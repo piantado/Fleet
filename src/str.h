@@ -30,6 +30,12 @@ public:
 };
 
     
+	
+// This is thrown by split when it has the wrong number of things
+// allowing us to recover from lines that are bad
+struct StringSplitException : public std::exception {
+	
+};
 
 /**
  * @brief Split is returns a deque of s split up at the character delimiter. 
@@ -83,7 +89,7 @@ std::array<std::string, N> split(const std::string& s, const char delimiter) {
 	// must be the right size 
 	if(q.size() != N) {
 		std::cerr << "*** String in split<N> has " << q.size() << " not " << N << " elements: " << s << std::endl;
-		assert(false);
+		throw StringSplitException();
 	}
 	
 	// convert to an array now that we know it's the right size

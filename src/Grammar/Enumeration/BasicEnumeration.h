@@ -2,6 +2,11 @@
 
 #include "EnumerationInference.h"
 
+// We require that each NT leads to a nonterminal -- if not, we
+// can run into problem where some integers do not map to trees. In this case,
+// we throw this assumption
+struct EnumerationNotInjectiveException : std::exception {};
+
 template<typename Grammar_t>
 class BasicEnumeration {
 public:
@@ -34,7 +39,10 @@ public:
 			// Otherwise it is encoding numterm+which_terminal
 			is -= numterm; 
 			
-			auto ri = is.pop(this->grammar->count_nonterminals(nt)); // this already includes the shift from all the nonterminals
+			const auto numnonterm = this->grammar->count_nonterminals(nt);
+			if(numnonterm == 0) throw EnumerationNotInjectiveException(); 
+			
+			auto ri = is.pop(numnonterm); // this already includes the shift from all the nonterminals
 			
 			Rule* r = this->grammar->get_rule(nt, ri+numterm); // shift index from terminals (because they are first!)
 			Node out = this->grammar->makeNode(r);

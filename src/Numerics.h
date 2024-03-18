@@ -369,7 +369,8 @@ T quantile(std::vector<T>& v, double q) {
 template<typename T>
 T median(std::vector<T>& v) {
 	const size_t n = v.size();
-	assert(n>0);
+	if(n == 0) return NaN;
+	if(n == 1) return v.at(0);
 	std::sort(v.begin(), v.end(), floating_point_compare<T>());
 	
 	if(n % 2 == 0) {
@@ -392,12 +393,14 @@ T median(std::vector<T>& v) {
 template<typename T>
 T trimmed_mean(std::vector<T>& v, float a, float b) {
 	const size_t n = v.size();
-	assert(n > 0);
+	if(n == 0) return NaN;
+	if(n == 1) return v.at(0);
+	
 	std::sort(v.begin(), v.end(), floating_point_compare<T>());
 	assert(a >= 0.0 and b <= 1.0 and a<b && "*** Bad range in trimmed_mean");
 	
 	double s = 0.0;
-	double k = 0;
+	int k = 0;
 	for(int i=a*n;i<b*n;i++) {
 		s += v.at(i); 
 		k++;
@@ -423,13 +426,14 @@ T trimmed_mean(std::vector<T>& v, float pct) {
  * @return 
  */
 template<typename T>
-T mymax(std::vector<T>& v) {
+T mymax(const std::vector<T>& v) {
 	const size_t n = v.size();
-	assert(n> 0);
+	if(n == 0) return NaN;
+	if(n == 1) return v.at(0);
 	
 	auto m = v[0];
 	for(size_t i=0;i<n;i++) 
-		m = std::max(v[i], m);
+		m = std::max(v.at(i), m);
 		
 	return m;
 }

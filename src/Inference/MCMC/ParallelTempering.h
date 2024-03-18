@@ -33,7 +33,7 @@ public:
 	
 	time_ms swap_every = 250; // try a round of swaps this often 
 	time_ms adapt_every = 5000; // 
-	time_ms show_every = 5000;
+	time_ms show_every = 10000;
 	
 	OrderedLock overall_mutex; // This mutex coordinates swappers, adapters, and printers, otherwise they can lock each other out
 	

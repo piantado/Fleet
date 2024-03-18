@@ -154,3 +154,12 @@ generator<T&> operator|(generator<T&> g, std::vector<T>& tn) { // NOTE: tn MUST 
 	}
 }
 
+
+template<typename T> 
+generator<T&> operator|(generator<T&> g, std::set<T>& tn) { // NOTE: tn MUST be a ref here...
+	for(auto& x : g) {
+		tn.add(x);
+		co_yield x; // and yield 
+	}
+}
+

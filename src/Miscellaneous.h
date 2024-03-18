@@ -139,3 +139,23 @@ struct is_specialization : std::false_type {};
 template<template<typename...> class Ref, typename... Args>
 struct is_specialization<Ref<Args...>, Ref>: std::true_type {};
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// A min that ignores nan and has as many arguments as we want
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+template<typename T> 
+T mymin(T a) {
+	return a; // if std::isnan(a) then we also return that
+}
+
+template<typename T, typename... Args> 
+T mymin(T a, Args... args) {
+	// if we are a nan, then remove
+	if(std::isnan(a)) {
+		return mymin(args...);
+	}
+	else {
+		return std::min(a, mymin(args...));
+	}
+}

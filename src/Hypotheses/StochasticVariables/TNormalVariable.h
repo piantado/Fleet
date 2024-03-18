@@ -21,7 +21,7 @@ public:
 	
 	float MEAN = 0.0;
 	float SD   = 1.0;
-	float PROPOSAL_SCALE = 0.10; 
+	float PROPOSAL_SCALE = 0.250; 
 	
 	bool can_propose;
 	
@@ -33,12 +33,17 @@ public:
  	}
 	
 	// Set the value (via float or double)
+	// NOTE: This ses the PRE-transformed value
 	template<typename T>
-	void set(T v) {
+	void set_untransformed(const T v) {
 		if(v != value) {
 			value = v;
 			fvalue = f(v);
 		}
+	}
+	
+	float get_untransformed() {
+		return value; 
 	}
 	
 	/**
@@ -55,14 +60,15 @@ public:
 	
 	
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-		throw YouShouldNotBeHereError("*** Should not call likelihood here");
+		return 0.0; // this is here so we can run MCMC with no data
+//		throw YouShouldNotBeHereError("*** Should not call likelihood here");
 	}
 	
 	virtual std::optional<std::pair<self_t,double>> propose() const override {
 		if(not can_propose) return {};
 		
 		self_t out = *this;
-		out.set(value + PROPOSAL_SCALE*random_normal());
+		out.set_untransformed(value + PROPOSAL_SCALE*random_normal());
 		return std::make_pair(out, 0.0); // everything is symmetrical so fb=0
 			
 	}
@@ -70,7 +76,7 @@ public:
 	virtual self_t restart() const override {
 		self_t out = *this;
 		if(can_propose) {
-			out.set(MEAN + SD*random_normal());
+			out.set_untransformed(MEAN + SD*random_normal());
 		}
 		else {
 			// should already have just copied it anyways
@@ -93,6 +99,6 @@ public:
 };
 
 
-using UniformVariable = TNormalVariable< +[](float x)->float { return normal_cdf<float>(x, 0.0, 1.0); }>;
+using UniformVariable     = TNormalVariable< +[](float x)->float { return normal_cdf<float>(x, 0.0, 1.0); }>;
 
-using ExponentialVariable = TNormalVariable< +[](float x)->float { return -log(normal_cdf<float>(x, 0.0, 1.0)); }>;
+using ExponentialVariable = TNormalVariable< +[](float x)->float { return -log(normal_cdf<float>(-x, 0.0, 1.0)); }>;

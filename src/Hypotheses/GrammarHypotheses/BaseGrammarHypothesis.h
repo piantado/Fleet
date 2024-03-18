@@ -54,22 +54,33 @@ public:
 	// a Vector2D of single outputs (for deterministic), or a Vector2D with only one value for the second dimension when it 
 	// is a thunk. These variants are the whole reason we have subclasses, although there is a lot of repeated code
 	// so this might change in the future. 
+	// NOTE: These do NOT mix in alpha -- that happens in compute_likelihood
 	using Predict_t = _Predict_t; 
 
 	// take a data pointer and map it to a hypothesis x i'th item for that data point
 	using LL_t = std::unordered_map<typename datum_t::data_t*, std::vector<Vector> >; 
-	
-	VectorHalfNormalHypothesis logA; 
+
+	typename HYP::Grammar_t* grammar;
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 
 	// a reasonably shaped prior
+public:
+	// if this is true, then we don't propose to any of logA, and we treat logA just as a bunch of zeros
+	bool flat_prior; 
+
+	// where we store the logA values
+	VectorHalfNormalHypothesis logA; 
+
+protected:
+	// these are now protected because when they are set, we have to recompute stuff sometimes
+	// Parameters for inference
 	UniformVariable alpha; // uniform in [0,1]
 	ExponentialVariable decay;  // expoential decay parameter
-	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
-	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt; // NOTE: Pt is not currently in use!
-	
-	typename HYP::Grammar_t* grammar;
+//	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
+//	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt; // NOTE: Pt is not currently in use!
+
+public: 
 	
 	// All of these are shared_ptr so that we can copy hypotheses quickly
 	// without recomputing them. NOTE that this assumes that the data does not change
@@ -77,6 +88,7 @@ public:
 	
 	std::shared_ptr<Matrix>    C;
 	std::shared_ptr<LL_t>      LL; // type for the likelihood
+	
 	std::shared_ptr<Predict_t> P;
 
 	// These variables store some parameters and get recomputed
@@ -85,34 +97,65 @@ public:
 	
 	// stored so we can remember what we computed for. 
 	const data_t* which_data; 
-	const std::vector<HYP>* which_hypotheses;
+	std::vector<HYP>* which_hypotheses;
 
-	// if this is true, then we don't propose to any of logA, and we treat logA just as a bunch of zeros
-	protected:
-		bool flat_prior; 
-	public:
 
-	BaseGrammarHypothesis() : flat_prior(false) {	}
+	BaseGrammarHypothesis() : flat_prior(false) {	
+		decay.set_untransformed(0.1);
+		alpha.set_untransformed(1.0);
+	}
 		
 	BaseGrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) : flat_prior(false) {
 		// This has to take human_data as a pointer because of how MCMCable::make works -- can't forward a reference
 		// but the rest of this class likes the references, so we convert here
+		decay.set_untransformed(0.1);
+		alpha.set_untransformed(1.0);
 		this->set_hypotheses_and_data(hypotheses, *human_data);		
 	}	
 	
+	// must do these together
+	void set_decay(const ExponentialVariable& ev) {
+		if(ev != decay) {
+			decay = ev;
+			this->recompute_decayedLikelihood(*which_data); 
+		}
+	}
+	
+	void set_decay_untransformed(double v) {
+		if(v != decay.get_untransformed()){
+			decay.set_untransformed(v);
+			this->recompute_decayedLikelihood(*which_data);
+		}
+	}
+	
+	void set_alpha(const UniformVariable& a ) {
+		if(a != alpha) {
+			alpha = a;
+			this->recompute_LL(*which_hypotheses, *which_data);
+		}
+	}
+	void set_alpha_untransformed(double v) {
+		if(v != alpha.get_untransformed()){
+			alpha.set_untransformed(v);
+			this->recompute_LL(*which_hypotheses, *which_data);
+		}
+	}
 	
 	void copy_parameters(const BaseGrammarHypothesis& h) {
 		// sometimes we want the parameters of h, but on some new (e.g. heldout) data
-		
 		this->logA  = h.logA;
-		this->alpha = h.alpha;
-		this->llt   = h.llt;
-		this->pt    = h.pt;
-		this->decay = h.decay;		
-		
-		// must recompute since we (presumably) changed decay
-		this->recompute_decayedLikelihood(*which_data);
+//		this->llt   = h.llt;
+//		this->pt    = h.pt;
+		this->set_alpha(h.alpha);
+		this->set_decay(h.decay);		// NOTE: this calls recompute_decayedLikelihood on my OWN data
 	}
+	
+	// we write this as a function so that we can override (and remove llt if we want)
+//	float get_llt() const {	return llt.get(); }
+	float get_alpha() const { return alpha.get(); }
+	float get_decay() const { return decay.get(); }	
+	
+	size_t ndata() const { return which_data->size(); }
 	
 	// we overwrite this because in MCMCable, this wants to check get_value, which is not defined here
 	[[nodiscard]] static this_t sample(std::vector<HYP>& hypotheses, const data_t* human_data) {
@@ -189,7 +232,7 @@ public:
 	 *			(requires that each hypothesis use the same grammar)
 	 * @param hypotheses
 	 */
-	virtual void recompute_C(std::vector<HYP>& hypotheses) {
+	virtual void recompute_C(const std::vector<HYP>& hypotheses) {
 		   
 		assert(hypotheses.size() > 0);
 
@@ -236,6 +279,8 @@ public:
 			}
 		}
 	
+		auto a = this->alpha.get();
+	
 		LL.reset(new LL_t()); 
 		LL->reserve(max_sizes.size()); // reserve for the same number of elements 
 		
@@ -258,7 +303,11 @@ public:
 					// data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
 					// but the problem is that isn't defined for some hypotheses. So we'll use 
 					// the slightly slower
-					typename HYP::data_t d = { dptr->at(i) };
+					typename HYP::data_t d = { dptr->at(i) }; 
+					for(auto& di : d)  {
+						di.reliability = a; // set to our alpha value
+					}
+					
 					data_lls(i) = hypotheses[h].compute_likelihood(d);
 								
 					//print(hypotheses[h].string(), data_lls(i) , str(dptr->at(i)), hypotheses[h].call(dptr->at(i).input), dptr->at(i).output);
@@ -306,8 +355,9 @@ public:
 		// we store these in reverse order from some max data size
 		// so that we can just take the tail for what we need
 		Vector powers = Vector::Ones(MX);
+		auto dc = get_decay();
 		for(int i=1;i<MX;i++) { // intentionally leaving powers(0) = 1 here
-			powers(i) = powf(i,-decay.get());
+			powers(i) = powf(i,-dc);
 		}
 		   
 		// sum up with the memory decay
@@ -376,8 +426,8 @@ public:
 	virtual double compute_prior() override {
 		return this->prior = logA.compute_prior() + 
 							 alpha.compute_prior() +
-							 llt.compute_prior() + 
-							 pt.compute_prior() + 
+//							 llt.compute_prior() + 
+							 //pt.compute_prior() + 
 							 decay.compute_prior();
 	}
 	
@@ -392,7 +442,7 @@ public:
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
 		// and that will get normalized away in posterior
 		const auto hprior =  this->hypothesis_prior();
-		const auto hlikelihood = (*decayedLikelihood / llt.get());
+		const auto hlikelihood = (*decayedLikelihood );
 		Matrix hposterior = hlikelihood.colwise() + hprior;
 		//Matrix hposterior = (*decayedLikelihood).colwise() + hprior;
 		
@@ -442,8 +492,8 @@ public:
 			this->likelihood  = 0.0; // for all the human data
 			
 			// precompute these so we don't keep doing it
-			const auto log_alpha = log(alpha.get());
-			const auto log_1malpha = log(1.0-alpha.get());
+			const auto log_alpha = log(get_alpha());
+			const auto log_1malpha = log(1.0-get_alpha());
 			
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
@@ -475,12 +525,10 @@ public:
 		
 		out.logA = logA.restart();
 		
-		out.alpha = alpha.restart();
-		out.decay = decay.restart();
-		out.llt   = llt.restart();
-		out.pt    = pt.restart();
-		
-		out.recompute_decayedLikelihood(*out.which_data);
+		out.set_alpha(alpha.restart());
+		out.set_decay(decay.restart());
+//		out.llt   = llt.restart();
+		//out.pt    = pt.restart();
 		
 		return out;
 	}
@@ -503,39 +551,22 @@ public:
 		if(flat_prior or flip(0.15)){ // if flat, we NEVER propose to logA
 			
 			double myfb = 0.0;
-			auto which = random_nonempty_subset(4, 0.25);
+			auto which = random_nonempty_subset(2, 0.25);
 	
 			if(which.at(0)) {
 				auto p = alpha.propose();
 				if(not p) return {}; // Hmm can change this -- failed proposals can just be skipped here
 				auto [ v, fb ] = p.value();
-				out.alpha = v;
+				out.set_alpha(v);
 				myfb += fb;
 			}
 			
-			if(which.at(1)){
-				auto p = llt.propose();
-				if(not p) return {};
-				auto [ v, fb ] = p.value();
-				out.llt = v;
-				myfb += fb;
-			}
-			
-			if(which.at(2)) {
-				auto p = pt.propose();
-				if(not p) return {};
-				auto [ v, fb ] = p.value();
-				out.pt = v;
-				myfb += fb;
-			}
-			
-			if(which.at(3)) {
+			if(which.at(1)) {
 				auto p = decay.propose();
 				if(not p) return {};
 				auto [ v, fb ] = p.value();
-				out.decay = v;
+				out.set_decay(v);
 				myfb += fb;
-				out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 			}
 			
 			return std::make_pair(out, myfb);
@@ -620,8 +651,6 @@ public:
 		return (C == h.C and LL == h.LL and P == h.P) and 
 				(logA == h.logA)   and 
 				(alpha == h.alpha) and
-				(llt   == h.llt)   and
-				(pt    == h.pt)    and
 				(decay == h.decay);
 	}
 	
@@ -640,10 +669,10 @@ public:
 		out += prefix + "-1\tposterior.score" +"\t"+ str(this->posterior) + "\n";
 		out += prefix + "-1\tparameter.prior" +"\t"+ str(this->prior) + "\n";
 		out += prefix + "-1\thuman.likelihood" +"\t"+ str(this->likelihood) + "\n";
-		out += prefix + "-1\talpha" +"\t"+ str(alpha.get()) + "\n";
-		out += prefix + "-1\tllt" +"\t"+ str(llt.get()) + "\n";
-		out += prefix + "-1\tpt" +"\t"+ str(pt.get()) + "\n";
-		out += prefix + "-1\tdecay" +"\t"+ str(decay.get()) + "\n";
+		out += prefix + "-1\talpha" +"\t"+ str(get_alpha()) + "\n";
+//		out += prefix + "-1\tllt" +"\t"+ str(get_llt()) + "\n";
+//		out += prefix + "-1\tpt" +"\t"+ str(pt.get()) + "\n";
+		out += prefix + "-1\tdecay" +"\t"+ str(get_decay()) + "\n";
 		
 		// now add the grammar operations
 		size_t xi=0;
@@ -670,7 +699,7 @@ public:
 	
 	virtual size_t hash() const override { 
 		size_t output = logA.hash();
-		hash_combine(output, alpha.hash(), decay.hash(), llt.hash(),  pt.hash());
+		hash_combine(output, alpha.hash(), decay.hash());
 		return output;
 	}
 	
