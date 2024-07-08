@@ -223,10 +223,11 @@ public:
 				childStrings[i] = this->children[i].string();
 			}
 			
-			// now substitute the children into the format
+			// mark for can resample (useful in MCTS)
 			std::string s = this->rule->format;
 			if(usedot and not this->can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
 
+			// now substitute the children into the format
 			for(size_t i=0;i<this->rule->N;i++) {
 				
 				// Here we put the i'th child by first trying position i, otherwise 

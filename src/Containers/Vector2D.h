@@ -28,6 +28,10 @@ struct Vector2D {
 		fill(b);
 	}
 	
+	bool inbounds(int x, int y) {
+		return (x>=0 and x<xsize and y>=0 and y<ysize);
+	}
+	
 	void fill(T x){
 		std::fill(value.begin(), value.end(), x);
 	}
@@ -41,6 +45,62 @@ struct Vector2D {
 		xsize=x; ysize=y;
 		value.reserve(x*y);
 	}
+	
+	void insert_y(const int y_at, T b) {
+		// insert a new row at y -- note this is a slow operation I'm sure 
+		if(y_at >= ysize+1) return; // nothing happens
+		auto nxt = Vector2D<T>(xsize, ysize+1);
+		for(int x=0;x<nxt.xsize;x++) {
+			for(int y=0;y<nxt.ysize;y++) {
+				if(y < y_at)       nxt.at(x,y) = this->at(x,y);
+				else if(y == y_at) nxt.at(x,y) = b;
+				else               nxt.at(x,y) = this->at(x,y-1);				
+			}
+		}
+		
+		this->operator=(std::move(nxt)); // set to myself
+	}
+	void insert_x(const int x_at, T b) {
+		// insert a new row at y -- note this is a slow operation I'm sure 
+		if(x_at >= xsize+1) return; // nothing happens
+		auto nxt = Vector2D<T>(xsize+1, ysize);
+		for(int x=0;x<nxt.xsize;x++) {
+			for(int y=0;y<nxt.ysize;y++) {
+				if(x < x_at)       nxt.at(x,y) = this->at(x,y);
+				else if(x == x_at) nxt.at(x,y) = b;
+				else               nxt.at(x,y) = this->at(x-1,y);				
+			}
+		}
+		
+		this->operator=(std::move(nxt)); // set to myself
+	}
+	void delete_y(const int y_at) {
+		if(ysize == 0 or y_at >= ysize or y_at < 0) return;
+		// insert a new row at y -- note this is a slow operation I'm sure 
+		auto nxt = Vector2D<T>(xsize, ysize-1);
+		for(int x=0;x<nxt.xsize;x++) { // TODO Can speed up by moving the if outside the y loop
+			for(int y=0;y<ysize;y++) {
+				if(y < y_at)       nxt.at(x,y) = this->at(x,y);
+				else if(y > y_at)  nxt.at(x,y-1) = this->at(x,y);				
+			}
+		}
+		
+		this->operator=(std::move(nxt)); // set to myself
+	}
+	void delete_x(const int x_at) {
+		if(xsize == 0 or x_at >= xsize or x_at < 0) return;
+		// insert a new row at y -- note this is a slow operation I'm sure 
+		auto nxt = Vector2D<T>(xsize-1, ysize);
+		for(int x=0;x<xsize;x++) {
+			for(int y=0;y<nxt.ysize;y++) {
+				if(x < x_at)       nxt.at(x,y) = this->at(x,y);
+				else if(x > x_at)  nxt.at(x-1,y) = this->at(x,y);				
+			}
+		}
+		
+		this->operator=(std::move(nxt)); // set to myself
+	}
+	
 	
 	const T& at(const int x, const int y) const {
 		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
@@ -83,6 +143,20 @@ struct Vector2D {
 	void operator[](X x) {
 		CERR "**** Cannot use [] with Vector2d, use .at()" ENDL;
 		throw YouShouldNotBeHereError();
+	}
+	
+	std::string string() {
+		std::string out = "[";
+		for(int y=0;y<ysize;y++) {
+			out += "[";
+			for(int x=0;x<xsize;x++) {
+				out += str(at(x,y)) + ",";				
+			}
+			if(ysize > 0) out.pop_back();
+			out += "],";
+		}
+		if(xsize > 0) out.pop_back(); // remove last comma
+		return out;
 	}
 };
 

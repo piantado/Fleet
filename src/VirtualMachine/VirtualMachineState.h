@@ -253,7 +253,7 @@ public:
 					throw VMSRuntimeError();
 				}
 				
-				FleetStatistics::vm_ops++;
+				//FleetStatistics::vm_ops++;
 				
 				Instruction i = program.top(); program.pop();
 //				print("Instruction", i);

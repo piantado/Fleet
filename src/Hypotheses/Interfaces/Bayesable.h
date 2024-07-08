@@ -10,6 +10,7 @@
 #include "IO.h"
 #include "Statistics/FleetStatistics.h"
 #include "Miscellaneous.h"
+#include "Statistics/StreamingSum.h"
 
 // if we define this, then we won't use breakouts
 //#define NO_BREAKOUT 1

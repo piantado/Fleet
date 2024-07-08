@@ -270,6 +270,7 @@ public:
 	 */
 	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
+//		print("*** Recomputing LL");
 			
 		// For each HumanDatum::data, figure out the max amount of data it contains
 		std::unordered_map<typename datum_t::data_t*, size_t> max_sizes;
