@@ -11,7 +11,7 @@
 
 //#define DEBUG_BEAMSEARCH 1
 
-extern volatile sig_atomic_t CTRL_C; 
+extern std::atomic<bool> CTRL_C;
 
 /**
  * @class BeamSearch

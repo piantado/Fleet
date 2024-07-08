@@ -143,7 +143,7 @@ public:
 		return lp;
 	}
 		
-	void print(std::string prefix="#\n") override {
+	void show(std::string prefix="#\n") override {
 		// make this hypothesis string show all the data too
 		extern data_t mydata;
 		
@@ -156,7 +156,7 @@ public:
 			prefix = prefix+"#Test\t" + testinput + "\t" + this->call(testinput, "<err>").string() + "\n";
 		}
 		
-		Super::print(prefix); 
+		Super::show(prefix);
 	}
 	
 	
