@@ -156,7 +156,7 @@ public:
 			prefix = prefix+"#Test\t" + testinput + "\t" + this->call(testinput, "<err>").string() + "\n";
 		}
 		
-		Super::show(prefix); 
+		Super::show(prefix);
 	}
 	
 	
