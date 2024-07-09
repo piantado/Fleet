@@ -58,9 +58,7 @@ public:
 	// what we use internally for stacks
 	template<typename T>
 	using VMSStack = Stack<T>;
-	
-	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
-	
+		
 	Program<this_t>    program; // programs are instructions for myself
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	const output_t&    err; // what error output do we return? Just a reference to a value for speed
@@ -233,12 +231,7 @@ public:
 	}
 	
 	/**
-	 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
-	 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 
-	 *        applyPrimitives, which means that whatever arguments we give here are passed all teh way back 
-	 *        to the VMS Primitives when they are called. They really should be loaders, but they could be anything. 
-	 * @param pool
-	 * @param loader
+	 * @brief Run 
 	 * @return 
 	 */	
 	 output_t run() {
@@ -250,7 +243,6 @@ public:
 			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
 				if(program.size() + runtime_counter.total > MAX_RUN_PROGRAM ) {  // if we've run too long or we couldn't possibly finish
-//					print("HEEERE");
 					throw VMSRuntimeError();
 				}
 				
