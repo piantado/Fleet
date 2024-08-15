@@ -284,11 +284,6 @@ std::pair<t*,double> sample(const T& s, const std::function<double(const t&)>& f
 }
 
 
-
-
-
-
-
 template<typename t, typename T> 
 double sample_lp_z(const T& s, const std::function<double(const t&)>& f) {
 	/**

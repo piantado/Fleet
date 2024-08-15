@@ -12,6 +12,7 @@
 #include "VirtualMachineState.h"
 #include "VirtualMachinePool.h"
 #include "Builtins.h"
+#include "Functional.h"
 
 // an exception for recursing too deep
 struct DepthException : public std::exception {
@@ -330,6 +331,26 @@ public:
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
 		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Argument type is not in GRAMMAR_TYPES");
 		
+		// NOTE: We want something with friendly error messages instead of the above,
+		// but apparently this is not supported:
+				// first check that the types are allowed
+//		if constexpr(std::is_reference<T>::value){
+//			print("*** Primitives cannot return references, in ", fmt);
+//			static_assert(false);
+//		}
+//		if constexpr((std::is_reference<args>::value || ...)){
+//			print("*** Arguments cannot be references, in ", fmt);
+//			static_assert(false);
+//		}
+//		if constexpr(not is_in_GRAMMAR_TYPES<T>()){
+//			print("*** Return type T not in grammar types, in ", fmt);
+//			static_assert(false);
+//		}
+//		if constexpr(not (is_in_GRAMMAR_TYPES<args>() && ...)){
+//			print("*** Argument type not in grammar types, in ", fmt);
+//			static_assert(false);
+//		}
+//		
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
 		//auto newf = new auto ( [=](VirtualMachineState_t*, int) -> void {
@@ -389,7 +410,7 @@ public:
 	}
 
 	/**
-	 * @brief 
+	 * @brief Wrapper for add to use function pointers
 	 * @param fmt
 	 * @param p
 	 * @param o
@@ -398,6 +419,8 @@ public:
 	void add(std::string fmt,  T(*_f)(args...), double p=1.0, Op o=Op::Standard, int a=0) {
 		add<T,args...>(fmt, std::function<T(args...)>(_f), p, o, a);
 	}	
+	
+
 	
 	/**
 	 * @brief Add a variable that is NOT A function -- simplification for adding alphabets etc.
@@ -413,6 +436,25 @@ public:
 		add(fmt, std::function( [=]()->T { return x; }), p, o, a);
 	}	
 	
+	
+	/**
+	 * @brief Adds this as a *function type* (see Function.h) rather than as a function itself. 
+	 * For example, if we add_ft the function F =[](int,char)->bool{...}, then we will be adding the
+	 * expansion in the grammar, ft<bool,int,char> -> F. Note in this case, there are no %s in 
+	 * fmt because in the grammar, this takes no arguments (we need an "apply" to use it).
+	 * Very confusing. 
+	 * @param fmt
+	 * @param p
+	 * @param o
+	 */
+	template<typename T, typename... args> 
+	void add_ft(std::string fmt,  T(*_f)(args...), double p=1.0, Op o=Op::Standard, int a=0) {
+		std::function f = _f; // convert to std::function
+		
+		assert(not contains(fmt, "%s")); // should not contain %s since its not a function application
+		
+		add_terminal<ft<T,args...>>(fmt, f, p, o, a);
+	}	
 	
 	/**
 	 * @brief Remove all the nonterminals of this type from the grammar. NOTE: This is generally a 
