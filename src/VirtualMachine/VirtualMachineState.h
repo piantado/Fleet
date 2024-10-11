@@ -154,7 +154,7 @@ public:
 			assert(false);
 		}
 		
-		T x = std::move(stack<T>().top());
+		T x = stack<T>().top();
 		stack<T>().pop();
 		return x;
 	}
