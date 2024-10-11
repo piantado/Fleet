@@ -3,6 +3,7 @@
 #include <vector>
 #include <mutex>
 #include <condition_variable>
+#include <queue>
 
 #include "OrderedLock.h"
 
@@ -18,7 +19,8 @@
 
 template<typename T>
 class ConcurrentQueue {
-
+	static const size_t DEFAULT_CONCURRENT_QUEUE_SIZE = 64;
+	
 	size_t N;  // length of the queue
 
 	// NOTE: We have tried to align to_yield better for multithreading, but nothing seems to improve speed
@@ -34,7 +36,7 @@ class ConcurrentQueue {
 	
 public:
 	
-	ConcurrentQueue(size_t n) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
+	ConcurrentQueue(size_t n=DEFAULT_CONCURRENT_QUEUE_SIZE) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
 		
 	}
 	
@@ -48,7 +50,7 @@ public:
 	bool full()   { return (push_idx+1) % N == pop_idx; }
 	size_t size() { return (pop_idx - push_idx + N) % N; } 
 	
-	void push(T& x) {	
+	void push(const T& x) {	
 	
 		std::unique_lock lck(lock);
 		
@@ -76,6 +78,73 @@ public:
 		full_cv.notify_one();		
 
 		return ret;
+	}
+	
+};
+
+
+/**
+ * @class ConcurrentQueueRing
+ * @author Steven Piantadosi
+ * @date 31/08/21
+ * @file ConcurrentQueue.h
+ * @brief It turns out that ConcurrentQueue is very slow with many threads. A ConcurrentQueueRing
+ * 		  stores a separate ConcurrentQueue for each thread, and then loops through them. Each
+ * 		  thread is therefore pushing onto a different ConcurrentQueue (NOTE: These must be 
+ * 		  ConcurrentQueues instead of e.g. std::queues, since the pusher and the popper are 
+ * 		  different threads, so they ened all of their locking). ConcurrentQueueRing 
+ *        prevents most of the locking/synchronization slowness, with only a 
+ * 		  little bit of wasted time for the yielding thread.
+ * 
+ * 		  This provides no guarantees on the order of pops, which may vary erratically based on
+ * 	 	  occupancy of the underlying queues.
+ * 
+ * 		  NOTE: A ConcurrentQueueRing is meant to be read by a single thread
+ */
+template<typename T>
+class ConcurrentQueueRing {
+	
+	size_t nthreads;
+	std::vector<ConcurrentQueue<T>> QS;
+	std::atomic<size_t> pop_index;
+public:
+	ConcurrentQueueRing(size_t t) : nthreads(t), pop_index(0), QS(nthreads) {
+		
+	}
+	
+	void push(const T& item, size_t thr) {
+		assert(thr >= 0 and thr < nthreads);
+		QS[thr].push(item);
+	}
+	
+	T pop() {
+		while(not CTRL_C) {
+			// on empty, we just move to the next slot -- no waiting here.
+			if(QS[pop_index].empty()) {
+				pop_index = (pop_index + 1) % nthreads;
+			}
+			else {
+				return QS[pop_index].pop();
+			}
+		}
+	}
+	
+	bool empty() {
+		// this, helpfully, leaves pop_index on the next 
+		// non-empty queue
+		
+		auto start_index = size_t(pop_index); // check if we loop around
+		
+		while(not CTRL_C) {
+			if(not QS[pop_index].empty()) {
+				return false; 
+			}
+			else {
+				pop_index = (pop_index + 1) % nthreads;
+				if(pop_index == start_index) // if we make it all the way around, we're empty
+					return true; 
+			}
+		}
 	}
 	
 };
