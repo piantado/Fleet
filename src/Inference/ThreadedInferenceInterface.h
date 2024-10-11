@@ -34,9 +34,9 @@ public:
 	size_t __nthreads; 
 	std::atomic<size_t> __nrunning;// everyone updates this when they are done
 	
-	ConcurrentQueue<X> to_yield;
+	ConcurrentQueueRing<X> to_yield;
 
-	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), to_yield(16) { }
+	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), to_yield(FleetArgs::nthreads) { }
 	
 	/**
 	 * @brief Return the next index to operate on (in a thread-safe way).
@@ -62,7 +62,7 @@ public:
 		for(auto& x : run_thread(ctl, args...)) {
 			
 			if(x.born_chain_idx == 0 or not FleetArgs::yieldOnlyChainOne) {
-				to_yield.push(x);
+				to_yield.push(x, thr);
 				
 			}
 			
@@ -93,7 +93,7 @@ public:
 		ctl2.start(); 
 
 		// give this just some extra space here
-		to_yield.resize(FleetArgs::MCMC_QUEUE_MULTIPLIER*ctl.nthreads); // just some extra space here
+		//to_yield.resize(FleetArgs::MCMC_QUEUE_MULTIPLIER*ctl.nthreads); // just some extra space here
 
 		// start each thread
 		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
@@ -103,10 +103,12 @@ public:
 	
 		// now yield as long as we have some that are running
 		while(__nrunning > 0 and !CTRL_C) { // we don't want to stop when its empty because a thread might fill it
-			if(not to_yield.empty()) { // w/o this we might pop when its empty...
-				//print((size_t)to_yield.push_idx, (size_t)to_yield.pop_idx, to_yield.size(), to_yield.N);
-				co_yield to_yield.pop();
-			}
+//			if(not to_yield.empty()) { // w/o this we might pop when its empty...
+//				//print((size_t)to_yield.push_idx, (size_t)to_yield.pop_idx, to_yield.size(), to_yield.N);
+//				co_yield to_yield.pop();
+//			}
+			if(not to_yield.empty()) 
+				co_yield to_yield.pop(); // search through until we find one
 		}
 		
 		// now we're done filling but we still may have stuff in the queue
