@@ -169,6 +169,7 @@ public:
 	
 	generator<HYP&> run(Control ctl) {
 		
+//		print("Starting swapper thread");
 		
 		// Start a swapper and adapter thread
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
