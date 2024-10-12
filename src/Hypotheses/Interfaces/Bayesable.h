@@ -114,6 +114,11 @@ public:
 			throw NotImplementedError("*** If you use a non-iterable data_t, then you must define compute_likelihood on your own."); 
 		}
 	}
+	
+	
+	virtual double compute_tempered_likelihood(const data_t& data, int ladder_rank, const double breakout=-infinity) {
+		return compute_likelihood(data,breakout); 
+	}
 
 	/**
 	 * @brief Compute the posterior, by calling prior and likelihood. 
