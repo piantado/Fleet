@@ -120,7 +120,7 @@ public:
 		while(not to_yield.empty()) {
 			auto val = to_yield.pop(); // search through until we find one
 			if(val.has_value())	co_yield val.value();
-			else                break;
+			else                break; // NOTE: we migth break here and leave some in queue -- but we only get break on CTRL_C
 		}
 		
 		// wait for all to complete
@@ -141,6 +141,7 @@ public:
 			
 			auto val = to_yield.pop(); // search through until we find one
 			if(val.has_value())	co_yield val.value();	
+			else                break;
 		}		
 	}
 	
