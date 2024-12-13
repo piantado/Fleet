@@ -57,8 +57,6 @@ public:
 	// this splits the prior,likelihood,posterior,and value
 	static const char SerializationDelimiter = '\t';
 	
-	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
-	
 	// store the the total number of instructions on the last call
 	// (summed up for stochastic, else just one for deterministic)
 	unsigned long total_instruction_count_last_call;
@@ -185,7 +183,7 @@ public:
 	virtual double compute_prior() override {
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
 		 * this_totheses */
-		if(this->value.count() > MAX_NODES) {
+		if(this->value.count() > FleetArgs::MAX_NODES) {
 			return this->prior = -infinity;
 		}
 		

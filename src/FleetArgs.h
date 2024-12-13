@@ -64,4 +64,7 @@ namespace FleetArgs {
 	// the number of threads)
 	int MCMC_QUEUE_MULTIPLIER = 16; 
 	
+	// The max number of nodes allowed ina LOTHypothesis
+	size_t MAX_NODES = 64; // how many nodes are allowed in hypotheses?
+	
 }
