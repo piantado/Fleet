@@ -107,14 +107,18 @@ public:
 //				//print((size_t)to_yield.push_idx, (size_t)to_yield.pop_idx, to_yield.size(), to_yield.N);
 //				co_yield to_yield.pop();
 //			}
-			if(not to_yield.empty()) 
-				co_yield to_yield.pop(); // search through until we find one
+			if(not to_yield.empty())  {
+				auto val = to_yield.pop(); // search through until we find one
+				if(val.has_value())	co_yield val.value();
+			}
+
 		}
 		
 		// now we're done filling but we still may have stuff in the queue
 		// some threads may be waiting so we can't join yet
 		while(not to_yield.empty()) {
-			co_yield to_yield.pop();
+			auto val = to_yield.pop(); // search through until we find one
+			if(val.has_value())	co_yield val.value();
 		}
 		
 		// wait for all to complete
@@ -131,8 +135,10 @@ public:
 		std::cerr << "*** Warning running unthreaded_run (intended for debugging)" << std::endl;
 		ctl.start();
 		for(auto& x : run_thread(ctl, args...)) {
-			co_yield x;
-			if(CTRL_C) break;
+			if(CTRL_C) break; // must come first or else we yield something invalid
+			
+			auto val = to_yield.pop(); // search through until we find one
+			if(val.has_value())	co_yield val.value();	
 		}		
 	}
 	

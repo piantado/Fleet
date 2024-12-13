@@ -4,6 +4,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <queue>
+#include <optional>
 
 #include "OrderedLock.h"
 
@@ -117,7 +118,8 @@ public:
 		QS[thr].push(item);
 	}
 	
-	T pop() {
+	std::optional<T> pop() {
+		
 		while(not CTRL_C) {
 			// on empty, we just move to the next slot -- no waiting here.
 			if(QS[pop_index].empty()) {
@@ -128,7 +130,8 @@ public:
 			}
 		}
 		
-		assert(false && "*** Should not get here"); return T{};
+		return std::nullopt;
+//		assert(false && "*** Should not get here"); return T{};
 	}
 	
 	bool empty() {
@@ -137,17 +140,21 @@ public:
 		
 		auto start_index = size_t(pop_index); // check if we loop around
 		
-		while(not CTRL_C) {
+//		while(not CTRL_C) {
+		while(true) {
 			if(not QS[pop_index].empty()) {
 				return false; 
 			}
 			else {
 				pop_index = (pop_index + 1) % nthreads;
+				
 				if(pop_index == start_index) // if we make it all the way around, we're empty
 					return true; 
 			}
 		}
-		
+
+		// This is what we return on CTRL_C -- I guess we'll call it empty?
+//		return false; 
 		assert(false && "*** Should not get here"); return false;
 	}
 	
