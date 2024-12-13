@@ -108,12 +108,12 @@ class ConcurrentQueueRing {
 	std::vector<ConcurrentQueue<T>> QS;
 	std::atomic<size_t> pop_index;
 public:
-	ConcurrentQueueRing(size_t t) : nthreads(t), pop_index(0), QS(nthreads) {
+	ConcurrentQueueRing(size_t t) : nthreads(t), QS(nthreads), pop_index(0){
 		
 	}
 	
 	void push(const T& item, size_t thr) {
-		assert(thr >= 0 and thr < nthreads);
+		assert(thr < nthreads); // must have thr >= 0
 		QS[thr].push(item);
 	}
 	
@@ -127,6 +127,8 @@ public:
 				return QS[pop_index].pop();
 			}
 		}
+		
+		assert(false && "*** Should not get here"); return T{};
 	}
 	
 	bool empty() {
@@ -145,6 +147,8 @@ public:
 					return true; 
 			}
 		}
+		
+		assert(false && "*** Should not get here"); return false;
 	}
 	
 };
