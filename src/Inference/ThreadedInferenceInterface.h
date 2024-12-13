@@ -110,6 +110,7 @@ public:
 			if(not to_yield.empty())  {
 				auto val = to_yield.pop(); // search through until we find one
 				if(val.has_value())	co_yield val.value();
+				else                break;
 			}
 
 		}
@@ -119,6 +120,7 @@ public:
 		while(not to_yield.empty()) {
 			auto val = to_yield.pop(); // search through until we find one
 			if(val.has_value())	co_yield val.value();
+			else                break;
 		}
 		
 		// wait for all to complete

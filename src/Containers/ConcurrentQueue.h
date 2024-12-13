@@ -140,7 +140,6 @@ public:
 		
 		auto start_index = size_t(pop_index); // check if we loop around
 		
-//		while(not CTRL_C) {
 		while(true) {
 			if(not QS[pop_index].empty()) {
 				return false; 
