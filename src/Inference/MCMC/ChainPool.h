@@ -48,7 +48,7 @@ public:
 	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) {
+	ChainPool(HYP& h0, typename HYP::data_t d, size_t n) {
 		assert(n>=1 && "*** You probably shouldn't have a chain pool with 0 elements");
 		for(size_t i=0;i<n;i++) {
 			add_chain(i==0?h0:h0.restart(), d);
@@ -60,7 +60,7 @@ public:
 	 * @param d -- what data to set
 	 * @param recompute -- should I recompute all of the posteriors?
 	 */	
-	void set_data(typename HYP::data_t* d, bool recompute=true) {
+	void set_data(typename HYP::data_t d, bool recompute=true) {
 		for(auto& c : pool) {
 			c.set_data(d, recompute);
 		}

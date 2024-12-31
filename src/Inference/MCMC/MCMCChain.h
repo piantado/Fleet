@@ -32,7 +32,7 @@ public:
 	// bad for ParallelTempering, where there are threads doing the adaptation etc. 
 	mutable OrderedLock current_mutex; 
 	
-	typename HYP::data_t* data;
+	typename HYP::data_t data;
 	
 	// this stores the maximum found since we've restarted
 	// (not the overall max)
@@ -47,14 +47,14 @@ public:
 	
 	FiniteHistory<bool> history;
 	
-	MCMCChain(HYP& h0, typename HYP::data_t* d) : 
+	MCMCChain(HYP& h0, typename HYP::data_t d) : 
 			current(h0), data(d), maxval(-infinity), 
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 	
-	MCMCChain(HYP&& h0, typename HYP::data_t* d) : 
+	MCMCChain(HYP&& h0, typename HYP::data_t d) : 
 			current(h0), data(d), maxval(-infinity),
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
@@ -89,10 +89,10 @@ public:
 	 * @param d - what data to set
 	 * @param recompute_posterior - should I recompute the posterior on current?
 	 */
-	void set_data(typename HYP::data_t* d, bool recompute_posterior=true) {
+	void set_data(typename HYP::data_t d, bool recompute_posterior=true) {
 		data = d;
 		if(recompute_posterior) {
-			current.compute_posterior(*data);
+			current.compute_posterior(data);
 		}
 	}
 	

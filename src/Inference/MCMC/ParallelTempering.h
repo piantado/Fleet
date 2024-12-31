@@ -46,7 +46,7 @@ public:
 	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	ParallelTempering(HYP& h0, typename HYP::data_t* d, std::initializer_list<double> t) : 
+	ParallelTempering(HYP& h0, typename HYP::data_t d, std::initializer_list<double> t) : 
 		ChainPool<HYP>(h0, d, t.size()),  temperatures(t), terminate(false) {
 		
 		swap_history.reserve(temperatures.size()); // reserve so we don't move
@@ -58,7 +58,7 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, typename HYP::data_t* d, unsigned long n, double maxT) : 
+	ParallelTempering(HYP& h0, typename HYP::data_t d, unsigned long n, double maxT) : 
 		ChainPool<HYP>(h0, d, n),terminate(false) {
 		assert(n != 0);
 		swap_history.reserve(n);
