@@ -98,7 +98,7 @@ public:
 	 */
 	generator<HYP&> run_thread(Control& ctl) override {
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
-		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
+		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than chains");
 		
 		// We have to manage subthreads pretty differently depending on whether we have a time or a 
 		// sample constraint. For now, we assume we can't have both

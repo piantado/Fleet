@@ -72,11 +72,11 @@ struct StreamingMean {
 	}
 	
 	operator T() const {
-		return T(sum)/this->n; // NOTE: Doesn't behave right if ints...
+		return T(sum)/T(this->n); // NOTE: Doesn't behave right if ints...
 	}
 	
-	float as_double() {
-		return double(this->s)/double(this->n);
-	}
+//	float () {
+//		return double(this->s)/double(this->n);
+//	}
 	
 };

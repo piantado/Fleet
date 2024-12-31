@@ -161,6 +161,7 @@ public:
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();		
 		while(true) {
+			//print(current.string());
 			
 			if(not ctl.running()) 
 				break;

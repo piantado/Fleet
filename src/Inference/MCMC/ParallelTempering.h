@@ -1,6 +1,6 @@
 #pragma once 
 
-//#define PARALLEL_TEMPERING_SHOW_DETAIL
+#define PARALLEL_TEMPERING_SHOW_DETAIL
 
 
 #include <signal.h>
@@ -205,7 +205,7 @@ public:
 		
 		//std::lock_guard og(overall_mutex);
 			
-		COUT "# Pool info: \n";
+		print("# Pool info: ################# \n");
 		for(size_t i=0;i<this->pool.size();i++) {
 			
 			// ugh locking doesn't work here..
@@ -215,7 +215,10 @@ public:
 			
 			print(i, 
 					double(this->pool[i].temperature),
+					this->pool[i].samples,
 					cpy.posterior,
+					cpy.prior,
+					cpy.likelihood,
 					this->pool[i].acceptance_ratio(),
 					swap_history[i].mean(),
 					int(swap_history[i].N),
@@ -223,6 +226,8 @@ public:
 					cpy.string()
 					);
 		}
+		print("############################## \n");
+
 	}
 	
 	double k(unsigned long t, double v, double t0) {
@@ -258,54 +263,5 @@ public:
 		}
 	}
 	
-};
-
-
-
-/**
- * @class DataTempering
- * @author piantado
- * @date 10/06/20
- * @file ParallelTempering.h
- * @brief This is like ParallelTempering but it tempers on the amount of data. Note then it doesn't adapt anything. 
- */
-template<typename HYP>
-class DataTempering : public ParallelTempering<HYP> {
-	
-public:
-	std::vector<FiniteHistory<bool>> swap_history;
-	std::atomic<bool> terminate; // used to kill swapper and adapter
-	
-	DataTempering(HYP& h0, std::vector<typename HYP::data_t>& datas)  : terminate(false) {
-		
-		swap_history.reserve(datas.size());
-		
-		// This version anneals on data, giving each chain a different amount in datas order
-		for(size_t i=0;i<datas.size();i++) {
-			this->pool.push_back(ChainPool<HYP>(i==0?h0:h0.restart(), &(datas[i])));
-			this->pool[i].temperature = 1.0;
-			swap_history.emplace_back();
-		}
-	}
-	
-	
-	// Same as ParallelTempering, but no adapter
-	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
-		
-		// Start a swapper and adapter thread
-		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
-	
-		// run normal pool run
-		for(auto& h : ChainPool<HYP>::run(ctl)) {
-			co_yield h;
-		}
-		
-		// kill everything else once that thread is done
-		terminate = true;
-		
-		swapper.join();
-	}
-	
-	void adapt(double v=3, double t0=1000000) { assert(false && "*** You should not call adapt for DataTempering");}
 };
 

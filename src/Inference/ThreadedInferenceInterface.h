@@ -60,13 +60,13 @@ public:
 	void run_thread_generator_wrapper(size_t thr, Control& ctl, Args... args) {
 		
 		for(auto& x : run_thread(ctl, args...)) {
+			if(CTRL_C) break;
 			
 			if(x.born_chain_idx == 0 or not FleetArgs::yieldOnlyChainOne) {
 				to_yield.push(x, thr);
-				
 			}
 			
-			if(CTRL_C) break;
+			
 		}
 		
 		// we always notify when we're done, after making sure we're not running or else the
@@ -107,25 +107,37 @@ public:
 //				//print((size_t)to_yield.push_idx, (size_t)to_yield.pop_idx, to_yield.size(), to_yield.N);
 //				co_yield to_yield.pop();
 //			}
+//			print("TII", to_yield.empty());
 			if(not to_yield.empty())  {
 				auto val = to_yield.pop(); // search through until we find one
-				if(val.has_value())	co_yield val.value();
-				else                break;
+				
+				if(val.has_value())	
+					co_yield val.value();
+				else                
+					break;
 			}
-
+			
 		}
 		
 		// now we're done filling but we still may have stuff in the queue
-		// some threads may be waiting so we can't join yet
+		// some threads may be waiting so we can't join yet. 
 		while(not to_yield.empty()) {
 			auto val = to_yield.pop(); // search through until we find one
-			if(val.has_value())	co_yield val.value();
-			else                break; // NOTE: we migth break here and leave some in queue -- but we only get break on CTRL_C
+			if(val.has_value())	
+				co_yield val.value();
+			else                
+				break; // NOTE: we migth break here and leave some in queue -- but we only get break on CTRL_C
 		}
 		
 		// wait for all to complete
+//		print("waiting");
+//		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
+//			threads[thr].join();
+//			print(thr, "joined");
+//		}
 		for(auto& t : threads) 
 			t.join();
+//		print("done");
 			
 	}
 	

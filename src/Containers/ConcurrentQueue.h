@@ -122,12 +122,13 @@ public:
 		
 		while(not CTRL_C) {
 			// on empty, we just move to the next slot -- no waiting here.
-			if(QS[pop_index].empty()) {
-				pop_index = (pop_index + 1) % nthreads;
-			}
-			else {
+			if(not QS[pop_index].empty()) {
 				return QS[pop_index].pop();
 			}
+			
+			pop_index = (pop_index + 1) % nthreads;
+			
+//			print("looping", (size_t)pop_index);
 		}
 		
 		return std::nullopt;
@@ -138,18 +139,25 @@ public:
 		// this, helpfully, leaves pop_index on the next 
 		// non-empty queue
 		
-		auto start_index = size_t(pop_index); // check if we loop around
+		size_t start_index = pop_index; // check if we loop around
 		
 		while(true) {
+//			print("here", (size_t)start_index, (size_t)pop_index, QS[pop_index].empty());
+			
+			//if(CTRL_C) return true;
+			
 			if(not QS[pop_index].empty()) {
 				return false; 
 			}
-			else {
+			else {				
 				pop_index = (pop_index + 1) % nthreads;
 				
-				if(pop_index == start_index) // if we make it all the way around, we're empty
-					return true; 
 			}
+			
+			if(pop_index == start_index) // if we make it all the way around, we're empty
+				return true; 
+			
+			
 		}
 
 		// This is what we return on CTRL_C -- I guess we'll call it empty?
