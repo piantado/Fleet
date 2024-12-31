@@ -118,7 +118,7 @@ public:
 		 */
 		
 		std::lock_guard guard(current_mutex);
-		current.compute_posterior(*data);
+		current.compute_posterior(data);
 		// NOTE: We do NOT count this as a "sample" since it is not yielded
 	}
 	
@@ -130,7 +130,7 @@ public:
 	void restart() { 
 		
 		current = current.restart();
-		current.compute_posterior(*data);
+		current.compute_posterior(data);
 		
 		steps_since_improvement = 0; // reset the couter
 		maxval = current.posterior; // and the new max
@@ -257,8 +257,8 @@ public:
 					// on likelihoods for compute_likelihood
 					const auto breakoutpair = std::make_pair(u + current.at_temperature(temperature) + fb, (double)temperature);
 					
-					proposal.compute_posterior(*data, breakoutpair);
-//					proposal.compute_posterior(*data);
+					proposal.compute_posterior(data, breakoutpair);
+//					proposal.compute_posterior(data);
 					
 //					#ifdef DEBUG_MCMC
 //					DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));

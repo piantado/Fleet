@@ -30,13 +30,14 @@ extern std::atomic<bool> CTRL_C;
 
 //cache::lru_cache<size_t, std::tuple<double,double,double>> posterior_cache(10);
 
+// Good god, because ranges are concepts, not templates, we have to declare them differently here:
 template <class R, class Value>
 concept range_over = std::ranges::range<R> && 
     std::same_as<std::ranges::range_value_t<R>, Value>;
 
 // good god: https://stackoverflow.com/questions/69081332/how-do-i-declare-a-template-parameter-of-type-range
 
-template<typename _datum_t, typename _data_t=range_over<_datum_t>>
+template<typename _datum_t, range_over<_datum_t> _data_t>
 class Bayesable {
 public:
 	

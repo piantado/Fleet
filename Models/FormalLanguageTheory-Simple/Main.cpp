@@ -236,7 +236,7 @@ int main(int argc, char** argv){
 //	return 0;
 
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
+	ParallelTempering samp(h0, mydata, FleetArgs::nchains, 1.20);
 //	ChainPool samp(h0, &mydata, FleetArgs::nchains);
 //	MCMCChain samp(h0, &mydata);
 //	HillClimbing samp(h0, &mydata);
