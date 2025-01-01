@@ -3,11 +3,11 @@
 #include <utility>
 #include <iomanip>
 #include <signal.h>
+#include <span>
 
 #include "FleetArgs.h"
 #include "Errors.h"
 #include "Datum.h"
-#include "DataRange.h"
 #include "IO.h"
 #include "Statistics/FleetStatistics.h"
 #include "Miscellaneous.h"
@@ -30,7 +30,7 @@ extern std::atomic<bool> CTRL_C;
 
 //cache::lru_cache<size_t, std::tuple<double,double,double>> posterior_cache(10);
 
-template<typename _datum_t, typename _data_t=DataRange<_datum_t>>
+template<typename _datum_t, typename _data_t=std::span<_datum_t>>
 class Bayesable {
 public:
 	

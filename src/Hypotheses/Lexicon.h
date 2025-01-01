@@ -22,9 +22,10 @@ template<typename this_t,
 		 typename _input_t,
 		 typename _output_t, 
 		 typename datum_t=defaultdatum_t<_input_t, _output_t>,
+		 typename data_t=std::span<datum_t>,
 		 typename _VirtualMachineState_t=typename INNER::Grammar_t::VirtualMachineState_t
 		 >
-class Lexicon : public MCMCable<this_t,datum_t>,
+class Lexicon : public MCMCable<this_t,datum_t,data_t>,
 				public Searchable<this_t, _input_t, _output_t>, // TODO: Interface a little broken 
 				public Serializable<this_t>,
 				public ProgramLoader<_VirtualMachineState_t> 
