@@ -31,6 +31,9 @@ class ParallelTempering : public ChainPool<HYP> {
 		
 public:
 	
+	using Super = ChainPool<HYP>;
+	
+	
 	time_ms swap_every = 250; // try a round of swaps this often 
 	time_ms adapt_every = 5000; // 
 	time_ms show_every = 10000;
@@ -75,6 +78,15 @@ public:
 				//print("t=", double(this->pool[i].temperature));
 			}
 		}
+	}
+	
+	template<typename... ARGS>
+	void add_chain(ARGS... args) {
+		
+		std::lock_guard guard(this->running_lock);
+		
+		Super::add_chain(args...);	
+		swap_history.emplace_back();
 	}
 	
 	void __shower_thread() {
@@ -212,19 +224,19 @@ public:
 			
 			// ugh locking doesn't work here..
 			//std::unique_lock guard(this->pool[i].current_mutex);
-			auto cpy = this->pool[i].current; // otherwise, without a mutex, it can change between accessing string and posterior, which is gnarly
+			auto cpy = this->pool.at(i).current; // otherwise, without a mutex, it can change between accessing string and posterior, which is gnarly
 			//guard.unlock();
 			
 			print(i, 
-					double(this->pool[i].temperature),
-					this->pool[i].samples,
+					double(this->pool.at(i).temperature),
+					this->pool.at(i).samples,
 					cpy.posterior,
 					cpy.prior,
 					cpy.likelihood,
-					this->pool[i].acceptance_ratio(),
-					swap_history[i].mean(),
-					int(swap_history[i].N),
-					this->pool[i].samples,
+					this->pool.at(i).acceptance_ratio(),
+					swap_history.at(i).mean(),
+					int(swap_history.at(i).N),
+					this->pool.at(i).samples,
 					cpy.string()
 					);
 		}

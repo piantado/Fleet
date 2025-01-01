@@ -117,14 +117,14 @@ public:
 				
 					do { 
 						idx = this->next_index() % pool.size();
-					} while( running[idx] != RunningState::READY ); // so we exit on a false running idx
-					running[idx] = RunningState::RUNNING; // say I'm running this one 
+					} while( running.at(idx) != RunningState::READY ); // so we exit on a false running idx
+					running.at(idx) = RunningState::RUNNING; // say I'm running this one 
 				}
 				
 				// Actually run and yield, being sure to save where everything came from 
 				Control c = ctl; // make a copy of everything in control
 				c.steps = steps_before_change; c.nthreads = 1; c.runtime = 0; // but update to 
-				for(auto x : pool[idx].run(c)) {
+				for(auto x : pool.at(idx).run(c)) {
 					x.born_chain_idx = idx; // set this
 					co_yield x;
 				}
@@ -135,7 +135,7 @@ public:
 					
 					ctl.done_steps += steps_before_change-1; // -1 because calling ctl.running adds one
 					
-					running[idx] = RunningState::READY;					
+					running.at(idx) = RunningState::READY;					
 				}
 							
 			}
@@ -158,8 +158,8 @@ public:
 				
 					do {
 						idx = this->next_index() % pool.size();
-					} while( running[idx] != RunningState::READY ); // so we exit on a ready idx
-					running[idx] = RunningState::RUNNING; // say I'm running this one 
+					} while( running.at(idx) != RunningState::READY ); // so we exit on a ready idx
+					running.at(idx) = RunningState::RUNNING; // say I'm running this one 
 					
 					/// figure out how many steps to run
 					to_run_steps = std::min(ctl.steps-ctl.done_steps, this->steps_before_change);								
@@ -181,7 +181,7 @@ public:
 				// Actually run and yield, being sure to save where everything came from 
 				Control c = ctl; // make a copy of everything in control
 				c.steps = to_run_steps; c.nthreads = 1; c.runtime = 0; // but update to 
-				for(auto& x : pool[idx].run(c)) {
+				for(auto& x : pool.at(idx).run(c)) {
 					x.born_chain_idx = idx; // set this
 					co_yield x;
 				}
@@ -196,10 +196,10 @@ public:
 						
 					// we are done if we ran out of steps to continue running. 
 					if(to_run_steps == steps_before_change) {
-						running[idx] = RunningState::READY;
+						running.at(idx) = RunningState::READY;
 					}
 					else {
-						running[idx] = RunningState::DONE; // say I'm running this one 
+						running.at(idx) = RunningState::DONE; // say I'm running this one 
 					}
 				}
 			}
