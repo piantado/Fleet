@@ -32,8 +32,7 @@ class ParallelTempering : public ChainPool<HYP> {
 public:
 	
 	using Super = ChainPool<HYP>;
-	
-	
+		
 	time_ms swap_every = 250; // try a round of swaps this often 
 	time_ms adapt_every = 5000; // 
 	time_ms show_every = 10000;
@@ -82,8 +81,6 @@ public:
 	
 	template<typename... ARGS>
 	void add_chain(ARGS... args) {
-		
-		std::lock_guard guard(this->running_lock);
 		
 		Super::add_chain(args...);	
 		swap_history.emplace_back();
