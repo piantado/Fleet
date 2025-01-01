@@ -29,12 +29,12 @@
  *        more natural palce) because we need access to the Grammar's parameter pack over types. 
  */
 template<typename this_t, // NOTE: IF YOU CHANGE THESE, CHANGE IN DeterministicLOTHypothesis and StochasticLOTHypothesis
-		 typename _input_t, 
 		 typename _output_t, 
+		 typename _input_t, 
 		 typename _Grammar_t,
 		 _Grammar_t* grammar,
 		 typename _datum_t=defaultdatum_t<_input_t, _output_t>, 
-		 typename _data_t=std::vector<_datum_t>,
+		 typename _data_t=DataRange<_datum_t>,
 		 typename _VirtualMachineState_t=typename _Grammar_t::VirtualMachineState_t
 		 >
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t

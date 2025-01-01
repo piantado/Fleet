@@ -3,11 +3,11 @@
 #include <utility>
 #include <iomanip>
 #include <signal.h>
-#include <ranges>
 
 #include "FleetArgs.h"
 #include "Errors.h"
 #include "Datum.h"
+#include "DataRange.h"
 #include "IO.h"
 #include "Statistics/FleetStatistics.h"
 #include "Miscellaneous.h"
@@ -30,21 +30,14 @@ extern std::atomic<bool> CTRL_C;
 
 //cache::lru_cache<size_t, std::tuple<double,double,double>> posterior_cache(10);
 
-// Good god, because ranges are concepts, not templates, we have to declare them differently here:
-template <class R, class Value>
-concept range_over = std::ranges::range<R> && 
-    std::same_as<std::ranges::range_value_t<R>, Value>;
-
-// good god: https://stackoverflow.com/questions/69081332/how-do-i-declare-a-template-parameter-of-type-range
-
-template<typename _datum_t, range_over<_datum_t> _data_t>
+template<typename _datum_t, typename _data_t=DataRange<_datum_t>>
 class Bayesable {
 public:
 	
 	// We'll define a vector of pairs of inputs and outputs
 	// this may be used externally to define what data is
-	typedef _datum_t datum_t;
-	typedef _data_t  data_t; 
+	using datum_t = _datum_t;
+	using data_t =  _data_t; 
 
 	// log values for all
 	double prior; 
@@ -88,14 +81,13 @@ public:
 	 * @param breakout
 	 * @return 
 	 */	
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) {
 	
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<data_t>) { 
 			// defaultly a sum over datums in data (e.g. assuming independence)
 			likelihood = 0.0;
 			for(const auto& d : data) {
-				
 				
 				auto sll = compute_single_likelihood(d);
 				
@@ -124,7 +116,7 @@ public:
 	}
 	
 	
-	virtual double compute_tempered_likelihood(const data_t& data, int ladder_rank, const double breakout=-infinity) {
+	virtual double compute_tempered_likelihood(const data_t data, int ladder_rank, const double breakout=-infinity) {
 		return compute_likelihood(data,breakout); 
 	}
 
@@ -145,7 +137,7 @@ public:
 	 * @param breakout
 	 * @return 
 	 */
-	virtual double compute_posterior(const data_t& data, const std::pair<double,double> breakoutpair=std::make_pair(-infinity,1.0)) {
+	virtual double compute_posterior(const data_t data, const std::pair<double,double> breakoutpair=std::make_pair(-infinity,1.0)) {
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		

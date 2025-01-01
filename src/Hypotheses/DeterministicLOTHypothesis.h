@@ -8,7 +8,7 @@ template<typename this_t,
 		 typename _Grammar_t,
 		 _Grammar_t* grammar,
 		 typename _datum_t=defaultdatum_t<_input_t, _output_t>, 
-		 typename _data_t=std::vector<_datum_t>,
+		 typename _data_t=DataRange<_datum_t>,
 		 typename _VirtualMachineState_t=typename _Grammar_t::VirtualMachineState_t
 		 >
 class DeterministicLOTHypothesis : public LOTHypothesis<this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t> { 
