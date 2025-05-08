@@ -54,7 +54,7 @@ public:
 	// these are static variables that makes them not have to be stored in each node
 	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
 	static double explore; 
-	static data_t* data;
+	data_t data; // maybe can be static?
 
 	std::atomic<unsigned int> nvisits;  // how many times have I visited each node?
 	
@@ -73,7 +73,7 @@ public:
 		mylock.unlock();
     }
     
-    MCTSBase(HYP& start, double ex, data_t* d) : 
+    MCTSBase(HYP& start, double ex, data_t d) : 
 		BaseNode<this_t>(),
 		open(true), which_expansion(0), nvisits(0) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
@@ -194,7 +194,7 @@ public:
 		open = false; // make sure nobody else takes this one
 			
 		// if its a terminal, compute the posterior
-		current.compute_posterior(*data);
+		current.compute_posterior(data);
 		add_sample(current.posterior);
 	}
 
@@ -357,7 +357,7 @@ public:
 template<typename this_t, typename HYP>
 double MCTSBase<this_t, HYP>::explore = 1.0;
 
-template<typename this_t, typename HYP>
-typename HYP::data_t* MCTSBase<this_t, HYP>::data = nullptr;
+//template<typename this_t, typename HYP>
+//typename HYP::data_t MCTSBase<this_t, HYP>::data;
 
 

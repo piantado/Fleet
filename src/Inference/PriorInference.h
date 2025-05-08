@@ -19,10 +19,10 @@ class PriorInference : public ThreadedInferenceInterface<HYP> {
 public:
 	
 	typename HYP::Grammar_t* grammar;
-	typename HYP::data_t* data;
+	typename HYP::data_t data;
 	HYP* from;
 	
-	PriorInference(typename HYP::Grammar_t* g, typename HYP::data_t* d, HYP* fr=nullptr) : 
+	PriorInference(typename HYP::Grammar_t* g, typename HYP::data_t d, HYP* fr=nullptr) : 
 		grammar(g), data(d), from(fr) {
 	}
 	
@@ -38,7 +38,7 @@ public:
 			else {
 				h = MyHypothesis::sample();
 			}
-			h.compute_posterior(*data);
+			h.compute_posterior(data);
 			co_yield h;
 		}
 	}

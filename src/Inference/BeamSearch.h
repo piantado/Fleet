@@ -43,12 +43,12 @@ public:
 	static constexpr size_t N_REPS = 10; // how many times do we try randomly filling in to determine priority? 
 	static constexpr double PARENT_PENALTY = 1.1;
 	static double temperature;	
-	static typename HYP::data_t* data;
+	typename HYP::data_t data; // maybe can be static?
 	
 	// the smallest element appears on top of this vector
 	TopN<HYP> Q;
 	 
-	BeamSearch(HYP& h0, typename HYP::data_t* d, double temp)  : Q(N) {
+	BeamSearch(HYP& h0, typename HYP::data_t d, double temp)  : Q(N) {
 		
 		// set these static members (static so GraphNode can use them without having so many copies)
 		data = d;
@@ -60,7 +60,7 @@ public:
 			auto g = h0;
 			g.complete();
 			
-			g.compute_posterior(*data);
+			g.compute_posterior(data);
 			
 			if(g.likelihood > -infinity) {
 				h0.prior = 0.0;
@@ -102,7 +102,7 @@ public:
 				// otherwise we 
 				if(v.is_evaluable()) {
 					
-					v.compute_posterior(*data); 
+					v.compute_posterior(data); 
 					
 					co_yield v;
 				}
@@ -115,7 +115,7 @@ public:
 					double likelihood = t.likelihood * PARENT_PENALTY;  // remember this likelihood is divided by temperature
 					for(size_t i=0;i<N_REPS and not CTRL_C;i++) {
 						auto g = v; g.complete();
-						g.compute_posterior(*data);
+						g.compute_posterior(data);
 						
 						co_yield g; 
 						
@@ -146,9 +146,6 @@ public:
 	
 };
 
-
-template<typename HYP>
-typename HYP::data_t* BeamSearch<HYP>::data = nullptr;
 
 template<typename HYP>
 double BeamSearch<HYP>::temperature = 100.0;

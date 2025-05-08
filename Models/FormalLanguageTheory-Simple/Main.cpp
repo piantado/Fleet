@@ -196,7 +196,7 @@ int main(int argc, char** argv){
 	//------------------
 	
 	// mydata stores the data for the inference model
-	auto mydata = string_to<MyHypothesis::data_t>(datastr);
+	auto mydata = string_to<std::vector<MyHypothesis::datum_t>>(datastr);
 		
 	/// check the alphabet
 	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work

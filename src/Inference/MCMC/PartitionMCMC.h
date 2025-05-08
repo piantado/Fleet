@@ -79,7 +79,7 @@ public:
 	 * @param data
 	 * @param max_size
 	 */
-	PartitionMCMC(HYP& h0, size_t max_depth, typename HYP::data_t* data, size_t max_size=0) {
+	PartitionMCMC(HYP& h0, size_t max_depth, typename HYP::data_t data, size_t max_size=0) {
 
 		assert(not h0.is_evaluable() && "*** You should not call PartitionMCMC on a complete node (usually you want it to be empty)");
 		

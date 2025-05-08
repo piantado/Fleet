@@ -23,14 +23,14 @@ public:
 	TopN<HYP> top;
 	size_t N; // how big is top?
 	size_t inner_samples;
-	typename HYP::data_t* data;
+	typename HYP::data_t data;
 	double T = 1.0; 
 		
-	HillClimbing(HYP& h0, typename HYP::data_t* d, size_t n=1, size_t is=100) :  N(n), inner_samples(is), data(d) {
+	HillClimbing(HYP& h0, typename HYP::data_t d, size_t n=1, size_t is=100) :  N(n), inner_samples(is), data(d) {
 		top.set_size(N);	
 		
 		// add this h0
-		h0.compute_posterior(*data);
+		h0.compute_posterior(data);
 		top << h0; 
 	}
 	
@@ -56,7 +56,7 @@ public:
 				while(true) { // avoid -infs
 					auto current = top.best().restart();
 					//CERR "# Restarting " TAB current.string() ENDL;
-					current.compute_posterior(*data);
+					current.compute_posterior(data);
 					if(current.posterior == -infinity) continue; 
 					
 					co_yield current; 
@@ -100,7 +100,7 @@ public:
 						// A lot of proposals end up with the same function, so if so, save time by not
 						// computing the posterior
 						if(proposal != h) {
-							proposal.compute_posterior(*data);
+							proposal.compute_posterior(data);
 							
 							if(proposal.posterior > -infinity)
 								newTop << proposal;

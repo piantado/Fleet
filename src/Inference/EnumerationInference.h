@@ -23,9 +23,9 @@ class EnumerationInference : public ThreadedInferenceInterface<HYP> {
 public:
 	
 	Grammar_t* grammar;
-	typename HYP::data_t* data;
+	typename HYP::data_t data;
 		
-	EnumerationInference(Grammar_t* g, typename HYP::data_t* d) : 
+	EnumerationInference(Grammar_t* g, typename HYP::data_t d) : 
 		grammar(g), data(d) {
 	}
 	
@@ -40,7 +40,7 @@ public:
 			//print(n.string());
 			
 			MyHypothesis h(n); 
-			h.compute_posterior(*data);
+			h.compute_posterior(data);
 
 			co_yield h;
 

@@ -238,7 +238,7 @@ public:
 		}
 		else {
 			// else we run vanilla MCMC
-			MCMCChain chain(h0, data);
+			MCMCChain<MyHypothesis> chain(h0, data);
 			// run mcmc with restarts; we sure shouldn't run more than runtime
 			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart))) {
 				co_yield h;
@@ -295,7 +295,7 @@ public:
 #include "Fleet.h" 
 
 // we need to declare mydata up here so that it can be accessed in print
-MyHypothesis::data_t mydata;
+std::vector<MyHypothesis::datum_t> mydata;
 
 int main(int argc, char** argv){ 
 	std::string arg_prefix = ""; // if we pass in a prefix as argument 
@@ -325,7 +325,7 @@ int main(int argc, char** argv){
 
 	// This uses string_to to convert datastr into a vector of defaultdatum_t. This uses some fanciness in
 	// Strings.h that unpacks comma-separated vectors and then input/output types for defaultdatum_t
-	mydata = string_to<MyHypothesis::data_t>(datastr);
+	mydata = string_to<std::vector<MyHypothesis::datum_t>>(datastr);
 
 	// Let's include a check on our alphabet
 	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
@@ -348,7 +348,7 @@ int main(int argc, char** argv){
 	
 	if(method == "parallel-tempering") {
 		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
+		ParallelTempering samp(h0, mydata, FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control())) {
 			top << h;
 		}
@@ -356,7 +356,7 @@ int main(int argc, char** argv){
 	else if(method == "parallel-tempering-ID") {
 		whichProposal = ProposalType::InsertDelete;
 		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
+		ParallelTempering samp(h0, mydata, FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control())){
 			top << h;
 		}
@@ -364,45 +364,45 @@ int main(int argc, char** argv){
 	else if(method == "parallel-tempering-prior-propose") {
 		whichProposal = ProposalType::Prior;
 		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
+		ParallelTempering samp(h0, mydata, FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control())) {
 			top << h;
 		}
 	}
 	else if(method == "prior-sampling") {
-		PriorInference<MyHypothesis> pri(&grammar, &mydata);
+		PriorInference<MyHypothesis> pri(&grammar, mydata);
 		for(auto& h : pri.run(Control()) | printer(FleetArgs::print)) {
 			top << h;
 		}
 	}
 	else if(method == "basic-enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,BasicEnumeration<MyGrammar>> e(&grammar, &mydata);
+		EnumerationInference<MyHypothesis,MyGrammar,BasicEnumeration<MyGrammar>> e(&grammar, mydata);
 		for(auto& h : e.run(Control()) | printer(FleetArgs::print)){
 			top << h;
 		}
 	}
 	else if(method == "partial-LZ-enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,PartialLZEnumeration<MyGrammar>> e(&grammar, &mydata);
+		EnumerationInference<MyHypothesis,MyGrammar,PartialLZEnumeration<MyGrammar>> e(&grammar, mydata);
 		for(auto& h : e.run(Control()) | printer(FleetArgs::print)) {
 			top << h;
 		}
 	}
 	else if(method == "full-LZ-enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,FullLZEnumeration<MyGrammar>> e(&grammar, &mydata);
+		EnumerationInference<MyHypothesis,MyGrammar,FullLZEnumeration<MyGrammar>> e(&grammar, mydata);
 		for(auto& h : e.run(Control()) | printer(FleetArgs::print) ){
 			top << h;
 		}
 	}
 	else if(method == "beam") {
 		MyHypothesis h0; // don't use make -- must start with empty value
-		BeamSearch bs(h0, &mydata, 1000.0);
+		BeamSearch<MyHypothesis> bs(h0, mydata, 1000.0);
 		for(auto& h : bs.run(Control())) {
 			top << h;
 		}
 	}
 	else if(method == "chain-pool") {
 		auto h0 = MyHypothesis::sample();
-		ChainPool c(h0, &mydata, FleetArgs::nchains);
+		ChainPool c(h0, mydata, FleetArgs::nchains);
 		for(auto& h : c.run(Control()) | printer(FleetArgs::print) ) {
 			top << h;
 		}
@@ -410,7 +410,7 @@ int main(int argc, char** argv){
 	else if(method == "prior-sample-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
 		MyHypothesis h0;
-		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata);
+		PriorSampleMCTS m(h0, FleetArgs::explore, mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
 		}
@@ -421,7 +421,7 @@ int main(int argc, char** argv){
 	else if(method == "mcmc-within-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
 		MyHypothesis h0;
-		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata);
+		MCMCwithinMCTS m(h0, FleetArgs::explore, mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
 		}
@@ -430,7 +430,7 @@ int main(int argc, char** argv){
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 		MyHypothesis h0;
-		MyFullMCTS m(h0, FleetArgs::explore, &mydata);
+		MyFullMCTS m(h0, FleetArgs::explore, mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
 		}
@@ -441,7 +441,7 @@ int main(int argc, char** argv){
 	else if(method == "minimal-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 		MyHypothesis h0;
-		MyMinimalMCTS m(h0, FleetArgs::explore, &mydata);
+		MyMinimalMCTS m(h0, FleetArgs::explore, mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
 		}
@@ -451,14 +451,14 @@ int main(int argc, char** argv){
 	}
 	else if(method == "partition-mcmc") {
 		MyHypothesis h0; // start empty
-		PartitionMCMC c(h0, FleetArgs::partition_depth, &mydata);
+		PartitionMCMC c(h0, FleetArgs::partition_depth, mydata);
 		for(auto& h : c.run(Control())) {
 			top << h;
 		}
 	}
 	else if(method == "hill-climbing") {
 		auto h0 = MyHypothesis::sample();
-		HillClimbing samp(h0, &mydata);
+		HillClimbing samp(h0, mydata);
 		// defaultly run with some restart:
 		for(auto& h : samp.run(Control(FleetArgs::steps,FleetArgs::runtime,FleetArgs::nthreads,1000))) {
 			top << h;
