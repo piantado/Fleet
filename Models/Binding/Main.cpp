@@ -54,7 +54,7 @@ class TreeException : public std::exception {};
 
 
 MyHypothesis::data_t load_data(std::string filename) {
-	MyHypothesis::data_t data;
+	std::vector<MyHypothesis::datum_t> data;
 	
 	for(auto& [ds, sentence] : read_csv<2>(filename, false, ',')){
 		
@@ -115,7 +115,7 @@ MyHypothesis::data_t load_data(std::string filename) {
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
+std::vector<MyHypothesis::datum_t> target_precisionrecall_data; // data for computing precision/recall 
 MyHypothesis target;
 	
 int main(int argc, char** argv){ 

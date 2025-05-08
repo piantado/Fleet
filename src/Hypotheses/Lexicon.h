@@ -411,6 +411,7 @@ template<typename this_t,
 		 typename _input_t,
 		 typename _output_t, 
 		 typename datum_t,
+		 typename data_t,
 		 typename _VirtualMachineState_t
 		 >
-double Lexicon<this_t,key_t,INNER,_input_t,_output_t,datum_t,_VirtualMachineState_t>::p_factor_propose = 0.5;
+double Lexicon<this_t,key_t,INNER,_input_t,_output_t,datum_t,data_t,_VirtualMachineState_t>::p_factor_propose = 0.5;

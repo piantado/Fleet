@@ -89,7 +89,7 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	// mydata stores the data for the inference model
-	MyHypothesis::data_t mydata;
+	std::vector<MyHypothesis::datum_t> mydata;
 
 	mydata.emplace_back(MyObject("triangle-blue-1"),   true, 0.75);
 	mydata.emplace_back(MyObject("circle-blue-1"),     false, 0.75);
@@ -103,9 +103,9 @@ int main(int argc, char** argv){
 
 	auto h0 = MyHypothesis::sample();
 	
-	MCMCChain samp(h0, &mydata);
+	//MCMCChain samp(h0, mydata);
 	//ChainPool samp(h0, &mydata, FleetArgs::nchains);
-	//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0); 
+	ParallelTempering samp(h0, mydata, FleetArgs::nchains, 10.0); 
 	for(auto& h : samp.run(Control()) | printer(FleetArgs::print) | top) {
 		UNUSED(h);
 	}

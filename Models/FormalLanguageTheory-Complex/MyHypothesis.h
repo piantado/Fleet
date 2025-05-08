@@ -78,7 +78,7 @@ public:
 	 }
 	 
 
-	 double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+	 double compute_likelihood(const data_t data, const double breakout=-infinity) override {
 		// this version goes through and computes the predictive probability of each prefix
 		 
 		const auto& M = call(EMPTY_STRING, errorstring); 

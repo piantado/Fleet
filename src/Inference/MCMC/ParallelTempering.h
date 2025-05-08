@@ -1,6 +1,6 @@
 #pragma once 
 
-#define PARALLEL_TEMPERING_SHOW_DETAIL
+//#define PARALLEL_TEMPERING_SHOW_DETAIL
 
 
 #include <signal.h>
@@ -25,11 +25,11 @@ extern std::atomic<bool> CTRL_C; //volatile sig_atomic_t CTRL_C;
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
 	
+public:
+
 	// loops on the swapper and adapter threads wait this long before checking their time, to make them interruptible
 	// NOTE that this can throw off timing speeds for e.g. parallel tempering for very small amounts of data
 	const unsigned long time_resolution_ms = 25; 
-		
-public:
 	
 	using Super = ChainPool<HYP>;
 		
@@ -48,7 +48,7 @@ public:
 	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	ParallelTempering() {} 
+	ParallelTempering() : terminate(false) {} 
 	
 	ParallelTempering(HYP& h0, typename HYP::data_t d, std::initializer_list<double> t) : 
 		ChainPool<HYP>(h0, d, t.size()),  temperatures(t), terminate(false) {
@@ -69,6 +69,7 @@ public:
 		
 		if(n == 1) { // just enforce this as a hard cosntraint. 
 			this->pool[0].temperature = 1.0;
+			swap_history.emplace_back();
 		}
 		else {
 			for(size_t i=0;i<n;i++) {
@@ -83,7 +84,7 @@ public:
 	void add_chain(ARGS... args) {
 		
 		Super::add_chain(args...);	
-		swap_history.emplace_back();
+		this->swap_history.emplace_back();
 	}
 	
 	void __shower_thread() {
@@ -114,6 +115,8 @@ public:
 			while(time_since(last) < swap_every and (not CTRL_C) and (not terminate))
 				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
+			assert(this->swap_history.size() == this->pool.size());
+						
 			// Here we are going to go through and swap each chain with its neighbor
 			std::lock_guard og(overall_mutex); // must get this so we don't lock by another thread stealing one of below
 			for(size_t k=this->pool.size()-1;k>=1;k--) { // swap k with k-1; starting at the bottom so stuff can percolate up

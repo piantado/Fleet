@@ -15,7 +15,7 @@ public:
 		}
 	}
 
-	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+	double compute_likelihood(const data_t data, const double breakout=-infinity) override {
 		// TODO: Can set to null so that we get an error on recurse
 		for(auto& [k, f] : factors) 
 			f.program.loader = this; 

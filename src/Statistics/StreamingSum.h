@@ -25,7 +25,7 @@ struct StreamingSum {
 	}
 	
 	T operator+=(const T v) {
-		return this->operator<<(v);
+		return this->operator<<(v); 
 	}
 	
 	operator double() const { return double(total+low); }

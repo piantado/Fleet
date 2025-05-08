@@ -337,3 +337,20 @@ void operator<<(std::set<HYP>& s, TopN<HYP>& t){
 		s.insert(h);
 	}
 }
+
+// A best is a TopN with n=1, and permits casting to type T
+template<class T>
+struct Best : public TopN<T> {
+	Best() : TopN<T>(1) {}
+	
+	operator T(){
+		return this->best();
+	}
+//	operator T(){
+//		return this->best();
+//	}
+//	
+//	operator T(){
+//		return this->best();
+//	}
+};
