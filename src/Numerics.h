@@ -24,6 +24,15 @@ constexpr double tau      = 2*pi; // fuck pi
 
 
 /////////////////////////////////////////////////////////////
+// Constants
+/////////////////////////////////////////////////////////////
+
+template<typename D>
+bool valid(D x) {
+	return not (std::isnan(x) or std::isinf(x));
+}
+		
+/////////////////////////////////////////////////////////////
 // An inherited integral type so we can subtype double, int, etc. 
 /////////////////////////////////////////////////////////////
 
@@ -424,6 +433,7 @@ T trimmed_mean(std::vector<T>& v, float a, float b) {
  */
 template<typename T>
 T trimmed_mean(std::vector<T>& v, float pct) {
+	assert(pct < 0.5);
 	return trimmed_mean(v,pct,pct);
 }
 

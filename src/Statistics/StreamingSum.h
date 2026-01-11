@@ -7,6 +7,11 @@ struct StreamingSum {
 	// TODO: Maybe lets pick an even better version? https://en.wikipedia.org/wiki/Kahan_summation_algorithm
 	StreamingSum(const T v=0) : total(v), low(0) { }
 	
+	void reset() {
+		total = 0;
+		low = 0;
+	}
+	
 	T operator<<(const T x) {
 		T y = x - low; 
 		volatile T t = total + y; // see here: https://en.wikipedia.org/wiki/Kahan_summation_algorithm
@@ -63,6 +68,11 @@ struct StreamingMean {
 	StreamingSum<T> sum;
 
 	StreamingMean() : n(0) {
+	}
+	
+	void reset() {
+		n = 0;
+		sum.reset();
 	}
 	
 	T operator<<(T v) {

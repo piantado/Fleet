@@ -45,7 +45,7 @@ std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 
 
 template<typename TDATA>
-std::pair<double, double> get_precision_and_recall(DiscreteDistribution<std::string>& model, std::vector<TDATA>& data, unsigned long N) {
+std::pair<double, double> get_precision_and_recall(DiscreteDistribution<std::string>& model, std::span<TDATA>& data, unsigned long N) {
 	// How many of the top N generated strings appear *anywhere* in the data
 	// And how many of the top N data appear *anywhere* in the generated strings
 	// Note: This is a little complicated if the data has fewer strings that the model, since we don't
@@ -55,7 +55,8 @@ std::pair<double, double> get_precision_and_recall(DiscreteDistribution<std::str
 	auto B = highest<std::string,TDATA>(data, std::min(N,data.size()) );
 	
 	std::set<std::string> mdata; // make a map of all observed output strings
-	for(auto v : data) mdata.insert(v.output); 
+	for(auto v : data) 
+		mdata.insert(v.output); 
 	
 	unsigned long nprec = 0;
 	for(auto a: A) {

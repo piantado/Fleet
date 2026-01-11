@@ -54,11 +54,15 @@ public:
 	virtual std::pair<double,double> constant_proposal(Constant) const = 0; // must implmenet
 	virtual void randomize_constants() = 0; 
 	
+	ConstantContainer() : constants{}, constant_idx(0) {
+		
+	}
 //	ConstantContainer& operator=(const ConstantContainer& c) {
 //		constants = c.constants; 
 //		constant_idx = c.constant_idx;
 //		return *this;
 //	}		
+	
 	virtual void reset_constant_index() {
 		constant_idx = 0;
 	}

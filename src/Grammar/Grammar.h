@@ -324,8 +324,8 @@ public:
 	 */	
 	template<typename T, typename... args> 
 	void add(std::string fmt,  std::function<T(args...)> f, double p=1.0, Op o=Op::Standard, int a=0) {
-				
 		// first check that the types are allowed
+		
 		static_assert((not std::is_reference<T>::value) && "*** Primitives cannot return references.");
 		static_assert((not std::is_reference<args>::value && ...) && "*** Arguments cannot be references.");
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
@@ -654,7 +654,8 @@ public:
 		if(depth >= GRAMMAR_MAX_DEPTH) {
 			#ifdef WARN_DEPTH_EXCEPTION
 				CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
-				CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
+				CERR "*** NONTERMINAL WAS" TAB ntfrom ENDL;
+				CERR "*** You might also be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
 				CERR "*** which nonterminals are called." ENDL;
 				CERR "*** Or.... maybe this nonterminal does not rewrite to a terminal?" ENDL;
 			#endif
@@ -694,7 +695,9 @@ public:
 		for(size_t tries=0;tries<GENERATE_DEPTH_EXCEPTION_RETRIES;tries++) {
 			try {
 				return __generate(ntfrom, depth);
-			} catch(DepthException& e) { }
+			} catch(DepthException& e) { 
+				
+			}
 		}
 		assert(false && "*** Generate failed due to repeated depth exceptions");
 	}

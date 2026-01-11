@@ -1,7 +1,9 @@
 #pragma once 
 
-//#define PARALLEL_TEMPERING_SHOW_DETAIL
+//#define PARALLEL_TEMPERING_SHOW
 
+// show every swap?
+//#define PARALLEL_TEMPERING_SHOW_SWAP
 
 #include <signal.h>
 #include <functional>
@@ -39,7 +41,7 @@ public:
 	
 	OrderedLock overall_mutex; // This mutex coordinates swappers, adapters, and printers, otherwise they can lock each other out
 	
-	std::vector<double> temperatures;
+	
 	
 	// Swap history stores how often the i'th chain swaps with the (i-1)'st chain
 	std::vector<FiniteHistory<bool>> swap_history;
@@ -51,7 +53,9 @@ public:
 	ParallelTempering() : terminate(false) {} 
 	
 	ParallelTempering(HYP& h0, typename HYP::data_t d, std::initializer_list<double> t) : 
-		ChainPool<HYP>(h0, d, t.size()),  temperatures(t), terminate(false) {
+		ChainPool<HYP>(h0, d, t.size()),  terminate(false) {
+		
+		std::vector<double> temperatures{t};
 		
 		swap_history.reserve(temperatures.size()); // reserve so we don't move
 			
@@ -85,6 +89,26 @@ public:
 		
 		Super::add_chain(args...);	
 		this->swap_history.emplace_back();
+	}
+	
+	// So this can be overwritten if we need a subclass
+	virtual void swap(size_t i, size_t j) {
+		// swap the chains
+		std::swap(this->pool[i].getCurrent(), this->pool[j].getCurrent());
+		
+		// and let's swap their steps since improvement so that the steps-since-improvement
+		// stays with a chain 
+		std::swap(this->pool[i].steps_since_improvement, this->pool[j].steps_since_improvement);		
+	}
+	
+	virtual double lp_swap(size_t i, size_t j) {
+		// compute the log probability of swapping i and j 
+
+		double Tnow = this->pool[i].at_temperature(this->pool[i].temperature) + 
+		              this->pool[j].at_temperature(this->pool[j].temperature);
+		double Tswp = this->pool[i].at_temperature(this->pool[j].temperature) + 
+					  this->pool[j].at_temperature(this->pool[i].temperature);
+		return Tswp-Tnow;		
 	}
 	
 	void __shower_thread() {
@@ -126,28 +150,20 @@ public:
 				std::lock_guard guard1(this->pool[k-1].current_mutex);
 				std::lock_guard guard2(this->pool[k  ].current_mutex);
 				
-				// compute R based on data
-				double Tnow = this->pool[k-1].at_temperature(this->pool[k-1].temperature)   + this->pool[k].at_temperature(this->pool[k].temperature);
-				double Tswp = this->pool[k-1].at_temperature(this->pool[k].temperature)     + this->pool[k].at_temperature(this->pool[k-1].temperature);
-				double R = Tswp-Tnow;
+				double R = lp_swap(k,k-1);
 	
 				//DEBUG("Swap p: ", k, R, this->pool[k-1].samples, this->pool[k-1].getCurrent().posterior, this->pool[k-1].getCurrent()); 
 				
-				if(R >= 0 or flip(exp(R))) { 
+				if(valid(R) and (R >= 0 or flip(exp(R)))) { 
 										
-					#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
-					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB Tnow TAB Tswp TAB this->pool[k].current.likelihood TAB this->pool[k-1].current.likelihood ENDL;
+					#ifdef PARALLEL_TEMPERING_SHOW_SWAP
+					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB this->pool[k].current.likelihood TAB this->pool[k-1].current.likelihood ENDL;
 					COUT "# " TAB this->pool[k].current.string() ENDL;
 					COUT "# " TAB this->pool[k-1].current.string() ENDL;
 					#endif
 					
-					// swap the chains
-					std::swap(this->pool[k].getCurrent(), this->pool[k-1].getCurrent());
+					this->swap(k,k-1);
 					
-					// and let's swap their steps since improvement so that the steps-since-improvement
-					// stays with a chain 
-					std::swap(this->pool[k].steps_since_improvement, this->pool[k-1].steps_since_improvement);
-
 					swap_history.at(k) << true;
 				}
 				else {
@@ -172,7 +188,7 @@ public:
 			
 			// This is not interruptible with CTRL_C: std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
 			
-			#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+			#ifdef PARALLEL_TEMPERING_SHOW
 				show_statistics();
 			#endif
 				
@@ -189,7 +205,7 @@ public:
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
 		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this);
 
-		#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+		#ifdef PARALLEL_TEMPERING_SHOW
 		std::thread shower(&ParallelTempering<HYP>::__shower_thread, this);
 		#endif
 
@@ -204,7 +220,7 @@ public:
 		swapper.join();
 		adapter.join();
 		
-		#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+		#ifdef PARALLEL_TEMPERING_SHOW
 		shower.join();
 		#endif
 
@@ -217,15 +233,16 @@ public:
 		// when we do it. Not sure why, very hard to debug/understand. Might be that the current_mutex is held
 		// by the generator so when we try to get to this inside the generator loop, its a disaster?
 		
-		//std::lock_guard og(overall_mutex);
-			
-		print("# Pool info: ################# \n");
+		std::lock_guard og(overall_mutex);
+		
+		print("##############################");	
+		print("### Pool info: ###############");
 		for(size_t i=0;i<this->pool.size();i++) {
 			
 			// ugh locking doesn't work here..
-			//std::unique_lock guard(this->pool[i].current_mutex);
-			auto cpy = this->pool.at(i).current; // otherwise, without a mutex, it can change between accessing string and posterior, which is gnarly
-			//guard.unlock();
+			std::unique_lock guard(this->pool[i].current_mutex);
+			//auto cpy = this->pool.at(i).current; // otherwise, without a mutex, it can change between accessing string and posterior, which is gnarly
+			auto& cpy = this->pool.at(i).getCurrent(); 
 			
 			print(i, 
 					double(this->pool.at(i).temperature),
@@ -233,10 +250,10 @@ public:
 					cpy.posterior,
 					cpy.prior,
 					cpy.likelihood,
-					this->pool.at(i).acceptance_ratio(),
+					//this->pool.at(i).acceptance_ratio(),
 					swap_history.at(i).mean(),
-					int(swap_history.at(i).N),
-					this->pool.at(i).samples,
+					//int(swap_history.at(i).N),
+					//this->pool.at(i).samples,
 					cpy.string()
 					);
 		}

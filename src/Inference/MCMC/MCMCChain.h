@@ -92,8 +92,12 @@ public:
 	void set_data(typename HYP::data_t d, bool recompute_posterior=true) {
 		data = d;
 		if(recompute_posterior) {
-			current.compute_posterior(data);
+			compute_posterior();
 		}
+	}
+	
+	double compute_posterior() {
+		return current.compute_posterior(data);
 	}
 	
 	HYP& getCurrent() {

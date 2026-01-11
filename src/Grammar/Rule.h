@@ -164,6 +164,11 @@ public:
 		return child_types;
 	}
 	
+	
+	size_t nchildren() const {
+		return child_types.size();
+	}
+	
 	std::string string() const {
 		std::string out = "[RULE " + format + ", ";
 		for(size_t i =0;i<N;i++) {

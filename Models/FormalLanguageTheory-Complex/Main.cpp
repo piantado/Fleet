@@ -39,7 +39,7 @@ const std::string errorstring = "<err>";
 #include "MyHypothesis.h"
 
 std::string prdata_path = ""; 
-MyHypothesis::data_t prdata; // used for computing precision and recall -- in case we want to use more strings?
+std::vector<MyHypothesis::datum_t> prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
 std::pair<double,double> mem_pr; 

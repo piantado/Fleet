@@ -133,7 +133,7 @@ public:
 	void show(std::string prefix="") override {
 		// we're going to make this print by showing the language we created on the line before
 		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
-		prefix = prefix+str(int(getpid()))+"\t"+str(FleetStatistics::global_sample_count)+"\t";
+//		prefix = prefix+str(int(getpid()))+"\t"+str(FleetStatistics::global_sample_count)+"\t";
 //		prefix += str(grammar->compute_enumeration_order(value)) + "\t"; 
 		Super::show(prefix); 
 	}

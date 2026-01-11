@@ -3,6 +3,7 @@
 #include <thread>
 
 //#define DEBUG_CHAINPOOL
+//#define YIELD_ONLY_CHAIN_ZERO // useful in parallel tempering
 
 #include <vector>
 
@@ -50,6 +51,7 @@ public:
 	
 	ChainPool(HYP& h0, typename HYP::data_t d, size_t n) {
 		assert(n>=1 && "*** You probably shouldn't have a chain pool with 0 elements");
+		
 		for(size_t i=0;i<n;i++) {
 			this->add_chain(i==0?h0:h0.restart(), d);
 		}
@@ -126,7 +128,13 @@ public:
 				c.steps = steps_before_change; c.nthreads = 1; c.runtime = 0; // but update to 
 				for(auto x : pool.at(idx).run(c)) {
 					x.born_chain_idx = idx; // set this
+					
+					#ifdef YIELD_ONLY_CHAIN_ZERO
+					// only yield chain zero
+					if(idx == 0) co_yield x;
+					#else
 					co_yield x;
+					#endif
 				}
 				
 				// and free this lock space
@@ -139,7 +147,7 @@ public:
 				}
 							
 			}
-			
+
 			
 		}
 		else { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,7 +191,13 @@ public:
 				c.steps = to_run_steps; c.nthreads = 1; c.runtime = 0; // but update to 
 				for(auto& x : pool.at(idx).run(c)) {
 					x.born_chain_idx = idx; // set this
+					
+					#ifdef YIELD_ONLY_CHAIN_ZERO
+					// only yield chain zero
+					if(idx == 0) co_yield x;
+					#else
 					co_yield x;
+					#endif
 				}
 				
 				#ifdef DEBUG_CHAINPOOL

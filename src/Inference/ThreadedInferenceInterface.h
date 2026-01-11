@@ -63,9 +63,8 @@ public:
 			if(CTRL_C) break;
 			
 			if(x.born_chain_idx == 0 or not FleetArgs::yieldOnlyChainOne) {
-				to_yield.push(x, thr);
+				if(!CTRL_C) to_yield.push(x, thr);
 			}
-			
 			
 		}
 		
@@ -108,6 +107,7 @@ public:
 //				co_yield to_yield.pop();
 //			}
 //			print("TII", to_yield.empty());
+
 			if(not to_yield.empty())  {
 				auto val = to_yield.pop(); // search through until we find one
 				
@@ -118,6 +118,7 @@ public:
 			}
 			
 		}
+		print("HEERE BREAK;");
 		
 		// now we're done filling but we still may have stuff in the queue
 		// some threads may be waiting so we can't join yet. 
@@ -128,16 +129,17 @@ public:
 			else                
 				break; // NOTE: we migth break here and leave some in queue -- but we only get break on CTRL_C
 		}
-		
+
+		print("HEERE BREAK 2;");
 		// wait for all to complete
-//		print("waiting");
-//		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
-//			threads[thr].join();
-//			print(thr, "joined");
-//		}
-		for(auto& t : threads) 
-			t.join();
-//		print("done");
+		print("waiting");
+		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
+			threads[thr].join();
+			print(thr, "joined");
+		}
+//		for(auto& t : threads) 
+//			t.join();
+		print("done");
 			
 	}
 	

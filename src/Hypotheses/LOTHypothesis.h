@@ -133,8 +133,11 @@ public:
 		
 		auto x = p.value();
 		
+		this_t ret = *static_cast<const this_t*>(this); // copy so we copy everything
+		ret.set_value(x.first);
+		
 		// return a pair of Hypothesis and forward-backward probabilities
-		return std::make_pair(this_t(std::move(x.first)), x.second); // return this_t and fb
+		return std::make_pair(ret, x.second); // return this_t and fb
 	}	
 
 	[[nodiscard]] static this_t sample() {
