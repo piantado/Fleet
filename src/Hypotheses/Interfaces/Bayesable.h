@@ -104,7 +104,9 @@ public:
 				}
 				
 				// add a break here 
-				if(CTRL_C) break; 
+				if(CTRL_C) {
+					return likelihood = NaN;
+				}
 			}
 			
 			return likelihood;		

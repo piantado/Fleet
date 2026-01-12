@@ -120,17 +120,15 @@ public:
 	
 	std::optional<T> pop() {
 		
-		while(not CTRL_C) {
-			// on empty, we just move to the next slot -- no waiting here.
-			if(not QS[pop_index].empty()) {
-				return QS[pop_index].pop();
-			}
-			
-			pop_index = (pop_index + 1) % nthreads;
-			
-//			print("looping", (size_t)pop_index);
+		// on empty, we just move to the next slot -- no waiting here.
+		if(not QS[pop_index].empty()) {
+			return QS[pop_index].pop();
 		}
 		
+		pop_index = (pop_index + 1) % nthreads;
+		
+//			print("looping", (size_t)pop_index);
+	
 		return std::nullopt;
 //		assert(false && "*** Should not get here"); return T{};
 	}
@@ -143,8 +141,6 @@ public:
 		
 		while(true) {
 //			print("here", (size_t)start_index, (size_t)pop_index, QS[pop_index].empty());
-			
-			//if(CTRL_C) return true;
 			
 			if(not QS[pop_index].empty()) {
 				return false; 
@@ -160,8 +156,6 @@ public:
 			
 		}
 
-		// This is what we return on CTRL_C -- I guess we'll call it empty?
-//		return false; 
 		assert(false && "*** Should not get here"); return false;
 	}
 	

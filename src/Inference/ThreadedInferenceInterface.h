@@ -60,10 +60,8 @@ public:
 	void run_thread_generator_wrapper(size_t thr, Control& ctl, Args... args) {
 		
 		for(auto& x : run_thread(ctl, args...)) {
-			if(CTRL_C) break;
-			
 			if(x.born_chain_idx == 0 or not FleetArgs::yieldOnlyChainOne) {
-				if(!CTRL_C) to_yield.push(x, thr);
+				to_yield.push(x, thr);
 			}
 			
 		}
@@ -101,24 +99,15 @@ public:
 		}
 	
 		// now yield as long as we have some that are running
-		while(__nrunning > 0 and !CTRL_C) { // we don't want to stop when its empty because a thread might fill it
-//			if(not to_yield.empty()) { // w/o this we might pop when its empty...
-//				//print((size_t)to_yield.push_idx, (size_t)to_yield.pop_idx, to_yield.size(), to_yield.N);
-//				co_yield to_yield.pop();
-//			}
-//			print("TII", to_yield.empty());
-
+		while(__nrunning > 0) { // we don't want to stop when its empty because a thread might fill it
 			if(not to_yield.empty())  {
-				auto val = to_yield.pop(); // search through until we find one
 				
+				auto val = to_yield.pop(); // search through until we find one
 				if(val.has_value())	
 					co_yield val.value();
-				else                
-					break;
 			}
 			
 		}
-		print("HEERE BREAK;");
 		
 		// now we're done filling but we still may have stuff in the queue
 		// some threads may be waiting so we can't join yet. 
@@ -126,20 +115,11 @@ public:
 			auto val = to_yield.pop(); // search through until we find one
 			if(val.has_value())	
 				co_yield val.value();
-			else                
-				break; // NOTE: we migth break here and leave some in queue -- but we only get break on CTRL_C
 		}
 
-		print("HEERE BREAK 2;");
 		// wait for all to complete
-		print("waiting");
-		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
-			threads[thr].join();
-			print(thr, "joined");
-		}
-//		for(auto& t : threads) 
-//			t.join();
-		print("done");
+		for(auto& t : threads) 
+			t.join();
 			
 	}
 	
@@ -151,11 +131,10 @@ public:
 		std::cerr << "*** Warning running unthreaded_run (intended for debugging)" << std::endl;
 		ctl.start();
 		for(auto& x : run_thread(ctl, args...)) {
-			if(CTRL_C) break; // must come first or else we yield something invalid
-			
 			auto val = to_yield.pop(); // search through until we find one
-			if(val.has_value())	co_yield val.value();	
-			else                break;
+			if(val.has_value())	
+				co_yield val.value();	
+			
 		}		
 	}
 	

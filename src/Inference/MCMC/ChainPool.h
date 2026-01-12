@@ -130,10 +130,10 @@ public:
 					x.born_chain_idx = idx; // set this
 					
 					#ifdef YIELD_ONLY_CHAIN_ZERO
-					// only yield chain zero
-					if(idx == 0) co_yield x;
+						// only yield chain zero
+						if(idx == 0) co_yield x;
 					#else
-					co_yield x;
+						co_yield x;
 					#endif
 				}
 				
