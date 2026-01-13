@@ -65,6 +65,12 @@ public:
 	// before tossing an assert error
 	static const size_t GENERATE_DEPTH_EXCEPTION_RETRIES = 1000; 
 	
+	// these are going to be computed on each_depth exception so you can see
+	static inline std::array<std::atomic<unsigned long>, sizeof...(GRAMMAR_TYPES)> depth_exception_count{}; 
+	
+	// this was added as a denominator for depth_exception_Count, but it might be slow
+	//static inline std::array<std::atomic<unsigned long>, sizeof...(GRAMMAR_TYPES)> ngenerated_from{}; 
+	
 	// get the n'th type
 	//template<size_t N>
 	//using type = typename std::tuple_element<N, TypeTuple>::type;
@@ -659,6 +665,7 @@ public:
 				CERR "*** which nonterminals are called." ENDL;
 				CERR "*** Or.... maybe this nonterminal does not rewrite to a terminal?" ENDL;
 			#endif
+			
 			throw DepthException();
 		}
 		
@@ -682,6 +689,16 @@ public:
 		return n;
 	}	
 
+	void show_depth_exception_count() {
+		constexpr auto names = types2string<GRAMMAR_TYPES...>();
+		
+		print("# Depth exception count:");
+		for(size_t i=0;i<sizeof...(GRAMMAR_TYPES);i++){
+			print("#", (unsigned long)depth_exception_count[i], names[i]);
+		}
+		
+	}
+
 	/**
 	 * @brief A wrapper to catch DepthExcpetions and retry. This means that defaultly we try to generate GENERATE_DEPTH_EXCEPTION_RETRIES
 	 * 	      times and if ALL of them fail, we throw an assert error. Presumably, unless the grammar is terrible
@@ -697,6 +714,8 @@ public:
 				return __generate(ntfrom, depth);
 			} catch(DepthException& e) { 
 				
+				// we want to keep track of where we got depth exceptions
+				depth_exception_count[ntfrom]++;
 			}
 		}
 		assert(false && "*** Generate failed due to repeated depth exceptions");

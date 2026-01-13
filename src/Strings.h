@@ -3,6 +3,8 @@
 #include <sstream>
 #include <atomic>
 #include <string>
+#include <string_view>
+
 
 #include "Miscellaneous.h"
 #include "Numerics.h"
@@ -334,3 +336,26 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	
 }
 
+////////////////////////////////////////////////////////////
+// Printing of types  (ugly, sorry)
+
+template <typename T>
+constexpr std::string_view type_name() {
+#if defined(__clang__)
+    std::string_view s = __PRETTY_FUNCTION__;
+    return { s.data() + 31, s.size() - 31 - 1 };
+#elif defined(__GNUC__)
+    std::string_view s = __PRETTY_FUNCTION__;
+    return { s.data() + 46, s.size() - 46 - 1 };
+#elif defined(_MSC_VER)
+    std::string_view s = __FUNCSIG__;
+    return { s.data() + 38, s.size() - 38 - 7 };
+#else
+    return "unsupported compiler for type_name";
+#endif
+}
+
+template<typename... Ts>
+constexpr auto types2string() {
+    return std::array{ type_name<Ts>()... };
+}
