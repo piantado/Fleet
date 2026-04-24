@@ -62,7 +62,7 @@ namespace FleetArgs {
 	
 	// When we do multithreading, we put MCMC samples into a ConcurrentQueue of this size (times
 	// the number of threads)
-	int MCMC_QUEUE_MULTIPLIER = 16; 
+	int MCMC_QUEUE_MULTIPLIER = 64; 
 	
 	// The max number of nodes allowed ina LOTHypothesis
 	size_t MAX_NODES = 64; // how many nodes are allowed in hypotheses?

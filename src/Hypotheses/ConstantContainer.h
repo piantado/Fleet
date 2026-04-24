@@ -5,34 +5,13 @@
 
 #include "Miscellaneous.h"
 #include "Rule.h"
-	
-using constant_t = float; 
-	
+#include "Constant.h"	
 
 struct TooManyConstantsException : public VMSRuntimeError {};
 
 	
-/**
- * @class Constant
- * @author Steven Piantadosi
- * @date 17/08/23
- * @file ConstantContainer.h
- * @brief This is a struct to basically hold a double (or float) for use in SymbolicRegression etc
- * 		  This allows us to define rules that specifically take Constants instead of doubles/floats
- * 		  which is useful in e.g. linear regression type parts of equations
- */
-struct Constant {
-	
-	float value;
-	Constant() : value(0) {}
-	Constant(constant_t v) : value(v) {}
-	
-	void operator=(const constant_t v) {
-		value = v; 
-	}
-	constant_t get_value() const { return value; }
-	operator constant_t() const { return value; }
-};
+
+
 
 /**
  * @class ConstantContainer
@@ -51,17 +30,15 @@ public:
 	size_t                constant_idx; // in evaluation, this variable stores what constant we are in 
 	
 	virtual size_t count_constants() const = 0; // must implement 
-	virtual std::pair<double,double> constant_proposal(Constant) const = 0; // must implmenet
+	virtual std::pair<double,double> constant_proposal(Constant) const = 0; // must implement
 	virtual void randomize_constants() = 0; 
+	
+	// used by some classes to convert constants to parseable and back
+	const static char ParseableDelimiter = '@'; // delimit format
 	
 	ConstantContainer() : constants{}, constant_idx(0) {
 		
 	}
-//	ConstantContainer& operator=(const ConstantContainer& c) {
-//		constants = c.constants; 
-//		constant_idx = c.constant_idx;
-//		return *this;
-//	}		
 	
 	virtual void reset_constant_index() {
 		constant_idx = 0;
@@ -101,6 +78,6 @@ public:
 		}
 		return hsh;
 	}
-
+	
 };
 

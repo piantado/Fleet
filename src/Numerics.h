@@ -81,6 +81,8 @@ T round(T v, int n) {
 	return std::round(v*m)/m;
 }
 
+
+
 /////////////////////////////////////////////////////////////
 // A faster (?) logarithm 
 /////////////////////////////////////////////////////////////
@@ -225,6 +227,15 @@ template<typename T> T sgnlog(T val) {
     return sgn(val)*log(std::abs(val));
 }
 
+/////////////////////////////////////////////////////////////
+// fractional powers with negative numbers 
+/////////////////////////////////////////////////////////////
+
+template<typename T>
+T powabs(T a, T b) {
+	return pow<T>(std::abs(a),b)*sgn(a);
+}
+
 
 /////////////////////////////////////////////////////////////
 // Numerical functions
@@ -309,9 +320,24 @@ T weighted_quantile(std::vector<std::pair<T,double>>& v, double q) {
  */
 
 template<typename T>
-T sum(std::vector<T>& v){
+T sum(const std::vector<T>& v){
 	T s = 0.0;
-	for(auto& x : v) s += x;
+	for(const auto& x : v) 
+		s += x;
+	return s;
+}
+
+/**
+ * @brief Sum
+ * @param v
+ * @return 
+ */
+
+template<typename T, size_t n>
+T sum(const std::array<T,n>& v){
+	T s = 0.0;
+	for(const auto& x : v) 
+		s += x;
 	return s;
 }
 
@@ -321,7 +347,7 @@ T sum(std::vector<T>& v){
  * @return 
  */
 template<typename T>
-T mean(std::vector<T>& v){
+T mean(const std::vector<T>& v){
 	return sum(v)/v.size();
 }
 
@@ -333,7 +359,8 @@ T mean(std::vector<T>& v){
 
 template<typename T>
 T sd(std::vector<T>& v) {
-	assert(v.size() > 1);
+	if(v.size() <= 1) return 0.0;
+	
 	T m = mean(v);
 	T s = 0.0;
 	for(auto& x : v) {
@@ -450,11 +477,24 @@ T mymax(const std::vector<T>& v) {
 	if(n == 1) return v.at(0);
 	
 	auto m = v[0];
-	for(size_t i=0;i<n;i++) 
+	for(size_t i=1;i<n;i++) 
 		m = std::max(v.at(i), m);
 		
 	return m;
 }
+
+template<typename T, size_t N>
+T mymax(const std::array<T,N>& v) {
+	if(N == 0) return NaN;
+	if(N == 1) return v.at(0);
+	
+	auto m = v[0];
+	for(size_t i=1;i<N;i++) 
+		m = std::max(v.at(i), m);
+		
+	return m;
+}
+
 
 
 /**
@@ -498,4 +538,19 @@ std::strong_ordering fp_ordering(T& x, T& y) {
 		else if(v == std::partial_ordering::equivalent) return std::strong_ordering::equivalent;
 		else assert(false);
 	}
+}
+
+template<typename T>
+T power(T base, T exp) {
+	assert(exp >= 0);
+    T res = 1;
+    while (exp > 0) {
+		
+        if (exp % 2 == 1) 
+			res *= base;
+        
+		base *= base;
+        exp /= 2;
+    }
+    return res;
 }

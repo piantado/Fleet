@@ -141,11 +141,17 @@ public:
 	}
 	
 	double Z() const {
-		double Z = -infinity; // add up the mass
-		for(const auto& a : m){ 
-			Z = logplusexp(Z, a.second);
+		
+		if(m.size() == 0) {
+			return 0; // the log normalizer is 0 for an empty set
 		}
-		return Z;
+		else { 
+			double Z = -infinity; // add up the mass
+			for(const auto& a : m){ 
+				Z = logplusexp(Z, a.second);
+			}
+			return Z;
+		}
 	}
 	
 	double lp(const T& x) {

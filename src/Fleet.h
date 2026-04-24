@@ -386,7 +386,7 @@ const std::string FLEET_VERSION = "0.1.4";
 
 #include "FleetArgs.h"
 
-unsigned long random_seed  = 0;
+unsigned long random_seed = 0;
 
 // This is global that checks whether CTRL_C has been pressed
 // NOTE: this must be registered in main with signal(SIGINT, Fleet::fleet_interrupt_handler);
@@ -509,11 +509,10 @@ public:
 		setpriority(PRIO_PROCESS, 0, 5);
 		
 		// convert everything to ms
-		FleetArgs::runtime = convert_time(FleetArgs::timestring);	
+		FleetArgs::runtime       = convert_time(FleetArgs::timestring);	
 		FleetArgs::inner_runtime = convert_time(FleetArgs::inner_timestring);
 
-
-		// 
+		// process chains and threads
 		if( FleetArgs::chainsthreads != 0) {
 			assert((FleetArgs::nchains == 1 and FleetArgs::nthreads==1) && "*** Cannot specify chains or threads with --ct");
 			FleetArgs::nchains  = FleetArgs::chainsthreads;

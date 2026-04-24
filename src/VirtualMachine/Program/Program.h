@@ -29,7 +29,7 @@ public:
 	virtual void push_program(Program<VirtualMachineState_t>& s, const short a)       { throw NotImplementedError(); }
 	virtual void push_program(Program<VirtualMachineState_t>& s, const int a)         { throw NotImplementedError(); }
 	virtual void push_program(Program<VirtualMachineState_t>& s, const std::string k) { throw NotImplementedError(); }
-	
+	virtual void push_program(Program<VirtualMachineState_t>& s, const size_t a)         { throw NotImplementedError(); }
 };
 
 

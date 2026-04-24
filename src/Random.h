@@ -41,20 +41,29 @@ double random_normal(double mu=0, double sd=1.0) {
 	return normal(DefaultRNG)*sd + mu;
 }
 
+//template<typename T>
+//T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
+//	/**
+//	 * @brief Compute the log PDF of a normal distribution
+//	 * @param x
+//	 * @param mu
+//	 * @param sd
+//	 * @return 
+//	 */
+//	
+//    //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
+//    const T linv_sqrt_2pi = -0.5*log(2*pi*sd*sd);
+//	const T z = (x-mu)/sd;
+//    return linv_sqrt_2pi  - z*z / 2.0;
+//}
 template<typename T>
-T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
-	/**
-	 * @brief Compute the log PDF of a normal distribution
-	 * @param x
-	 * @param mu
-	 * @param sd
-	 * @return 
-	 */
-	
-    //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
-    const T linv_sqrt_2pi = -0.5*log(2*pi*sd*sd);
-	const T z = (x-mu)/sd;
-    return linv_sqrt_2pi  - z*z / 2.0;
+T normal_lpdf(T x, T mu = 0.0, T sd = 1.0) {
+    static const T log_sqrt_2pi = std::log(std::sqrt(2 * M_PI));
+    
+    T z = (x - mu) / sd;
+    
+    // Formula: -log(sd) - log(sqrt(2*pi)) - 0.5 * z^2
+    return -std::log(sd) - log_sqrt_2pi - (0.5 * z * z);
 }
 
 template<typename T>
@@ -323,6 +332,18 @@ std::pair<t*,double> sample_lp(const T& s, const std::function<double(const t&)>
 }
 
 
+
+
+
+double random_beta(double a, double b) {
+	std::gamma_distribution<double> gamma_alpha(a);
+    std::gamma_distribution<double> gamma_beta(b);
+
+    double x = gamma_alpha(DefaultRNG);
+    double y = gamma_beta(DefaultRNG);
+
+    return x / (x + y);
+}
 
 
 

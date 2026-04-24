@@ -290,7 +290,7 @@ public:
 	}
 	
 	template<typename data_t>
-	[[nodiscard]] TopN compute_posterior(data_t& data){
+	[[nodiscard]] TopN compute_posterior(data_t data){
 		/**
 		 * @brief Returns a NEW TopN where each current hypothesis is evaluated on the data. NOTE: If a hypothesis has a new posterior of -inf or NaN, it won't be added. 
 		 * @param data

@@ -15,8 +15,8 @@ struct Primitive {
 	Op op;
 	void* f;
 	
-	Primitive(const Primitive<T,args...>& other) = delete; // probably not the best idea to copy these
-	Primitive(const Primitive<T,args...>&& other) = delete; // probably not the best idea to copy these
+	//Primitive(const Primitive<T,args...>& other) = delete; // probably not the best idea to copy these
+	//Primitive(const Primitive<T,args...>&& other) = delete; // probably not the best idea to copy these
 	
 	/**
 	 * @brief Constructor here assumes the std::function type

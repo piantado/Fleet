@@ -37,6 +37,9 @@ public:
 	using key_t = _key_t;
 	using VirtualMachineState_t = _VirtualMachineState_t;
 	
+	// proposals return this:
+	using ProposalType = std::optional<std::pair<this_t,double>>;
+	
 	// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
 
@@ -44,7 +47,7 @@ public:
 
 	std::map<key_t,INNER> factors;
 	
-	Lexicon() : MCMCable<this_t,datum_t>()  { }
+	Lexicon() : MCMCable<this_t,datum_t,data_t>()  { }
 	
 	/**
 	 * @brief Return the number of factors
@@ -60,6 +63,8 @@ public:
 	
 		  INNER& at(const key_t& k) { return factors.at(k); }
 	const INNER& at(const key_t& k) const { return factors.at(k); }
+	
+	void set(const key_t& k, const INNER& in) { factors[k] = in; }
 	
 		  INNER& operator[](const key_t& k) { return factors[k]; }
 	const INNER& operator[](const key_t& k) const { return factors[k]; }
@@ -234,7 +239,7 @@ public:
 	 * @param s
 	 * @param k
 	 */	 
-	virtual void push_program(Program<VirtualMachineState_t>& s, const key_t k) override {
+	virtual void push_program(Program<VirtualMachineState_t>& s, const key_t k) {
 		this->was_called = true; // set this since we're a program loader
 		// dispath to the right factor
 		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
@@ -267,44 +272,39 @@ public:
 	 *        Each individual factor is proposed to with p_factor_propose
 	 * @return 
 	 */	
-	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
+	[[nodiscard]] virtual ProposalType propose() const override {
 
 		// let's first make a vector to see which factor we propose to.
 		auto should_propose = random_nonempty_subset(factors.size(), p_factor_propose);
 		
 		// now go through and propose to those factors
 		// (NOTE fb is always zero)
-		// NOTE: This is not great because it doesn't copy like we might want...
-		this_t x; double fb = 0.0;
+		this_t ret = *static_cast<const this_t*>(this); // copy all the member variables (slower but easier to think about)
+		double fb = 0.0;
 		int idx = 0;
 		for(auto& [k,f] : factors) {
 			if(should_propose[idx]) {
 				auto p = f.propose();
 				if(p){
 					auto [h, _fb] = p.value();
-					x.factors[k] = h;
+					ret.factors[k] = h;
 					fb += _fb;
-				}
-				else {
-					x.factors[k] = f; // on failed proposal just copy
-				}
-			} else {
-				x.factors[k] = f;
-			}
+				} // on failed proposal, we stick with old copy
+			} 
 			idx++;
 		}
-		assert(x.factors.size() == factors.size());
+		assert(ret.factors.size() == factors.size());
 		
-		return std::make_pair(x,fb);									
+		return std::make_pair(ret,fb);									
 	}
 	
 	
 	[[nodiscard]] virtual this_t restart() const override {
-		this_t x;
+		this_t ret = *static_cast<const this_t*>(this);
 		for(auto& [k,f] : factors) {
-			x.factors[k] = f.restart();
+			ret.factors[k] = f.restart();
 		}
-		return x;
+		return ret;
 	}
 	
 	template<typename... A>

@@ -8,6 +8,7 @@
 #include <atomic>
 #include <string>
 
+#include "Constant.h"
 
 /**
  * @class has_string - SFINAE for whether a type has a ".string" function. What an ugly nightmare. 
@@ -267,7 +268,7 @@ std::string str(std::string _sep, Args... args){
  * @return 
  */
 template<typename T>
-T string_to(const std::string s) {
+T string_to(std::string s) {
 	
 	// process some special cases here
 	if constexpr(is_specialization<T,std::map>::value) {
@@ -283,6 +284,11 @@ T string_to(const std::string s) {
 		return {string_to<typename T::first_type>(x), string_to<typename T::second_type>(y)};		
 	}
 	else if constexpr(is_specialization<T,std::vector>::value) {
+		
+		// remove [...] if they are there (optional)
+		if(s.front() == '[') s.erase(0,1);
+		if(s.back()  == ']') s.pop_back();
+		
 		T v;
 		for(auto& x : split(s, ',')) {
 			v.push_back(string_to<typename T::value_type>(x));
@@ -309,6 +315,7 @@ template<> unsigned long string_to(const std::string s) { return std::stoul(s); 
 template<> double        string_to(const std::string s) { return std::stod(s); }
 template<> float         string_to(const std::string s) { return std::stof(s); }
 template<> bool          string_to(const std::string s) { assert(s.size()==1); return s=="1"; } // 0/1 for t/f
+template<> Constant      string_to(const std::string s) { return std::stof(s); }
 
 //template<typename T, typename U>
 //std::pair<T,U> string_to(const std::string s) {	

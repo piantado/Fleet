@@ -158,6 +158,12 @@ public:
 			posterior = prior + likelihood;	
 		}
 		
+		#ifdef ASSERT_BAYES_NOT_NAN
+			// we allow NAN likelihoods (above) if prior is -infinity
+			assert(not std::isnan(prior));
+			assert((prior == -infinity) or not std::isnan(likelihood));
+		#endif
+		
 		return posterior;
 	}
 	

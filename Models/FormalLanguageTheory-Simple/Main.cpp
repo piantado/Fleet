@@ -79,7 +79,7 @@ public:
 	using Super =  StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
-	static double regenerate_p;
+	static inline double regenerate_p = 0.75;
 		
 	double compute_single_likelihood(const datum_t& x) override {	
 		
@@ -138,10 +138,7 @@ public:
 		Super::show(prefix); 
 	}
 };
-
-// Probability of regenerating
-double MyHypothesis::regenerate_p = 0.75;
-
+\
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 // if we define DO_NOT_INCLUDE_MAIN then we can import everything *except* the below

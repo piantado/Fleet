@@ -40,7 +40,10 @@ public:
 			is -= numterm; 
 			
 			const auto numnonterm = this->grammar->count_nonterminals(nt);
-			if(numnonterm == 0) throw EnumerationNotInjectiveException(); 
+			if(numnonterm == 0) {
+				print("*** Enumeration not injective", is, nt);
+				throw EnumerationNotInjectiveException(); 
+			}
 			
 			auto ri = is.pop(numnonterm); // this already includes the shift from all the nonterminals
 			

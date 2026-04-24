@@ -317,7 +317,7 @@ public:
 	template<typename T, typename... args> 
 	void add(std::string fmt, Primitive<T,args...>& b, double p=1.0, int a=0) {
 		// read f and o from b
-		assert(b.f != nullptr);
+		if(b.f == nullptr) { print("*** Error, you passed a null pointer function to rule for ", fmt); print(b.f); assert(false);}
 		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op, a);
 	}
 	
@@ -404,6 +404,27 @@ public:
 					auto a1 = vms->template getpop_nth<1,args...>();	
 					auto a0 = vms->template getpop_nth<0,args...>();		
 					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4), std::move(a5)));
+				}
+				else if constexpr (sizeof...(args) ==  7) {
+					auto a6 = vms->template getpop_nth<6,args...>();	
+					auto a5 = vms->template getpop_nth<5,args...>();	
+					auto a4 = vms->template getpop_nth<4,args...>();	
+					auto a3 = vms->template getpop_nth<3,args...>();	
+					auto a2 = vms->template getpop_nth<2,args...>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6)));
+				}
+				else if constexpr (sizeof...(args) ==  8) {
+					auto a7 = vms->template getpop_nth<7,args...>();	
+					auto a6 = vms->template getpop_nth<6,args...>();	
+					auto a5 = vms->template getpop_nth<5,args...>();	
+					auto a4 = vms->template getpop_nth<4,args...>();	
+					auto a3 = vms->template getpop_nth<3,args...>();	
+					auto a2 = vms->template getpop_nth<2,args...>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7)));
 				}
 				else {
 					print("*** Error -- too many arguments for a function. Must be updated in Grammar.h ", sizeof...(args) );
@@ -885,6 +906,7 @@ public:
 		return lp;		
 	}
 	
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Implementation of converting strings to nodes 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
