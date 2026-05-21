@@ -105,6 +105,7 @@ class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,set,wo
 public:
 	using Super = DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar>;
 	using Super::Super;
+	using data_t = MyHypothesis::data_t;
 	
 	double compute_prior() override {
 		// include recusion penalty
@@ -112,7 +113,7 @@ public:
 	}
 		
 	// As in the original paper, we compute hte likelihood by averaging over all numbers, weighting by their probabilities
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) override {
 		this->likelihood = 0.0;
 		for(int x=1;x<10;x++) {
 			auto v = call(make_set(x), U);
@@ -134,7 +135,8 @@ public:
 	}
 	
 	virtual void show(std::string prefix="") override {
-		prefix += QQ(KLstring())+"\t"+std::to_string(this->recursion_count())+"\t";
+		//prefix += QQ(KLstring())+"\t"+std::to_string(this->recursion_count())+"\t";
+		prefix += QQ(KLstring())+"\t";
 		Super::show(prefix);		
 	}
 };
@@ -152,41 +154,41 @@ int main(int argc, char** argv) {
 	fleet.add_option("--ndata", Ndata, "How many data points do we simulate on?");
 	fleet.initialize(argc, argv);
 	
-	MyHypothesis::data_t mydata; // just dummy data because it's computed on its own in the likelihood
+	std::vector<MyHypothesis::datum_t> mydata; // just dummy data because it's computed on its own in the likelihood
 
 	// Run parallel tempering
 	TopN<MyHypothesis> top;
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 5.0);
+	ParallelTempering samp(h0, mydata, FleetArgs::nchains, 5.0);
 	for(auto h : samp.run(Control()) | thin(FleetArgs::thin) | printer(FleetArgs::print)){
 		top << h;
 	}
 	
-	//top.print();
+	top.print();
 	
 	// let's print out the counts
-	for(auto h : top.values()) {
-		auto c = grammar.get_counts(h.get_value());
-		auto cs = str(c); cs.erase(0,1); cs.erase(cs.length()-1,1);
-		
-		// replace commas with tabs
-		for(size_t i=0;i<cs.length();i++){
-			if(cs.at(i) == ',') 
-				cs[i] = '\t';
-		}
-		
-		print(h.likelihood / Ndata, QQ(h.KLstring()), cs, QQ(h.string()));
-	}
+//	for(auto h : top.values()) {
+//		auto c = grammar.get_counts(h.get_value());
+//		auto cs = str(c); cs.erase(0,1); cs.erase(cs.length()-1,1);
+//		
+//		// replace commas with tabs
+//		for(size_t i=0;i<cs.length();i++){
+//			if(cs.at(i) == ',') 
+//				cs[i] = '\t';
+//		}
+//		
+//		print(h.likelihood / Ndata, QQ(h.KLstring()), cs, QQ(h.string()));
+//	}
 
 	// print out the grammar
-	{
-		size_t gi = 0;
-		for(auto& r : grammar) {
-			print(gi, r.nt, r.p / grammar.rule_normalizer(r.nt), Q(r.format));
-			gi++;
-		}
-		
-	}
+//	{
+//		size_t gi = 0;
+//		for(auto& r : grammar) {
+//			print(gi, r.nt, r.p / grammar.rule_normalizer(r.nt), Q(r.format));
+//			gi++;
+//		}
+//		
+//	}
 	
 }
 
