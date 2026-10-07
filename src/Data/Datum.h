@@ -2,6 +2,10 @@
 
 #include "Strings.h"
 
+
+struct NullDatum_t {}; // this serves for a null data type for samplers etc that don't use one
+
+
 /**
 * @class defaultdatum_t
 * @author piantado

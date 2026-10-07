@@ -59,7 +59,7 @@ public:
 	}
 	
 	
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) override {
 		return 0.0; // this is here so we can run MCMC with no data
 //		throw YouShouldNotBeHereError("*** Should not call likelihood here");
 	}

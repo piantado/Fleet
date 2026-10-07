@@ -77,7 +77,7 @@ public:
 		return this->prior;
 	}
 	
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) override {
 		throw YouShouldNotBeHereError("*** Should not call likelihood here");
 	}
 	

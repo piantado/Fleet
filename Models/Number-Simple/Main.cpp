@@ -156,6 +156,10 @@ int main(int argc, char** argv) {
 	
 	std::vector<MyHypothesis::datum_t> mydata; // just dummy data because it's computed on its own in the likelihood
 
+//	mydata.add( {1}, "one" );
+//	mydata.add( {1,1,1}, "two" );
+	
+
 	// Run parallel tempering
 	TopN<MyHypothesis> top;
 	auto h0 = MyHypothesis::sample();

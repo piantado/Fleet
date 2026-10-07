@@ -84,6 +84,17 @@ T t_lpdf(T x, T nu) {
 		   log(1+x*x/nu)*(-(nu+1)/2);
 }
 
+template<typename T>
+T gamma_lpdf(T x, T alpha, T beta) { // shape and RATE (note difference to std::gamma_distribution)
+	if (x <= 0.0 or alpha <= 0.0 or beta <= 0.0) 
+		return -infinity;
+
+	return alpha * log(beta) 
+			+ (alpha - 1.0) * log(x) 
+			- beta * x 
+			- mylgamma(alpha);
+}
+
 
 double random_cauchy() {
 	/**
@@ -154,8 +165,8 @@ double geometric_lpdf(size_t k, double p) {
 	return log(p) + (k-1)*log(1-p);
 }
 
-double random_gamma(double a, double b) {
-	std::gamma_distribution<double> g(a,b);
+double random_gamma(double a, double b) { // shape and RATE here
+	std::gamma_distribution<double> g(a,1.0/b); // convert to shape/scale since this is what C++ uses
 	return g(DefaultRNG);
 }
 
