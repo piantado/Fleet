@@ -268,12 +268,16 @@ std::string str(std::string _sep, Args... args){
  * @return 
  */
 template<typename T>
-T string_to(std::string s) {
+T string_to(std::string s);
+
+template<typename T>
+T string_to(std::string s, char split_at) {
+	// Here split_at is only for the TOP-LEVEL split --everythign below is different
 	
 	// process some special cases here
 	if constexpr(is_specialization<T,std::map>::value) {
 		T m;
-		for(auto& r : split(s, ',')) { // TODO might want a diff delim here
+		for(auto& r : split(s, split_at)) { // TODO might want a diff delim here
 			auto [x, y] = split<2>(r, ':');
 			m[string_to<typename T::key_type>(x)] = string_to<typename T::mapped_type>(y);	
 		}
@@ -290,14 +294,14 @@ T string_to(std::string s) {
 		if(s.back()  == ']') s.pop_back();
 		
 		T v;
-		for(auto& x : split(s, ',')) {
+		for(auto& x : split(s, split_at)) {
 			v.push_back(string_to<typename T::value_type>(x));
 		}
 		return v;
 	}
 	else if constexpr(is_specialization<T,std::multiset>::value) {
 		T ret;
-		for(auto& x : split(s, ',')) {
+		for(auto& x : split(s, split_at)) {
 			ret.insert( string_to<typename T::key_type>(x));
 		}
 		return ret; 
@@ -306,6 +310,11 @@ T string_to(std::string s) {
 		// Otherwise we must have a string constructor
 		return T{s};
 	}	
+}
+
+template<typename T>
+T string_to(std::string s) {
+	return string_to<T>(s, ',');
 }
 
 template<> std::string   string_to(const std::string s) { return s; }

@@ -17,13 +17,11 @@ template<typename HYP>
 class PriorInference : public ThreadedInferenceInterface<HYP> {
 
 public:
+	std::vector<typename HYP::datum_t> data;
+	HYP* from; // when we want to sample completions of a hypothesis
 	
-	typename HYP::Grammar_t* grammar;
-	typename HYP::data_t data;
-	HYP* from;
-	
-	PriorInference(typename HYP::Grammar_t* g, typename HYP::data_t d, HYP* fr=nullptr) : 
-		grammar(g), data(d), from(fr) {
+	PriorInference(std::vector<typename HYP::datum_t>& d, HYP* fr=nullptr) : 
+		data(d), from(fr) {
 	}
 	
 	generator<HYP&> run_thread(Control& ctl) override {

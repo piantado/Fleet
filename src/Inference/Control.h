@@ -34,7 +34,6 @@ struct Control {
 	bool break_CTRLC; // should we break on ctrl_c?
 
 
-
 	Control(unsigned long st=FleetArgs::steps, 
 			unsigned long t=FleetArgs::runtime,
 			size_t thr=FleetArgs::nthreads, 

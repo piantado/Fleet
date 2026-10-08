@@ -17,68 +17,148 @@
 //	std::vector<typename HYP::output_t> outputs; // what hi predicts for each generalize	
 //};
 
+#include "HumanDatum.h"
 
-template<typename HYP>
-struct HumanDataBundle {
-
-	using Hdata_t  = typename HYP::data_t;
+// This is a HumanDatum plus some sutff for dealing with hypotheses
+// ConditionOn_t can either by std::vector of data or std::span, depending on where we want to store the conditioning data
+template<typename HYP, typename _ConditionOn_t=HYP::data_t>
+struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
+	using ConditionOn_t = _ConditionOn_t;
 	using Hinput_t = typename HYP::input_t;
-
-	Hdata_t conditioned_on;
-	std::vector<float> decay_indices; // each condition_on has some decay_position
-
-	// what they are asked to respond on  (single data point)
-	Hinput_t generalize; 
-
-	// the map of counts for each human response
-	std::map<typename HYP::output_t,int> human_responses;
-
-	// one response for each hypothesis
-	std::vector<typename HYP::output_t> hypotheses_responses; // each hypothesis output on generalize
 	
-	std::vector<std::vector<float>> point_likelihood;  // each hypothesis's likelihood to each conditioned_on
+	// To HumanDatum we are going to add responses and caching etc
+	// from each hypothesis
+	
+	// each hypothesis output on generalize
+	std::vector<typename HYP::output_t> hypotheses_responses; 
+	
+	// each hypothesis's likelihood to each conditioned_on
+	std::vector<std::vector<float>> point_likelihood;  
 	
 	HumanDataBundle(std::vector<HYP>& hypotheses, 
-					Hdata_t cond, 
+					HumanDatum<HYP,ConditionOn_t>& d) :
+		HumanDatum<HYP,ConditionOn_t>(d) // copy over everything from d
+	{
+		fill_point_likelihoods(hypotheses);
+		fill_predictions(hypotheses);
+	}
+
+	HumanDataBundle(std::vector<HYP>& hypotheses, 
+					ConditionOn_t cond, 
 					Hinput_t gen, 
 					std::map<typename HYP::output_t,int> resp,
 					std::vector<float> decays) : 
-				conditioned_on(cond), 
-				generalize(gen), 
-				human_responses(resp), 
-				decay_indices(decays) {
-		const size_t N = conditioned_on.size();
-		const size_t H = hypotheses.size();
+			HumanDatum<HYP, ConditionOn_t>(cond, decays, gen, resp)
+	{
+		const size_t N = this->condition_on.size();
 		
-		assert(decay_indices.size() == N); 
+		assert(this->decay_indices.size() == N); 
+		
+		fill_point_likelihoods(hypotheses);
+		fill_predictions(hypotheses);
+	}
+	
+	void fill_point_likelihoods(std::vector<HYP>& hypotheses) {
+		const size_t H = hypotheses.size();
 		
 		// fill in the point likelihoods
 		point_likelihood.resize(H); 
 		for(size_t hi=0;hi<H;hi++) {
 			auto& h = hypotheses.at(hi);
-			point_likelihood.at(hi) = std::vector<float>(conditioned_on.size(), 0.0);
-			for(size_t di=0;di<conditioned_on.size();di++) {
-				point_likelihood.at(hi).at(di) = h.compute_single_likelihood(conditioned_on[di]);
+			point_likelihood.at(hi) = std::vector<float>(this->condition_on.size(), 0.0);
+			for(size_t di=0;di<this->condition_on.size();di++) {
+				point_likelihood.at(hi).at(di) = h.compute_single_likelihood(this->condition_on[di]);
 			}
 		}
+	}
+	
+	void fill_predictions(std::vector<HYP>& hypotheses) {
+		const size_t H = hypotheses.size();
 		
 		// fill in the predictions of each hypothesis
 		hypotheses_responses.resize(H);
 		for(size_t hi=0;hi<H;hi++) {
 			auto& h = hypotheses.at(hi);
-			hypotheses_responses.at(hi) = h.call(generalize);
+			hypotheses_responses.at(hi) = h.call(this->generalize);
 		}
 	}
 	
 	// what is the hi'th liklihood if it has decay decay?
 	double likelihood_with_decay(size_t hi, float decay) {
 		double ll = 0.0;
-		for(size_t i=0;i<conditioned_on.size();i++) {
-			ll += point_likelihood.at(hi).at(i) * pow( decay_indices.at(i), -decay);
+		for(size_t i=0;i<this->condition_on.size();i++) {
+			ll += point_likelihood.at(hi).at(i) * pow( this->decay_indices.at(i), -decay);
 		}
 		return ll;
 	}
 };
+
+
+
+#include "TopN.h"
+#include "MCMC/MCMCChain.h"
+#include "PriorInference.h"
+
+#include<ranges>
+
+template<typename HYP, typename ConditionOn_t=HYP::data_t>
+std::vector<HYP> generate_from(std::vector<HumanDatum<HYP,ConditionOn_t>>& human_datas, 
+					size_t mcmc_steps_per=1000, 
+					size_t mcmc_top=100,  // this many from each data point
+					size_t prior_samples=10000, 
+					size_t prior_top=10000) {
+	
+	std::set<HYP> hypotheses; 
+	
+	// here we will defaultly carry over the most recent sample
+	// between data sets -- this means that if we are sorted to be
+	// incremental, we'll do better
+	{
+		auto h0 = HYP::sample();
+		
+		for(auto& hd : human_datas) {
+			print("# Running mcmc on", str(hd.condition_on));
+			
+			TopN<HYP> top(mcmc_top);
+			
+			Control c(mcmc_steps_per);
+				
+			// run on each condition_on
+			auto chain = MCMCChain(h0, hd.condition_on);
+			for(auto& h : chain.run(c) | top ) {
+				UNUSED(h);
+			}
+			
+			h0 = top.best(); // start next round on our best from this
+			print("# found best: ", h0.string());
+			
+			// add to this set
+			hypotheses << top; 
+			
+			if(CTRL_C) break; 		
+		}
+		
+		print("# MCMC found", hypotheses.size(), "unique samples.");
+	}
+	
+	// and now let's do prior samples
+	{
+		print("# Running prior samples");
+		TopN<HYP> top(prior_top);
+		std::vector<typename HYP::datum_t> fakedata;
+		PriorInference<HYP> prinf(fakedata);
+		for(auto& h : prinf.run(Control(prior_samples)) | top) {
+			UNUSED(h);
+		}
+		hypotheses << top; 
+	}
+		
+	// convert set to vector
+	std::vector<HYP> vh(hypotheses.begin(), hypotheses.end());
+	return vh;
+	
+}
+
 
 //#include "LOTHypothesis.h"
 #include "Interfaces/MCMCable.h"
@@ -87,19 +167,28 @@ struct HumanDataBundle {
 
 template<typename this_t,
          typename HYP,
-		 typename HumanData_t=HumanDataBundle<HYP>,
+		 typename _ConditionOn_t=HYP::data_t,
 		 typename _datum_t = NullDatum_t, 
 		 typename _data_t=std::span<_datum_t>
 		 >
 class NewGrammarHypothesis : public MCMCable<this_t, _datum_t, _data_t> {
 public:
-	
-	using Hdata_t  = typename HYP::data_t;
+	using ConditionOn_t = _ConditionOn_t;
+	using HumanDataBundle_t = HumanDataBundle<HYP, ConditionOn_t>;
 	using Hinput_t = typename HYP::input_t;
 	
 	std::shared_ptr<std::vector<HYP>> hypotheses;
 	std::shared_ptr<Matrix>    C; // matrix of counts for eahc rule and hypothesis	
-	std::shared_ptr<std::vector<HumanData_t>> human_data;
+	std::shared_ptr<std::vector<HumanDataBundle_t>> human_data;
+	
+	
+	// as a diagnostic, we will include automatically binning
+	// by model prediction (i.e in [0,1] by BIN_SIZE) the counts of
+	// hypothesis responses. This is recomputed on each likelihood computation
+	float BIN_SIZE = 0.05; 
+	std::vector<int> bin_yes;
+	std::vector<int> bin_tot;
+	
 	
 	std::shared_ptr<std::map<const Rule*, size_t>> rule_indexer; // for checking whcih rule for each -- set in recompute_C()
 	
@@ -121,7 +210,7 @@ public:
 	
 	NewGrammarHypothesis(std::shared_ptr<std::vector<HYP>> hptr) : 
 		hypotheses(hptr),
-		human_data(std::make_shared<std::vector<HumanData_t>>()),
+		human_data(std::make_shared<std::vector<HumanDataBundle_t>>()),
 		N_RULES(hypotheses->at(0).get_grammar()->count_rules()),
 		people_PT(5,5), // some slightly informative priors about all of these components 
 		people_LLT(5,5),
@@ -133,12 +222,16 @@ public:
 		recompute_C();
 	}
 	
-	void add_HumanData(Hdata_t cond, 
+	void add_HumanData(typename HumanDataBundle_t::ConditionOn_t cond, 
 					   Hinput_t gen, 
 					   std::map<typename HYP::output_t,int>& resp, 
 					   std::vector<float> decays ) {
 						   
 		human_data->emplace_back(*hypotheses, cond, gen, resp, decays);
+	}
+	
+	void add_HumanData(HumanDatum<HYP,ConditionOn_t>& d) {
+		human_data->emplace_back(*hypotheses, d);
 	}
 	
 
@@ -197,8 +290,15 @@ public:
 		const auto priors = this->hypothesis_prior(); // determined by counts and parameters
 		const auto H = hypotheses->size();
 		
+		// reset the bins
+		bin_yes = std::vector<int>(ceil(1.0/BIN_SIZE), 0);
+		bin_tot = std::vector<int>(ceil(1.0/BIN_SIZE), 0);
+		
 		this->likelihood = 0.0; // easier to just compute here
-		for(auto& hd : *human_data) {
+		
+		#pragma omp parallel for
+		for(size_t di=0;di<human_data->size();di++){
+			auto& hd = human_data->at(di);
 			
 			// get each data point's marginal over responses
 			Vector posteriors(H);
@@ -232,8 +332,27 @@ public:
 			}
 			//print(str(model_pr));
 			
-			for(auto& [r,cnt] : hd.human_responses) {
-				this->likelihood += model_pr.get(r, HUMAN_DATA_OUTLIER) * cnt;
+			// TODO: Do not do this in parallel -- because we are tracking bins etc
+			#pragma omp critical
+			{
+				
+				// look a
+							
+				int z = 0;
+				for (const auto& [_, value] : hd.human_responses) { z += value; }
+				for(auto& [r, mp] : model_pr.values()) {
+					size_t b = floor(exp(mp)*bin_tot.size());
+					bin_yes[b] += get(hd.human_responses, r, 0);
+					bin_tot[b] += z; 					
+				}
+				
+				// now compute likelihood of human responses
+				double myll = 0.0;
+				for(auto& [r,cnt] : hd.human_responses) {
+					myll +=  cnt * model_pr.get(r, HUMAN_DATA_OUTLIER);
+				}
+				
+				this->likelihood += myll;
 			}
 			
 		}
@@ -334,7 +453,10 @@ public:
 	 * @return 
 	 */	
 	virtual std::string string(std::string prefix="") const override {
-		std::string out = ""; 
+		std::string out = "";
+
+		out += "# " + str(bin_yes) + "\n"; 
+		out += "# " + str(bin_tot) + "\n"; 
 		
 		// the -1 here is just to contrast with the nt printed below
 		out += prefix + "-1\tposterior.score" +"\t"+ str(this->posterior) + "\n";
@@ -360,3 +482,4 @@ public:
 	}
 
 };
+

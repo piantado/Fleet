@@ -24,16 +24,14 @@
 // I must declare my own in order to fill in the this_t in the template
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "DeterministicGrammarHypothesis.h" 
+#include "NewGrammarHypothesis.h.h" 
 
-class MyGrammarHypothesis final : public DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
+class MyGrammarHypothesis final : public NewGrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
 public:
-	using Super = DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
+	using Super = NewGrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
 	using Super::Super;
+	using this_t = MyGrammarHypothesis;
 	
-	MyGrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
-		this->set_hypotheses_and_data(hypotheses, *human_data);
-	}	
 };
 
 
@@ -65,31 +63,25 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-	std::vector<HumanDatum<MyHypothesis>> human_data;
-	std::vector<std::string> human_data_key; // store the raw strings so we can output more friendly
+	// this stores all conditioning data
+	// (with overlap so we can just construct spans
+	std::vector<HumanDatum> human_data;
 	
-	std::vector<HumanDatum<MyHypothesis>> heldout_data;
-	std::vector<std::string> heldout_data_key;
+	// This lives on the heap and stores the data we are currently
+	// conditioning on
+	std::vector<MyHypothesis::datum_t>>* current_condition_on;
+	std::vector<float> decay_indices;
 	
 	// We need to read the data and collapse same setNumbers and concepts to the same "set", since this is the new
 	// data format for the model. 
 	std::ifstream infile(FleetArgs::input_path);
-	
-	MyHypothesis::data_t* learner_data = nullptr; // pointer to a vector of the current learner data
-	std::vector<int>* decay_position = nullptr;
-	
-	// what data do I run mcmc on? not just human_data since that will have many reps
-	// NOTE here we store only the pointers to sequences of data, and the loop below loops
-	// over items. This lets us preserve good hypotheses across amounts of data
-	// but may not be as great at using parallel cores. 
-	std::vector<MyHypothesis::data_t*> mcmc_data; 
-	
-	size_t ndata = 0;
-	int    decay_position_counter = 0;
+//	
+//	size_t ndata = 0;
+//	int    decay_position_counter = 0;
 	S prev_conceptlist = "NA"; // what was the previous concept/list we saw? 
-	size_t LEARNER_RESERVE_SIZE = 128; // reserve this much so our pointers don't break;
-	size_t data_idx = 0; // what position are we overall for data
-	
+	//size_t LEARNER_RESERVE_SIZE = 128; // reserve this much so our pointers don't break;
+//	size_t data_idx = 0; // what position are we overall for data
+		
 	while(! infile.eof() ) {
 		if(CTRL_C) break;
 		
@@ -100,25 +92,27 @@ int main(int argc, char** argv){
 			
 		// if we are on a new conceptlist, then make a new learner data (on stack)
 		if(conceptlist != prev_conceptlist) {
-			if(learner_data != nullptr) 
-				mcmc_data.push_back(learner_data);
-			
-			learner_data = new MyHypothesis::data_t();
-			decay_position = new std::vector<int>();
-			learner_data->reserve(LEARNER_RESERVE_SIZE); // need to reserve enough here so that we don't have to move -- or else the pointers break		
-			ndata = 0;
-			decay_position_counter = 0;
-			data_idx = 0;
+			current_condition_on = new MyHypothesis::data_t();
+			decay_indices = new std::vector<float>(); 
 		}
 		
 		// now put the relevant stuff onto learner_data
+		ObjectSet
 		for(size_t i=0;i<objs->size();i++) {
-			assert(learner_data != nullptr and decay_position != nullptr);
 			MyInput inp{objs->at(i), *objs};
 			learner_data->emplace_back(inp, corrects->at(i), alpha);
 			decay_position->push_back(decay_position_counter); // these all occur at the same decay position
 			assert(learner_data->size() < LEARNER_RESERVE_SIZE);
 		}
+
+
+			HumanData hd = {
+				.conditioned_on=std::span(current_condition_on),
+				.decay_indices=,
+				.generalize=,
+				.human_responses
+			};
+
 
 		// now unpack this data into human_data for each point in the concept
 		for(size_t i=0;i<objs->size();i++) {
