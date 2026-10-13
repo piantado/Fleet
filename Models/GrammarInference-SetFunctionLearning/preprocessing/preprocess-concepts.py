@@ -18,19 +18,22 @@ for _, r in humanfile.iterrows():
     human[tup] += 1
     # print(tup)
 
-## Now read and aggregate the training data
+def as_fleet_array(lst, sep=','):
+    return '['+sep.join(map(str,lst))+']'
 
+## Now read and aggregate the training data
 for filename in os.listdir(CONCEPT_DIR):
     if re.search(r"L3|L4", filename): continue # skip these lists
 
     with open(CONCEPT_DIR+filename) as f:
         lines = f.readlines()
 
-        m = re.match("CONCEPT_(.+)__LIST_(.+)\.", filename)
+        m = re.match(r"CONCEPT_(.+)__LIST_(.+)\.", filename)
         concept, list = m.groups()
 
         target = lines[0].strip()
         setNumber = 1
+        condition_sets = []
         for l in lines[1:]:
             l = l.strip()
             parts = re.split(r"\t", l)
@@ -38,15 +41,38 @@ for filename in os.listdir(CONCEPT_DIR):
             vals = re.findall(r"\#f|\#t", parts[0]) # get the trues and falses
             assert(len(vals) == len(parts[1:]))
 
-            responseNumber = 1
+            # construct into a format for  C++ to load
+            objs = []
+            yes = []
+            no = []
+            response_number = 1
             for v, o in zip(vals, parts[1:]):
 
+                # write in Fleet format for objects
                 features = re.split(r",", o)
+                objs.append('-'.join(features[:-1]))
 
-                hyes = human[ (concept, list, setNumber, responseNumber, True)]
-                hno  = human[ (concept, list, setNumber, responseNumber, False)]
+                y = human[ (concept, list, setNumber, response_number, True)]
+                n = human[ (concept, list, setNumber, response_number, False)]
+                yes.append(y)
+                no.append(n)
+                response_number += 1
 
-                print(concept, list, setNumber, responseNumber, v == '#t', *(features[0:3]), hyes, hno)
-                responseNumber += 1
+            assert len(objs) == len(yes) == len(no)
+
+            this_set = as_fleet_array(objs)
+
+            print( concept,
+                   list,
+                   setNumber,
+                   as_fleet_array(condition_sets, ';'),
+                   this_set,
+                   as_fleet_array(yes),
+                   as_fleet_array(no),
+                   sep="\t" )
+
+            condition_sets.append(this_set)
+
             setNumber += 1
-            if(setNumber > MAX_SET): break
+            if(setNumber > MAX_SET):
+                break

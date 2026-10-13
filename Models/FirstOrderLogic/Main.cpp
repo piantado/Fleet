@@ -19,17 +19,20 @@ using S = std::string;
 
 #include "ShapeColorSizeObject.h"
 
-using MyObject = ShapeColorSizeObject; 
+using Obj = ShapeColorSizeObject; 
 
 // Define a set of objects -- really it's a multiset so we'll use a vector
-using ObjectSet = std::vector<MyObject>;
+using Set = std::vector<Obj>;
 
-// The arguments to a hypothesis will be a pair of a set and an object (as in Piantadosi, Tenenbaum, Goodman 2016)
-using MyInput = std::tuple<MyObject,ObjectSet>; // this is the type of arguments we give to our function
+using Bset = std::vector<bool>; // one boolean response for each element of a set
+
+struct GrammarInput {
+	Obj o;
+	Set s;
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
-/// Thid requires the types of the thing we will add to the grammar (bool,Object)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
@@ -37,11 +40,14 @@ using MyInput = std::tuple<MyObject,ObjectSet>; // this is the type of arguments
 
 double TERMINAL_WEIGHT = 5.0;
 
-class MyGrammar : public Grammar<MyInput,bool,   
-						         bool,MyObject,MyInput,ObjectSet,
+// The grammar here descibes functions that takes a set and object and returns a bool
+// NOTE: hypotheses don't do this -- they map over everything
+
+class MyGrammar : public Grammar<GrammarInput,bool,   
+						         bool,Obj,GrammarInput,Set,
 								 ft<bool,bool>, ft<bool,bool,bool>,
-								 ft<bool,MyObject>, ft<bool,MyObject,MyObject>, 
-								 ft<bool,bool,MyObject>
+								 ft<bool,Obj>, ft<bool,Obj,Obj>, 
+								 ft<bool,bool,Obj>
 								 >,
 				  public Singleton<MyGrammar> {
 public:
@@ -52,27 +58,27 @@ public:
 		// we are going to make the type system a little cleaner -- here we use
 		// b and o only within the function type ft -- so something that returns a bool from an object and a bool is ft<b,o,b>
 		using b = bool; 
-		using o = MyObject;
+		using o = Obj;
 
 		add("true",    +[]() -> bool { return true; }, 0.05); // give these low prior so we don't spend much time proposing them
 		add("false",   +[]() -> bool { return false; }, 0.05);
 		
 		// these are funny primitives that to fleet are functions with no arguments, but themselves
 		// return functions from objects to bool (ObjectToBool):
-		add("yellow",    +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Color::Yellow);}; });
-		add("green",     +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Color::Green);}; });
-		add("blue",      +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Color::Blue);}; });
+		add("yellow",    +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Color::Yellow);}; });
+		add("green",     +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Color::Green);}; });
+		add("blue",      +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Color::Blue);}; });
 
-		add("rectangle", +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Shape::Rectangle);}; });
-		add("triangle",  +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Shape::Triangle);}; });
-		add("circle",    +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Shape::Circle);}; });
+		add("rectangle", +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Shape::Rectangle);}; });
+		add("triangle",  +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Shape::Triangle);}; });
+		add("circle",    +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Shape::Circle);}; });
 		
-		add("small",    +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Size::size1);}; });
-		add("medium",   +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Size::size2);}; });
-		add("large",    +[]() -> ft<b,o> { return +[](MyObject x) {return x.is(Size::size3);}; });
+		add("small",    +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Size::size1);}; });
+		add("medium",   +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Size::size2);}; });
+		add("large",    +[]() -> ft<b,o> { return +[](Obj x) {return x.is(Size::size3);}; });
 		
-		// Define logical operators as operating over the functions. These combine functions from MyObject->Bool into 
-		// new ones from MyObject->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
+		// Define logical operators as operating over the functions. These combine functions from Obj->Bool into 
+		// new ones from Obj->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
 		// call them, a and b may not be around anymore. We've written them with [] to remind us their arguments are functions, not objects
 		// NOTE: These do not short circuit...
 		add("and",     +[]() -> ft<b,b,b> { return +[](bool x, bool y) -> bool { return (x and y); };});
@@ -82,11 +88,11 @@ public:
 		add("implies", +[]() -> ft<b,b,b> { return +[](bool x, bool y) -> bool { return ((not x) or y); };});
 		
 		// and define our composition operations -- these capture partial application in all orders
-		add("apply1(%s,%s)", +[](ft<b,o> f,   MyObject x) -> b       { return f(x); }, 5.0);
-		add("apply2(%s,%s)", +[](ft<b,o,o> f, MyObject x) -> ft<b,o> { return std::bind(f, _1, x);} );
-		add("apply3(%s,%s)", +[](ft<b,o,o> f, MyObject x) -> ft<b,o> { return std::bind(f, x, _1);} );
-		add("apply4(%s,%s)", +[](ft<b,o,o> f, MyObject x) -> b       { return f(x,x);} ); // bind in both places
-		add("apply5(%s,%s)", +[](ft<b,b,o> f, MyObject x) -> ft<b,b> { return std::bind(f, _1, x);} );
+		add("apply1(%s,%s)", +[](ft<b,o> f,   Obj x) -> b       { return f(x); }, 5.0);
+		add("apply2(%s,%s)", +[](ft<b,o,o> f, Obj x) -> ft<b,o> { return std::bind(f, _1, x);} );
+		add("apply3(%s,%s)", +[](ft<b,o,o> f, Obj x) -> ft<b,o> { return std::bind(f, x, _1);} );
+		add("apply4(%s,%s)", +[](ft<b,o,o> f, Obj x) -> b       { return f(x,x);} ); // bind in both places
+		add("apply5(%s,%s)", +[](ft<b,b,o> f, Obj x) -> ft<b,b> { return std::bind(f, _1, x);} );
 		add("apply6(%s,%s)", +[](ft<b,b,o> f, b x)        -> ft<b,o> { return std::bind(f, x, _1);} ); // won't bind to second argument
 	
 		add("apply7(%s,%s)", +[](ft<b,b> f,   b x) -> b { return f(x); });
@@ -109,58 +115,58 @@ public:
 		});
 
 		add("compose7(%s,%s)", +[](ft<b,b,b> f, ft<b,o> g)     -> ft<b,b,o>  { 
-			return [=](bool y, MyObject x) { return f(g(x),y); }; 
+			return [=](bool y, Obj x) { return f(g(x),y); }; 
 		});
 		add("compose8(%s,%s)", +[](ft<b,b,b> f, ft<b,o> g)     -> ft<b,b,o>  { 
-			return [=](bool y, MyObject x) { return f(y,g(x)); };
+			return [=](bool y, Obj x) { return f(y,g(x)); };
 		});
 		// applying b to both values of a probably doe not make sense...
 		
 		add("compose9(%s,%s)", +[](ft<b,b,o> f, ft<b,o> g) -> ft<b,o,o> { 
-			return [=](MyObject x, MyObject y) -> bool { return f(g(x),y); }; 
+			return [=](Obj x, Obj y) -> bool { return f(g(x),y); }; 
 		});
 		add("compose10(%s,%s)", +[](ft<b,b,o> f, ft<b,o> g) -> ft<b,o,o> { 
-			return [=](MyObject x, MyObject y) -> bool { return f(g(y),x); }; 
+			return [=](Obj x, Obj y) -> bool { return f(g(y),x); }; 
 		});
 		add("compose11(%s,%s)", +[](ft<b,b,o> f, ft<b,o> g) -> ft<b,o> { 
-			return [=](MyObject x) -> bool { return f(g(x),x); }; 
+			return [=](Obj x) -> bool { return f(g(x),x); }; 
 		});
 
 		//		
-		add("forall(%s,%s)",   +[](ft<b,o> f, ObjectSet s)    -> bool { 
+		add("forall(%s,%s)",   +[](ft<b,o> f, Set s)    -> bool { 
 			for(auto& x : s) {
 				if(not f(x)) return false;
 			}
 			return true;
 		}); 
 		
-		add("exists(%s, %s)",   +[](ft<b,o> f, ObjectSet s)    -> bool { 
+		add("exists(%s, %s)",   +[](ft<b,o> f, Set s)    -> bool { 
 			for(auto& x : s) {
 				if(f(x)) return true;
 			}
 			return false;
 		}); 
 		
-		add("contains(%s, %s)",   +[](MyObject z, ObjectSet s)    -> bool { 
+		add("contains(%s, %s)",   +[](Obj z, Set s)    -> bool { 
 			for(auto& x : s) {
 				if(z == x) return true;
 			}
 			return false;
 		}); 
 		
-		add("filter(%s, %s)",   +[](ft<b,o> f, ObjectSet s)    -> ObjectSet { 
-			ObjectSet out;
+		add("filter(%s, %s)",   +[](ft<b,o> f, Set s)    -> Set { 
+			Set out;
 			for(auto& x : s) {
 				if(f(x)) out.push_back(x);
 			}
 			return out;
 		}); 
 		
-		add("empty(%s)",   +[](ObjectSet s)    -> bool { 
+		add("empty(%s)",   +[](Set s)    -> bool { 
 			return s.empty();
 		}); 
 
-		add("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
+		add("the(%s)",   +[](Set s)    -> Obj { 
 			// return the unique element in the set. If not, we throw an exception
 			// which must be caught in calling below. 
 			if(s.size() != 1) throw VMSRuntimeError();
@@ -169,42 +175,42 @@ public:
 		
 		// Relations -- these will require currying
 		add("same_shape",   +[]() -> ft<b,o,o> { 
-			return +[](MyObject x, MyObject y) { return x.get<Shape>() == y.get<Shape>();}; 
+			return +[](Obj x, Obj y) { return x.get<Shape>() == y.get<Shape>();}; 
 		});
 		
 		add("same_color",   +[]() -> ft<b,o,o> { 
-			return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
+			return +[](Obj x, Obj y) { return x.get<Color>() == y.get<Color>();}; 
 		});
 		
 		add("same_size",   +[]() -> ft<b,o,o> { 
-			return +[](MyObject x, MyObject y) { return x.get<Size>() == y.get<Size>();}; 
+			return +[](Obj x, Obj y) { return x.get<Size>() == y.get<Size>();}; 
 		});
 		
 		add("size-lt",   +[]() -> ft<b,o,o> { 
 			// we can cast to int to compare gt size
-			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() < (int)y.get<Size>();}; 
+			return +[](Obj x, Obj y) { return (int)x.get<Size>() < (int)y.get<Size>();}; 
 		});
 		
 		add("size-leq",   +[]() -> ft<b,o,o> { 
 			// we can cast to int to compare gt size
-			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() <= (int)y.get<Size>();}; 
+			return +[](Obj x, Obj y) { return (int)x.get<Size>() <= (int)y.get<Size>();}; 
 		});
 		
 			
 		// we need to include these because apply is always to first argument
 		add("size-gt",   +[]() -> ft<b,o,o> { 
 			// we can cast to int to compare gt size
-			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() > (int)y.get<Size>();}; 
+			return +[](Obj x, Obj y) { return (int)x.get<Size>() > (int)y.get<Size>();}; 
 		});
 		
 		add("size-geq",   +[]() -> ft<b,o,o> { 
 			// we can cast to int to compare gt size
-			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
+			return +[](Obj x, Obj y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
 		});
 		
 		// And we assume that we're passed a tuple of an object and set
-		add("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); });
-		add("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }, TERMINAL_WEIGHT);
+		add("%s.o",       +[](GrammarInput t)  -> Obj  { return t.o; });
+		add("%s.s",       +[](GrammarInput t)  -> Set { return t.s; }, TERMINAL_WEIGHT);
 		add("x",          Builtins::X<MyGrammar>, TERMINAL_WEIGHT);
 		
 	}
@@ -217,22 +223,35 @@ public:
 
 #include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar> {
-public:
-	using Super = DeterministicLOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar>;
-	using Super::Super; // inherit the constructors
+// The actual hypothesis we want will output a set, so we need a new type that overrides call
+class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,
+													   Set,BSet,
+													   MyGrammar,&grammar> {
+														   
+	Bset call(const Set& x) {
+		auto n = x.size();
+		Bset out(n);
+		for(size_t i=0;i<n;i++) {
+			GrammarInput gi(x.at(i), x);
+			out.at(i) = call(gi);
+		}
+		return out; 
+	}
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
 	// can just define the likelihood of a single data point, which is here the true
 	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& x) override {
-		bool out = call(x.input, false);			
+		bool out = this->call(x.input);			
 		
-		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
+		double ll = 0.0;
+		for(size_t i=0;i<x.s.size();i++) {
+			ll += (out.at(i) == x.output.at(i)) ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
+		}
+		return ll;
 	}
-	
-	
 };
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
@@ -256,14 +275,14 @@ int main(int argc, char** argv){
 	//------------------
 	
 	// mydata stores the data for the inference model
-	MyHypothesis::data_t mydata;	
+	std::vector<MyHypothesis::datum_t> mydata;	
 	
-	ObjectSet s = {MyObject(Shape::Triangle,  Color::Blue,  Size::size1),
-				   MyObject(Shape::Rectangle, Color::Green, Size::size2),
-				   MyObject(Shape::Triangle,  Color::Blue,  Size::size3)};
-	MyObject x =   MyObject(Shape::Triangle,  Color::Blue,  Size::size1);
+	Set s = {Obj(Shape::Triangle,  Color::Blue,  Size::size1),
+				   Obj(Shape::Rectangle, Color::Green, Size::size2),
+				   Obj(Shape::Triangle,  Color::Blue,  Size::size3)};
+	Bset b = {true, true, false};
 	
-	mydata.emplace_back(std::make_tuple(x,s), true, 0.99);
+	mydata.emplace_back(s,b,0.99);
 			
 	//------------------
 	// Actually run
@@ -273,9 +292,9 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 	
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0); 
+	ParallelTempering samp(h0, mydata, FleetArgs::nchains, 10.0); 
 	for(auto& h : samp.run(Control()) | top | printer(FleetArgs::print)) { 
-		top << h;
+		UNUSED(h);
 	}
 	
 	// Show the best we've found

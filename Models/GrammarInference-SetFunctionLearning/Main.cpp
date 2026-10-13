@@ -63,6 +63,42 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
+	
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	print("# Loading human data");
+	
+	std::vector<HumanDatum<MyHypothesis,
+						   std::vector<MyHypothesis::datum_t> 
+						   >> human_data;
+	
+	std::ifstream infile("clean_learn_per_trial_expanded.csv"); //(FleetArgs::input_path);
+	std::string line; 
+	std::getline(infile, line); // skip header
+	
+	while(! infile.eof() ) {
+		if(CTRL_C) break;
+		
+		auto& b = std::getline(infile, line);
+		if(not b) break;
+		
+		auto[concept, list, setnumber, cond_s, gen_s, yesv, nov] = split<6>(line, '\t');
+		
+		auto cond = string_to<std::vector<MyHypothesis::datum_t>>(cond_s, ';');
+		auto gen  = string_to<MyHypothesis::input_t>(gen_s);
+		auto res  = string_to<MyHypothesis::output_t>(res_s);
+		std::map<List,int> responses; responses[res] = 1; // 
+		
+		std::vector<float> decays;
+		for(size_t i=0;i<cond.size();i++){
+			decays.push_back(cond.size()-i); // so [a,b,c] goes to [3,2,1] so that the previous data point has *no* decay 
+		}
+				
+		human_data.emplace_back(cond, decays, gen, responses);
+
+	}
+	
+	
+	
 	// this stores all conditioning data
 	// (with overlap so we can just construct spans
 	std::vector<HumanDatum> human_data;

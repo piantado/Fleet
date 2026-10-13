@@ -10,6 +10,7 @@
 #include "Gamma.h"
 #include "VectorOfHypotheses.h"
 
+
 template<typename this_t,
          typename HYP,
 		 typename _ConditionOn_t=HYP::data_t,
@@ -157,19 +158,50 @@ public:
 			
 			// compute the marginal model predictions (marginalizing over hypotheses)
 			DiscreteDistribution<typename HYP::output_t> model_pr;
-			if constexpr (std::is_base_of_v<DeterministicLOTHypothesis, CleanHYP>) {
-				// output here is a single output -- not a probability distribution
-				for(size_t hi=0;hi<H;hi++) {
-					model_pr.addmass(hd.hypotheses_responses.at(hi), lpost(hi)); 
-				}
-			} else if constexpr (std::is_base_of_v<StochasticLOTHypothesis, CleanHYP>) {
-				// output is a DiscreteDistribution so we must sum over values
-				for(size_t hi=0;hi<H;hi++) {
-					for(auto& [v,mlp] : hd.hypotheses_responses.at(hi)) {
-						model_pr.addmass(v, lpost(hi) + mlp); 
-					}
+			for(size_t hi=0;hi<H;hi++) {
+				model_pr.addmass(hd.hypotheses_responses.at(hi), lpost(hi)); 
+			}
+				
+				
+				
+				
+			// TODO: MUST DO SOMETHING BELOW TO CHECK IF DETERMINISTIC OUTPUTS OR NOT
+				
+				
+			/*
+			 * #include <type_traits>
+
+			template <typename T>
+			concept IsDeterministicLOT = std::is_base_of_v<DeterministicLOTHypothesis, std::remove_cvref_t<T>>;
+
+			template <typename T>
+			concept IsStochasticLOT = std::is_base_of_v<StochasticLOTHypothesis, std::remove_cvref_t<T>>;
+
+			template <typename HYP>
+			void process_hypothesis(HYP&& hyp) {
+				if constexpr (IsDeterministicLOT<HYP>) {
+					// Deterministic branch
+				} else if constexpr (IsStochasticLOT<HYP>) {
+					// Stochastic branch
 				}
 			}
+			 * 	*/
+							
+				
+				
+//			if constexpr (std::is_base_of_v<DeterministicLOTHypothesis, CleanHYP>) {
+//				// output here is a single output -- not a probability distribution
+//				for(size_t hi=0;hi<H;hi++) {
+//					model_pr.addmass(hd.hypotheses_responses.at(hi), lpost(hi)); 
+//				}
+//			} else if constexpr (std::is_base_of_v<StochasticLOTHypothesis, CleanHYP>) {
+//				// output is a DiscreteDistribution so we must sum over values
+//				for(size_t hi=0;hi<H;hi++) {
+//					for(auto& [v,mlp] : hd.hypotheses_responses.at(hi)) {
+//						model_pr.addmass(v, lpost(hi) + mlp); 
+//					}
+//				}
+//			}
 			
 			// TODO: Do not do this in parallel -- because we are tracking bins etc
 			#pragma omp critical
@@ -317,6 +349,10 @@ public:
 		out.erase(out.size()-1,1); // delete the final newline 
 		
 		return out;	
+	}
+
+	virtual void show(std::string prefix="") override {
+		print(this->string(prefix));
 	}
 
 };

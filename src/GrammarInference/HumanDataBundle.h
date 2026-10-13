@@ -41,6 +41,9 @@ struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
 		fill_predictions(hypotheses);
 	}
 	
+	double likelihood_on(
+	
+	
 	void fill_point_likelihoods(std::vector<HYP>& hypotheses) {
 		const size_t H = hypotheses.size();
 		

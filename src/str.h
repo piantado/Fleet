@@ -110,6 +110,8 @@ std::array<std::string, N> split(const std::string& s, const char delimiter) {
 template<typename T>
 std::string str(T x){
 
+	// TODO: MAKE THIS TAKE A REFERENCE
+	
 	// special handling of a few key types:
 	if constexpr (std::is_pointer<T>::value) {
 		std::ostringstream address;
@@ -139,7 +141,7 @@ std::string str(const std::tuple<T...>& x, std::index_sequence<I...> idx){
 	 * @param x
 	 * @return 
 	 */
-	return "<" + ( (std::to_string(std::get<I>(x)) + ",") + ...) + ">";
+	return "<" + ( (str(std::get<I>(x)) + ",") + ...) + ">";
 }
 template<typename... T>
 std::string str(const std::tuple<T...>& x ){
@@ -300,6 +302,19 @@ T string_to(std::string s, char split_at) {
 		return v;
 	}
 	else if constexpr(is_specialization<T,std::multiset>::value) {
+		if(s.front() == '{') s.erase(0,1);
+		if(s.back()  == '}') s.pop_back();
+		
+		T ret;
+		for(auto& x : split(s, split_at)) {
+			ret.insert( string_to<typename T::key_type>(x));
+		}
+		return ret; 
+	}
+	else if constexpr(is_specialization<T,std::set>::value) {
+		if(s.front() == '{') s.erase(0,1);
+		if(s.back()  == '}') s.pop_back();
+		
 		T ret;
 		for(auto& x : split(s, split_at)) {
 			ret.insert( string_to<typename T::key_type>(x));
@@ -312,8 +327,9 @@ T string_to(std::string s, char split_at) {
 	}	
 }
 
+// Default call with comma separator
 template<typename T>
-T string_to(std::string s) {
+T string_to(std::string s) { 
 	return string_to<T>(s, ',');
 }
 
@@ -323,7 +339,7 @@ template<> long          string_to(const std::string s) { return std::stol(s); }
 template<> unsigned long string_to(const std::string s) { return std::stoul(s); }
 template<> double        string_to(const std::string s) { return std::stod(s); }
 template<> float         string_to(const std::string s) { return std::stof(s); }
-template<> bool          string_to(const std::string s) { assert(s.size()==1); return s=="1"; } // 0/1 for t/f
+template<> bool          string_to(const std::string s) { assert(s.size()==1); return (s=="1" or s=="t" or s=="True" or s=="true"); } // 0/1 for t/f
 template<> Constant      string_to(const std::string s) { return std::stof(s); }
 
 //template<typename T, typename U>
