@@ -227,6 +227,8 @@ public:
 class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,
 													   Set,Bset,
 													   MyGrammar,&grammar> {
+public:
+
 	using Super = DeterministicLOTHypothesis<MyHypothesis,
 													   Set,Bset,
 													   MyGrammar,&grammar>;
@@ -242,6 +244,7 @@ class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,
 		}
 		return out; 
 	}
+
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
 	// can just define the likelihood of a single data point, which is here the true
@@ -259,6 +262,7 @@ class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,
 				ll += log((1.0-x.reliability)/2.0);
 			}
 		}
+		
 		return ll;
 	}
 };
@@ -289,8 +293,8 @@ int main(int argc, char** argv){
 	std::vector<MyHypothesis::datum_t> mydata;	
 	
 	Set s = {Obj(Shape::Triangle,  Color::Blue,  Size::size1),
-				   Obj(Shape::Rectangle, Color::Green, Size::size2),
-				   Obj(Shape::Triangle,  Color::Blue,  Size::size3)};
+			 Obj(Shape::Rectangle, Color::Green, Size::size2),
+			 Obj(Shape::Triangle,  Color::Blue,  Size::size3)};
 	Bset b = {true, true, false};
 	
 	mydata.emplace_back(s,b,0.99);

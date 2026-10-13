@@ -13,14 +13,15 @@
 
 template<typename this_t,
          typename HYP,
-		 typename _ConditionOn_t=HYP::data_t,
+		 typename HD, // human datum type
 		 typename _datum_t = NullDatum_t, 
 		 typename _data_t=std::span<_datum_t>
 		 >
 class NewGrammarHypothesis : public MCMCable<this_t, _datum_t, _data_t> {
 public:
-	using ConditionOn_t = _ConditionOn_t;
-	using HumanDataBundle_t = HumanDataBundle<HYP, ConditionOn_t>;
+	using ConditionOn_t = typename HD::ConditionOn_t;
+	using Response_t    = typename HD::Response_t;
+	using HumanDataBundle_t = HumanDataBundle<HYP,HD>;
 	using Hinput_t = typename HYP::input_t;
 	using CleanHYP = std::remove_cvref_t<HYP>; // needed below for checking 
 	
@@ -67,15 +68,15 @@ public:
 		recompute_C();
 	}
 	
-	void add_HumanData(typename HumanDataBundle_t::ConditionOn_t cond, 
+	void add_HumanData(ConditionOn_t cond, 
 					   Hinput_t gen, 
-					   std::map<typename HYP::output_t,int>& resp, 
+					   Response_t& resp, 
 					   std::vector<float> decays ) {
 						   
 		human_data->emplace_back(*hypotheses, cond, gen, resp, decays);
 	}
 	
-	void add_HumanData(HumanDatum<HYP,ConditionOn_t>& d) {
+	void add_HumanData(HD& d) {
 		human_data->emplace_back(*hypotheses, d);
 	}
 	
@@ -128,106 +129,81 @@ public:
 		return ((*C) * (-la)) / double(people_PT);	
 	}
 	
+//	virtual double compute_human_likelihood(DiscreteDistribution<typename HYP::output_t>& model_pr) {
+//		// convert model predictions into human likelihoods
+//		double ll = 0.0;
+//		for(auto& [r,cnt] : hd.human_responses) {
+//			ll +=  cnt * model_pr.get(r, HUMAN_DATA_OUTLIER);
+//		}
+//		return ll;
+//	}
 	
 	virtual double compute_likelihood() {
 		
-		// each hypothesis's prior
-		const auto priors = this->hypothesis_prior(); // determined by counts and parameters
-		const auto H = hypotheses->size();
-		
-		// reset the bins
-		bin_yes = std::vector<int>(ceil(1.0/BIN_SIZE), 0);
-		bin_tot = std::vector<int>(ceil(1.0/BIN_SIZE), 0);
-		
-		this->likelihood = 0.0; // easier to just compute here
-		
-		#pragma omp parallel for
-		for(size_t di=0;di<human_data->size();di++){
-			auto& hd = human_data->at(di);
+		// the likelihood is easy to compute in this simple case:
+		// (otherwise it be implemented by a subclass)
+		if constexpr (std::is_same_v<Response_t, 
+									 std::map<typename HYP::output_t, int>>) {
+											
+			// each hypothesis's			  prior
+			const auto priors = this->hypothesis_prior(); // determined by counts and parameters
+			const auto H = hypotheses->size();
 			
-			// get each data point's marginal over responses
-			Vector posteriors(H);
-			for(size_t hi=0;hi<H;hi++) {
-				posteriors(hi) =  priors(hi) + 
-				                  hd.likelihood_with_decay(hi, decay) / double(people_LLT); // likelihood temperatures here
-			}
+			// reset the bins
+			bin_yes = std::vector<int>(ceil(1.0/BIN_SIZE), 0);
+			bin_tot = std::vector<int>(ceil(1.0/BIN_SIZE), 0);
 			
-			// Normalized posteriors on this data
-			const Vector lpost = lognormalize(posteriors).array();
+			this->likelihood = 0.0; // easier to just compute here
 			
-			
-			// compute the marginal model predictions (marginalizing over hypotheses)
-			DiscreteDistribution<typename HYP::output_t> model_pr;
-			for(size_t hi=0;hi<H;hi++) {
-				model_pr.addmass(hd.hypotheses_responses.at(hi), lpost(hi)); 
-			}
+			#pragma omp parallel for
+			for(size_t di=0;di<human_data->size();di++){
+				auto& hd = human_data->at(di);
 				
-				
-				
-				
-			// TODO: MUST DO SOMETHING BELOW TO CHECK IF DETERMINISTIC OUTPUTS OR NOT
-				
-				
-			/*
-			 * #include <type_traits>
-
-			template <typename T>
-			concept IsDeterministicLOT = std::is_base_of_v<DeterministicLOTHypothesis, std::remove_cvref_t<T>>;
-
-			template <typename T>
-			concept IsStochasticLOT = std::is_base_of_v<StochasticLOTHypothesis, std::remove_cvref_t<T>>;
-
-			template <typename HYP>
-			void process_hypothesis(HYP&& hyp) {
-				if constexpr (IsDeterministicLOT<HYP>) {
-					// Deterministic branch
-				} else if constexpr (IsStochasticLOT<HYP>) {
-					// Stochastic branch
-				}
-			}
-			 * 	*/
-							
-				
-				
-//			if constexpr (std::is_base_of_v<DeterministicLOTHypothesis, CleanHYP>) {
-//				// output here is a single output -- not a probability distribution
-//				for(size_t hi=0;hi<H;hi++) {
-//					model_pr.addmass(hd.hypotheses_responses.at(hi), lpost(hi)); 
-//				}
-//			} else if constexpr (std::is_base_of_v<StochasticLOTHypothesis, CleanHYP>) {
-//				// output is a DiscreteDistribution so we must sum over values
-//				for(size_t hi=0;hi<H;hi++) {
-//					for(auto& [v,mlp] : hd.hypotheses_responses.at(hi)) {
-//						model_pr.addmass(v, lpost(hi) + mlp); 
-//					}
-//				}
-//			}
-			
-			// TODO: Do not do this in parallel -- because we are tracking bins etc
-			#pragma omp critical
-			{
-				
-				// look at bins by model and see proportion of the time you get a yes by model bin							
-				int z = 0;
-				for (const auto& [_, value] : hd.human_responses) { z += value; }
-				for(auto& [r, mp] : model_pr.values()) {
-					size_t b = floor(exp(mp)*bin_tot.size());
-					bin_yes[b] += get(hd.human_responses, r, 0);
-					bin_tot[b] += z; 					
+				// get each data point's marginal over responses
+				Vector posteriors(H);
+				for(size_t hi=0;hi<H;hi++) {
+					posteriors(hi) =  priors(hi) + 
+									  hd.likelihood_with_decay(hi, decay) / double(people_LLT); // likelihood temperatures here
 				}
 				
-				// now compute likelihood of human responses
+				// Normalized posteriors on this data
+				const Vector lpost = lognormalize(posteriors).array();
+				
+				
+				// compute the marginal model predictions (marginalizing over hypotheses)
+				DiscreteDistribution<typename HYP::output_t> model_pr;
+				for(size_t hi=0;hi<H;hi++) {
+					model_pr.addmass(hd.hypotheses_responses.at(hi), lpost(hi)); 
+				}
+					
 				double myll = 0.0;
 				for(auto& [r,cnt] : hd.human_responses) {
 					myll +=  cnt * model_pr.get(r, HUMAN_DATA_OUTLIER);
 				}
 				
-				this->likelihood += myll;
+				// TODO: Do not do this in parallel -- because we are tracking bins etc
+				#pragma omp critical
+				{
+					// look at bins by model and see proportion of the time you get a yes by model bin							
+					int z = 0;
+					for (const auto& [_, value] : hd.human_responses) { z += value; }
+					for(auto& [r, mp] : model_pr.values()) {
+						size_t b = floor(exp(mp)*bin_tot.size());
+						bin_yes[b] += get(hd.human_responses, r, 0);
+						bin_tot[b] += z; 					
+					}
+					
+					// and add the likelihood
+					this->likelihood += myll;
+				}
+				
 			}
 			
-		}
-		
-		return this->likelihood; 
+			return this->likelihood; 
+		 }
+		 else {
+			 assert(false && "*** Must implement compute_likelihood for custom human respones types");
+		 }
 	}
 
 	// wrapper to get the terface right

@@ -4,11 +4,14 @@
 
 // This is a HumanDatum plus some sutff for dealing with hypotheses
 // ConditionOn_t can either by std::vector of data or std::span, depending on where we want to store the conditioning data
-template<typename HYP, typename _ConditionOn_t=HYP::data_t>
-struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
-	using ConditionOn_t = _ConditionOn_t;
-	using Hinput_t = typename HYP::input_t;
-	
+template<typename HYP, 
+		typename HD // some HumanDatum type
+		>
+struct HumanDataBundle : public HD {
+	using ConditionOn_t = typename HD::ConditionOn_t;
+	using Response_t    = typename HD::Response_t;
+	using Hinput_t      = typename HYP::input_t;
+
 	// To HumanDatum we are going to add responses and caching etc
 	// from each hypothesis
 	
@@ -19,8 +22,8 @@ struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
 	std::vector<std::vector<float>> point_likelihood;  
 	
 	HumanDataBundle(std::vector<HYP>& hypotheses, 
-					HumanDatum<HYP,ConditionOn_t>& d) :
-		HumanDatum<HYP,ConditionOn_t>(d) // copy over everything from d
+				   HD& d) :
+		HD(d) // copy over everything from d
 	{
 		fill_point_likelihoods(hypotheses);
 		fill_predictions(hypotheses);
@@ -31,7 +34,7 @@ struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
 					Hinput_t gen, 
 					std::map<typename HYP::output_t,int> resp,
 					std::vector<float> decays) : 
-			HumanDatum<HYP, ConditionOn_t>(cond, decays, gen, resp)
+			HD(cond, decays, gen, resp)
 	{
 		const size_t N = this->condition_on.size();
 		
@@ -40,8 +43,6 @@ struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
 		fill_point_likelihoods(hypotheses);
 		fill_predictions(hypotheses);
 	}
-	
-	double likelihood_on(
 	
 	
 	void fill_point_likelihoods(std::vector<HYP>& hypotheses) {

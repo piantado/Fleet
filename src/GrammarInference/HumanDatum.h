@@ -17,7 +17,7 @@ struct HumanDatum {
 	HumanDatum(ConditionOn_t& c,
 			   std::vector<float> di,
 			   Hinput_t gen,
-			   std::map<typename HYP::output_t,int> hr) :
+			   Response_t hr) :
 			condition_on(c),
 			decay_indices(di),
 			generalize(gen),
@@ -40,5 +40,14 @@ struct HumanDatum {
 
 	// the map of counts for each human response
 	Response_t human_responses;
-	
+
 };
+
+//
+//
+//template<typename... Args>
+//std::ostream& operator<<(std::ostream& o, const HumanDatum<Args...>& d) {
+//	
+//	// TODO: Check if pointer and deref for printing
+//	return o;
+//}

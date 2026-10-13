@@ -8,8 +8,8 @@
 
 #include <ranges>
 
-template<typename HYP, typename ConditionOn_t=HYP::data_t>
-std::vector<HYP> generate_from(std::vector<HumanDatum<HYP,ConditionOn_t>>& human_datas, 
+template<typename HYP, typename HD>
+std::vector<HYP> generate_from(std::vector<HD>& human_datas, 
 					size_t mcmc_steps_per=1000000, 
 					size_t mcmc_top=100,  // this many from each data point
 					size_t prior_samples=1000000, 
@@ -27,6 +27,7 @@ std::vector<HYP> generate_from(std::vector<HumanDatum<HYP,ConditionOn_t>>& human
 		for(size_t hdi=0;hdi<human_datas.size();hdi++) {
 			if(not CTRL_C) {
 				auto& hd = human_datas.at(hdi);
+				//print("RUNNING ON", str(hd.condition_on));
 				
 				TopN<HYP> top(mcmc_top);
 				
@@ -36,6 +37,7 @@ std::vector<HYP> generate_from(std::vector<HumanDatum<HYP,ConditionOn_t>>& human
 				auto h0 = HYP::sample();
 				auto chain = MCMCChain(h0, hd.condition_on);
 				for(auto& h : chain.run(c) | top ) {
+				//	print(h);
 					UNUSED(h);
 				}
 				

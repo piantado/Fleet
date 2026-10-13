@@ -227,6 +227,14 @@ template<typename T> T sgnlog(T val) {
     return sgn(val)*log(std::abs(val));
 }
 
+
+double log1mp(double log_p) {
+    if (log_p > -0.6931471805599453) { // p > 0.5 (log_p close to 0)
+        return std::log1p(-std::expm1(log_p));
+    } else {                           // p <= 0.5 (log_p is negative)
+        return std::log1p(-std::exp(log_p));
+    }
+}
 /////////////////////////////////////////////////////////////
 // fractional powers with negative numbers 
 /////////////////////////////////////////////////////////////

@@ -50,7 +50,7 @@ for filename in os.listdir(CONCEPT_DIR):
 
                 # write in Fleet format for objects
                 features = re.split(r",", o)
-                objs.append('-'.join(features[:-1]))
+                objs.append('-'.join(features[0:3]))
 
                 y = human[ (concept, list, setNumber, response_number, True)]
                 n = human[ (concept, list, setNumber, response_number, False)]
@@ -71,7 +71,10 @@ for filename in os.listdir(CONCEPT_DIR):
                    as_fleet_array(no),
                    sep="\t" )
 
-            condition_sets.append(this_set)
+            # reformat valus to bool
+            vals = ["1" if x == '#t' else "0" for x in vals]
+
+            condition_sets.append("%s:%s"%(this_set, "[" + ",".join(vals)+"]" ))
 
             setNumber += 1
             if(setNumber > MAX_SET):
