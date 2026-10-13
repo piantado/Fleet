@@ -48,9 +48,14 @@ public:
 
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
-	using Grammar_t = _Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
+	
+	// sometimes the grammar input/output types differ from my own
+	using Grammar_t = _Grammar_t;
+	using ginput_t   = typename _Grammar_t::input_t;
+	using goutput_t  = typename _Grammar_t::output_t;
+	
 	using VirtualMachineState_t = _VirtualMachineState_t;
 	
 	// proposals return this:
@@ -120,6 +125,7 @@ public:
 			program.loader = this;  // something special here -- if c's loader was itself, make this myself; else leave it
 		return *this;
 	}	
+	
 	
 	/**
 	 * @brief Default proposal is rational-rules style regeneration. 
@@ -248,7 +254,7 @@ public:
 	 */	
 	virtual void complete() override {
 		if(value.is_null()) {
-			auto nt = grammar->template nt<output_t>();
+			auto nt = grammar->template nt<goutput_t>();
 			set_value(grammar->generate(nt));
 		}
 		else {
@@ -264,7 +270,7 @@ public:
 	 
 	virtual int neighbors() const override {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
-			auto nt = grammar->template nt<output_t>();
+			auto nt = grammar->template nt<goutput_t>();
 			return grammar->count_rules(nt);
 		}
 		else {
@@ -278,7 +284,7 @@ public:
 		//assert(grammar != nullptr);
 		
 		if(value.is_null()){
-			auto nt = grammar->template nt<output_t>();
+			auto nt = grammar->template nt<goutput_t>();
 			auto r = grammar->get_rule(nt,(size_t)k);
 			value = grammar->makeNode(r);
 		}
@@ -293,7 +299,7 @@ public:
 	virtual double neighbor_prior(int k) override {
 		// What is the prior for this neighbor?
 		if(value.is_null()){
-			auto nt = grammar->template nt<output_t>();
+			auto nt = grammar->template nt<goutput_t>();
 			auto r = grammar->get_rule(nt,(size_t)k);
 			return log(r->p)-log(grammar->rule_normalizer(r->nt));
 		}

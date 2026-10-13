@@ -225,15 +225,20 @@ public:
 
 // The actual hypothesis we want will output a set, so we need a new type that overrides call
 class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,
-													   Set,BSet,
+													   Set,Bset,
 													   MyGrammar,&grammar> {
-														   
-	Bset call(const Set& x) {
+	using Super = DeterministicLOTHypothesis<MyHypothesis,
+													   Set,Bset,
+													   MyGrammar,&grammar>;
+	using Super::Super;
+	
+	
+	virtual Bset compute_output(const Set& x) override {
 		auto n = x.size();
 		Bset out(n);
 		for(size_t i=0;i<n;i++) {
 			GrammarInput gi(x.at(i), x);
-			out.at(i) = call(gi);
+			out[i] = this->call(gi);
 		}
 		return out; 
 	}
@@ -242,11 +247,17 @@ class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,
 	// can just define the likelihood of a single data point, which is here the true
 	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& x) override {
-		bool out = this->call(x.input);			
+		
+		auto out = compute_output(x.input);			
 		
 		double ll = 0.0;
-		for(size_t i=0;i<x.s.size();i++) {
-			ll += (out.at(i) == x.output.at(i)) ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
+		for(size_t i=0;i<x.output.size();i++) {
+			if(out[i] ==  x.output[i]) {
+				ll +=  log(x.reliability + (1.0-x.reliability)/2.0);
+			}
+			else {
+				ll += log((1.0-x.reliability)/2.0);
+			}
 		}
 		return ll;
 	}

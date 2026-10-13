@@ -65,7 +65,7 @@ struct HumanDataBundle : public HumanDatum<HYP,_ConditionOn_t> {
 		hypotheses_responses.resize(H);
 		for(size_t hi=0;hi<H;hi++) {
 			auto& h = hypotheses.at(hi);
-			hypotheses_responses.at(hi) = h.call(this->generalize);
+			hypotheses_responses.at(hi) = h.compute_output(this->generalize);
 		}
 	}
 	

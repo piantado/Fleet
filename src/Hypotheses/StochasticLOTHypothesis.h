@@ -19,8 +19,27 @@ public:
 	using Grammar_t = _Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
+	using ginput_t   = typename _Grammar_t::input_t;
+	using goutput_t  = typename _Grammar_t::output_t;
+	
 	using call_output_t = DiscreteDistribution<output_t>; // what does call output?
 	using VirtualMachineState_t = _VirtualMachineState_t;
+
+	// Compute the output of this function. Must be defined in subclasses. 
+	virtual DiscreteDistribution<output_t> compute_output(const input_t& in) {
+		
+		 if constexpr(std::is_same_v<input_t, ginput_t> && 
+					  std::is_same_v<output_t, goutput_t>) {
+						 
+			// defaultly, out output is just a call
+			// NOTE: we might want to change this if e.g. our grammar type is different than
+			// our output type (as in FOL)
+			return this->call(in);
+		 }
+		 else {
+			 assert(false && "*** You must overwrite compute_output if input!=ginput or output!=goutput");
+		 }
+	}
 	
 	/**
 	 * @brief Run the virtual machine on input x, and marginalize over execution paths to return a distribution
@@ -31,12 +50,12 @@ public:
 	 * @param loader - where to load recursive calls
 	 * @return 
 	 */	
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}) {
+	virtual DiscreteDistribution<goutput_t> call(const ginput_t x, const goutput_t& err=goutput_t{}) {
 		
 		// The below condition is needed in case we create e.g. a lexicon whose input_t and output_t differ from the VirtualMachineState
 		// in that case, these functions are all overwritten and must be called on their own. 
-		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
-				      std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, ginput_t>::value and 
+				      std::is_same<typename VirtualMachineState_t::output_t, goutput_t>::value) {
 			assert(not this->program.empty());
 		    
 			VirtualMachinePool<VirtualMachineState_t> pool; 		
