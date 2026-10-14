@@ -227,14 +227,20 @@ template<typename T> T sgnlog(T val) {
     return sgn(val)*log(std::abs(val));
 }
 
-
-double log1mp(double log_p) {
-    if (log_p > -0.6931471805599453) { // p > 0.5 (log_p close to 0)
-        return std::log1p(-std::expm1(log_p));
-    } else {                           // p <= 0.5 (log_p is negative)
-        return std::log1p(-std::exp(log_p));
+double log1m(double log_p) {
+    if (log_p >= 0.0) {
+        return -std::numeric_limits<double>::infinity(); // log(0) = -inf
     }
+    
+    // For log_p close to 0 (p close to 1): use expm1 to prevent (1 - p) cancellation
+    if (log_p > -0.6931471805599453) { // log(0.5)
+        return std::log(-std::expm1(log_p));
+    } 
+    
+    // For log_p < log(0.5) (p <= 0.5): exp(log_p) won't cancel, log1p(-p) is precise
+    return std::log1p(-std::exp(log_p));
 }
+
 /////////////////////////////////////////////////////////////
 // fractional powers with negative numbers 
 /////////////////////////////////////////////////////////////

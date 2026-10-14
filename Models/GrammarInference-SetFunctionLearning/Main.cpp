@@ -78,11 +78,13 @@ public:
 				}
 			}
 		
+			//print(str(marginal_yes), str(hd.human_responses.yes_responses), str(hd.human_responses.no_responses), log1m(marginal_yes.at(0)));
+		
 			// now compute on the humna data
 			double myll = 0.0;
 			for(size_t ri=0;ri<n;ri++) {
 				myll += hd.human_responses.yes_responses.at(ri) * marginal_yes.at(ri);
-				myll += hd.human_responses.no_responses.at(ri)  * log1mp(marginal_yes.at(ri));
+				myll += hd.human_responses.no_responses.at(ri)  * log1m(marginal_yes.at(ri));
 				
 			}
 		
@@ -146,17 +148,17 @@ int main(int argc, char** argv){
 		
 		auto [conc, list, setnumber, cond_s, gen_s, yesv, nov] = split<7>(line, '\t');
 		
-		auto cond = string_to<MyHumanDatum::ConditionOn_t>(cond_s, ';');
+		auto cond = str_to<MyHumanDatum::ConditionOn_t>(cond_s, ';');
 		
 		// set all the alphas
 		for(auto& di : cond) {
 			di.reliability = alpha;
 		}
 		
-		auto gen  = string_to<MyHypothesis::input_t>(gen_s);
+		auto gen  = str_to<MyHypothesis::input_t>(gen_s);
 		
-		auto y = string_to<std::vector<int>>(yesv);
-		auto n = string_to<std::vector<int>>(nov);
+		auto y = str_to<std::vector<int>>(yesv);
+		auto n = str_to<std::vector<int>>(nov);
 		HumanResponse hr{y,n};
 		
 		assert(gen.size() == y.size());
@@ -205,7 +207,10 @@ int main(int argc, char** argv){
 		print("# Setting data.");
 
 		// add our data to g0
+		int jj=0;
 		for(auto& d : human_data) {
+			//if(++jj > 10) break;
+			
 			gh0.add_HumanData(d);
 		}
 		

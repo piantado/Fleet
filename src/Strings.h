@@ -12,7 +12,7 @@
 #include "Vector3D.h"
 
 // This holds our conversions to and from strings
-#include "str.h"
+#include "cppstr.h"
 
 // This constant is occasionally useful, especially in grammar inference where we might
 // want a reference to an empty input

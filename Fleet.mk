@@ -2,6 +2,7 @@
 
 # NOTE: On Mac, you may need to remove fstack-protector-strong in FLEET_FLAGS below
 
+CPPSTR_INCLDUE=
 
 # Include directories
 FLEET_INCLUDE=-I$(FLEET_ROOT)/src/ -I$(FLEET_ROOT)/src/Inference -I$(FLEET_ROOT)/src/Hypotheses -I$(FLEET_ROOT)/src/VirtualMachine -I$(FLEET_ROOT)/src/VirtualMachine/Program/ -I$(FLEET_ROOT)/src/Statistics -I$(FLEET_ROOT)/src/Grammar -I$(FLEET_ROOT)/src/Grammar/Enumeration -I$(FLEET_ROOT)/src/Data -I$(FLEET_ROOT)/src/Containers -I$(FLEET_ROOT)/src/Threads -I$(FLEET_ROOT)/src/Dependencies -I$(FLEET_ROOT)/src/Inference/MCTS -I$(FLEET_ROOT)/src/Inference/MCMC  -I$(FLEET_ROOT)/src/GrammarInference/  -I$(FLEET_ROOT)/src/Hypotheses/StochasticVariables

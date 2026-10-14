@@ -373,6 +373,12 @@ int main(int argc, char** argv){
     #include <mach-o/dyld.h> // dynamic link editor with method to get executable path
 #endif
 
+// Don't warn shadow on this its a nightmare
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wshadow"
+#include "Dependencies/CL11.hpp"
+#pragma GCC diagnostic pop
+
 
 const std::string FLEET_VERSION = "0.1.4";
 
