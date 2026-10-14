@@ -353,9 +353,9 @@ public:
 		auto h = this_t(grammar->from_parseable(v));
 	
 		// restore the bayes stats
-		h.prior = string_to<double>(pr); 
-		h.likelihood = string_to<double>(li); 
-		h.posterior = string_to<double>(po);
+		h.prior = str_to<double>(pr); 
+		h.likelihood = str_to<double>(li); 
+		h.posterior = str_to<double>(po);
 		
 		return h; 
 	}

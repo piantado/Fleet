@@ -17,11 +17,11 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP> {
 	using data_t = typename HYP::data_t;
 	
 	virtual generator<HYP&> search_one(HYP& current) override {
-		if(DEBUG_MCTS) DEBUG("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
+		if(DEBUG_MCTS) ::print("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
 	
 		auto c = this->descend_to_childless(current); //sets current and returns the node. 
 		
-//		DEBUG("descend_to_childless ", this, "\t["+current.string()+"] ");
+//		print("descend_to_childless ", this, "\t["+current.string()+"] ");
 		
 		// if we are a terminal 
 		if(current.is_evaluable()) {
@@ -50,7 +50,7 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP> {
 			co_yield current;
 		}
 		else {
-			PriorInference samp(current.get_grammar(), this->data, &current);
+			PriorInference<HYP> samp(this->data, &current);
 			for(auto& h : samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart))){
 				co_yield h;
 				this->add_sample(h.posterior);

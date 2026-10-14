@@ -27,7 +27,7 @@ protected:
 public:
 	ReservoirSample(size_t n=100) : capacity(n), N(0) {	}	
 
-	void set_reservoir_size(const size_t s) const {
+	void set_reservoir_size(const size_t s) {
 		/**
 		 * @brief How big should the reservoir size be?
 		 * @param s
@@ -96,7 +96,7 @@ public:
 
 	PosteriorWeightedReservoirSample(size_t s=100) : capacity(s), N(0), weight_lse(-infinity) {	}	
 
-	void set_reservoir_size(const size_t s) const {
+	void set_reservoir_size(const size_t s) {
 		/**
 		 * @brief How big should the reservoir size be?
 		 * @param s

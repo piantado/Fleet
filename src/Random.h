@@ -85,16 +85,15 @@ T t_lpdf(T x, T nu) {
 }
 
 template<typename T>
-T gamma_lpdf(T x, T alpha, T beta) { // shape and RATE (note difference to std::gamma_distribution)
-	if (x <= 0.0 or alpha <= 0.0 or beta <= 0.0) 
+T gamma_lpdf(T x, T a, T b) { // shape and RATE (note difference to std::gamma_distribution)
+	if (x <= 0.0 or a <= 0.0 or b <= 0.0) 
 		return -infinity;
 
-	return alpha * log(beta) 
-			+ (alpha - 1.0) * log(x) 
-			- beta * x 
-			- mylgamma(alpha);
+	return a * log(b) 
+			+ (a - 1.0) * log(x) 
+			- b * x 
+			- mylgamma(a);
 }
-
 
 double random_cauchy() {
 	/**
@@ -104,7 +103,6 @@ double random_cauchy() {
 	
 	return tan(pi*(uniform()-0.5));
 }
-
 
 template<typename T>
 T cauchy_lpdf(T x, T loc=0.0, T gamma=1.0) {
@@ -118,7 +116,6 @@ T cauchy_lpdf(T x, T loc=0.0, T gamma=1.0) {
 	
     return -log(pi) - log(gamma) - log(1+((x-loc)/gamma)*((x-loc)/gamma));
 }
-
 
 template<typename T>
 T laplace_lpdf(T x, T mu=0.0, T b=1.0) {

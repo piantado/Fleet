@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 	}
 	
 	// We are going to build up the data
-	std::vector<MyHypothesis::data_t> datas; // load all the data	
+	std::vector<std::vector<MyHypothesis::datum_t>> datas; // load all the data	
 	for(size_t i=0;i<data_amounts.size();i++){ 
 		MyHypothesis::data_t d;
 		

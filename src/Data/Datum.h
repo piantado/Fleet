@@ -38,12 +38,12 @@ public:
 		
 			// define this so we can use string_to
 			auto [x, y] = split<2>(s, DATA_IO_DELIMITER);
-			input = string_to<input_t>(x);
-			output = string_to<output_t>(y);
+			input = str_to<input_t>(x);
+			output = str_to<output_t>(y);
 		}
 		else {
 			input = input_t{};
-			output = string_to<output_t>(s);
+			output = str_to<output_t>(s);
 		}
 		
 		reliability = NaN;

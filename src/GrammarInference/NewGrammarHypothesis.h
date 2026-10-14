@@ -80,6 +80,17 @@ public:
 		human_data->emplace_back(*hypotheses, d);
 	}
 	
+	void add_HumanData(std::vector<HD>& data) {
+		
+		// here if we add all the data at once we can reserve and do it in parallel
+		human_data->resize(data.size());
+		
+		#pragma omp parallel for
+		for(size_t i=0;i<data.size();i++) {
+			human_data->at(i) = HumanDataBundle(*hypotheses, data.at(i));
+		}
+	}
+	
 
 	/**
 	 * @brief Computes our matrix C[h,r] of hypotheses (rows) by counts of each grammar rule.
@@ -128,16 +139,7 @@ public:
 		// now its a simple dot-product, scaling by temperature
 		return ((*C) * (-la)) / double(people_PT);	
 	}
-	
-//	virtual double compute_human_likelihood(DiscreteDistribution<typename HYP::output_t>& model_pr) {
-//		// convert model predictions into human likelihoods
-//		double ll = 0.0;
-//		for(auto& [r,cnt] : hd.human_responses) {
-//			ll +=  cnt * model_pr.get(r, HUMAN_DATA_OUTLIER);
-//		}
-//		return ll;
-//	}
-	
+		
 	virtual double compute_likelihood() {
 		
 		// the likelihood is easy to compute in this simple case:

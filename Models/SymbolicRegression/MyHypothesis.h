@@ -136,7 +136,7 @@ public:
 		for(const auto& n : this->value) {
 			if(n.rule->format[0] == 'x') {
 				std::string s = n.rule->format; s.erase(0,1); // remove x
-				uses_variable[string_to<int>(s)] = true;
+				uses_variable[str_to<<int>(s)] = true;
 			}
 		}
 		for(const auto& v : uses_variable) { // check that we used everything

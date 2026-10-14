@@ -37,6 +37,7 @@ bool valid(D x) {
 /////////////////////////////////////////////////////////////
 
 // here we give N so that we can define different types if we want to!
+// can call with InheritedIntegral<int,__COUNTER__> if you want
 template<typename T, int N=1>
 struct InheritedIntegral {
 	T value; 
@@ -80,8 +81,6 @@ T round(T v, int n) {
 	auto m = pow(10,n);
 	return std::round(v*m)/m;
 }
-
-
 
 /////////////////////////////////////////////////////////////
 // A faster (?) logarithm 
@@ -295,7 +294,6 @@ template<typename T>
 bool approx_eq(const T x, const T y, double prec=0.00001) {
 	return abs(x-y)<prec;
 }
-
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Weighted quantiles

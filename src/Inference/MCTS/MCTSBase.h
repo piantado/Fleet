@@ -20,6 +20,8 @@
 
 #include "BaseNode.h"
 
+#include "cppstr.h"
+
 /**
  * @class MCTSBase
  * @author piantado
@@ -175,7 +177,7 @@ public:
 		ctl.start();
 		
 		while(ctl.running()) {
-			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
+			if(DEBUG_MCTS) ::print("\tMCTS SEARCH LOOP");
 			
 			HYP current = h0; // each thread makes a real copy here 
 			
@@ -298,7 +300,7 @@ public:
 	 * @param current
 	 */
 	virtual this_t* descend_to_childless(HYP& current) {
-		if(DEBUG_MCTS) DEBUG("descend_to_childless ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
+		if(DEBUG_MCTS) ::print("descend_to_childless ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
 		 
 		this->nvisits++; // change on the way down so other threads don't follow
 			
@@ -324,7 +326,7 @@ public:
 	 * @param current
 	 */
 	virtual this_t* descend_to_evaluable(HYP& current) {
-		if(DEBUG_MCTS) DEBUG("descend_to_evaluable ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
+		if(DEBUG_MCTS) ::print("descend_to_evaluable ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
 		
 		this->nvisits++; // change on the way down so other threads don't follow
 			

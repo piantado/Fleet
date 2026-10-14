@@ -391,12 +391,12 @@ public:
 		this_t h;
 		auto q = split(s, Lexicon::FactorDelimiter);
 		
-		h.prior      = string_to<double>(q.front()); q.pop_front();
-		h.likelihood = string_to<double>(q.front()); q.pop_front();
-		h.posterior  = string_to<double>(q.front()); q.pop_front();
+		h.prior      = str_to<double>(q.front()); q.pop_front();
+		h.likelihood = str_to<double>(q.front()); q.pop_front();
+		h.posterior  = str_to<double>(q.front()); q.pop_front();
 
 		while(not q.empty()){
-			key_t k = string_to<key_t>(q.front());  q.pop_front();
+			key_t k = str_to<key_t>(q.front());  q.pop_front();
 			auto v = INNER::deserialize(q.front()); q.pop_front();
 			h.factors[k] = v; 
 		}

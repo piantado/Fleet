@@ -11,6 +11,8 @@
 
 #include "EigenLib.h"
 
+const size_t MAX_TRIALS = 5; // don't go more than this many into the trials, since that's mostly posterior--not priors
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Set up primitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -130,7 +132,6 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	print("# Loading human data");
 	
 	std::vector<MyHumanDatum> human_data;
@@ -150,28 +151,30 @@ int main(int argc, char** argv){
 		
 		auto cond = str_to<MyHumanDatum::ConditionOn_t>(cond_s, ';');
 		
-		// set all the alphas
-		for(auto& di : cond) {
-			di.reliability = alpha;
-		}
-		
-		auto gen  = str_to<MyHypothesis::input_t>(gen_s);
-		
-		auto y = str_to<std::vector<int>>(yesv);
-		auto n = str_to<std::vector<int>>(nov);
-		HumanResponse hr{y,n};
-		
-		assert(gen.size() == y.size());
-		assert(gen.size() == n.size());
+		if(cond.size() < MAX_TRIALS) {
+			
+			// set all the alphas
+			for(auto& di : cond) {
+				di.reliability = alpha;
+			}
+			
+			auto gen  = str_to<MyHypothesis::input_t>(gen_s);
+			
+			auto y = str_to<std::vector<int>>(yesv);
+			auto n = str_to<std::vector<int>>(nov);
+			HumanResponse hr{y,n};
+			
+			assert(gen.size() == y.size());
+			assert(gen.size() == n.size());
 
-		std::vector<float> decays;
-		for(size_t i=0;i<cond.size();i++){
-			decays.push_back(cond.size()-i); // so [a,b,c] goes to [3,2,1] so that the previous data point has *no* decay 
+			std::vector<float> decays;
+			for(size_t i=0;i<cond.size();i++){
+				decays.push_back(cond.size()-i); // so [a,b,c] goes to [3,2,1] so that the previous data point has *no* decay 
+			}
+					
+			human_data.emplace_back(cond, decays, gen, hr);
+			print(str(cond), str(gen), str(y), str(n));
 		}
-				
-		human_data.emplace_back(cond, decays, gen, hr);
-		print(str(cond), str(gen), str(y), str(n));
-		
 			
 		
 		//print(*human_data.rbegin());
@@ -195,24 +198,13 @@ int main(int argc, char** argv){
 	if(runtype == "mcmc" or runtype == "both") {
 			
 		MyGrammarHypothesis gh0(hypotheses);
-		
-		// Set the constantIntegers not to be sampled
-//		for(auto& [r,ri] : *gh0.rule_indexer) {
-//			if(r->nt == grammar.nt<ConstantInteger>()) {
-//				gh0.logA.at(ri).can_propose = false; // don't propose to these
-//				gh0.logA.at(ri).value = 1.0; 
-//			}
-//		}	
-		
+
 		print("# Setting data.");
 
 		// add our data to g0
-		int jj=0;
-		for(auto& d : human_data) {
-			//if(++jj > 10) break;
-			
-			gh0.add_HumanData(d);
-		}
+
+		human_data = slice(human_data,0,250);
+		gh0.add_HumanData(human_data);
 		
 		print("# Running sampler");
 		

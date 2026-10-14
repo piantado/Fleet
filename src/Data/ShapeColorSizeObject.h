@@ -11,23 +11,23 @@ enum class Shape { Rectangle, Triangle, Circle};
 enum class Color { Blue, Yellow, Green};
 enum class Size  { size1, size2, size3};
 
-# include "str.h"
+# include "cppstr.h"
 template<> 
-std::string str(Shape s) {
+std::string str(const Shape& s) {
 	if     (s == Shape::Triangle) return "triangle";
 	else if(s == Shape::Rectangle) return "rectangle";
 	else if(s == Shape::Circle)    return "circle";
 	else { assert(0); }
 }
 template<> 
-std::string str(Color s) {
+std::string str(const Color& s) {
 	if     (s == Color::Blue) return "blue";
 	else if(s == Color::Yellow) return "yellow";
 	else if(s == Color::Green)    return "green";
 	else { assert(0); }
 }
 template<> 
-std::string str(Size s) {
+std::string str(const Size& s) {
 	if     (s == Size::size1) return "1";
 	else if(s == Size::size2) return "2";
 	else if(s == Size::size3) return "3";
@@ -82,12 +82,12 @@ struct ShapeColorSizeObject : public Object<Shape,Color,Size>  {
 };
 
 template<>
-ShapeColorSizeObject string_to(std::string s) {
+ShapeColorSizeObject str_to(const std::string& s) {
 	auto [shape, color, size] = split<3>(s,'-');
 	return ShapeColorSizeObject(shape,color,size);
 }
 
 template<>
-std::string str(ShapeColorSizeObject& o) {
+std::string str(const ShapeColorSizeObject& o) {
 	return str(o.get<Shape>())+"-"+str(o.get<Color>())+"-"+str(o.get<Size>());
 }

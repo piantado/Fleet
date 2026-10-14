@@ -318,7 +318,7 @@ public:
 		
 		TopN<T> out;
 		auto q = split(s, SerializationDelimiter);
-		out.set_size(string_to<size_t>(q.front())); q.pop_front();
+		out.set_size(str_to<size_t>(q.front())); q.pop_front();
 		
 		for(auto& x : q) {
 			out << T::deserialize(x);

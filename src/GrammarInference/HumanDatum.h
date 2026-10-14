@@ -14,18 +14,6 @@ struct HumanDatum {
 	using Hinput_t = typename HYP::input_t;
 	using Response_t = _Response_t;
 	
-	HumanDatum(ConditionOn_t& c,
-			   std::vector<float> di,
-			   Hinput_t gen,
-			   Response_t hr) :
-			condition_on(c),
-			decay_indices(di),
-			generalize(gen),
-			human_responses(hr)
-	{
-	
-	}
-
 	// What data did the human see?
 	// NOTE that this will typically be a span (defaulty for LOTHypothesis)
 	ConditionOn_t condition_on;
@@ -40,6 +28,20 @@ struct HumanDatum {
 
 	// the map of counts for each human response
 	Response_t human_responses;
+
+	HumanDatum() {} 
+	
+	HumanDatum(ConditionOn_t& c,
+			   std::vector<float> di,
+			   Hinput_t gen,
+			   Response_t hr) :
+			condition_on(c),
+			decay_indices(di),
+			generalize(gen),
+			human_responses(hr)
+	{
+	
+	}
 
 };
 

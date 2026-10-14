@@ -21,6 +21,9 @@ struct HumanDataBundle : public HD {
 	// each hypothesis's likelihood to each conditioned_on
 	std::vector<std::vector<float>> point_likelihood;  
 	
+	// default empty constructor does nothing
+	HumanDataBundle() {}	
+	
 	HumanDataBundle(std::vector<HYP>& hypotheses, 
 				   HD& d) :
 		HD(d) // copy over everything from d

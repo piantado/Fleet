@@ -66,7 +66,7 @@ std::ostream& operator<<(std::ostream& o, X_t a) {
 #include "MyMCTS.h"
 #include "StructureToSamples.h"
 
-MyHypothesis::data_t mydata;
+std::vector<MyHypothesis::datum_t> mydata;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,13 +169,13 @@ int main(int argc, char** argv){
 
 		X_t x; size_t i=0;
 		for(;i<NUM_VARS;i++) {
-			x[i] = string_to<D>(v[i]);
+			x[i] = str_to<D>(v[i]);
 			assert(not contains(v[i]," "));
 			
 			data_x.push_back(x[i]); // all are just counted here in the mean -- maybe not a great idea
 		}
 		assert(not contains(v[i]," "));
-		auto y = string_to<D>(v[i]); i++; 
+		auto y = str_to<D>(v[i]); i++; 
 		assert(not contains(v[i]," "));
 		auto sdstr = v[i]; // processed below
 		
@@ -249,7 +249,7 @@ int main(int argc, char** argv){
 	//	
 	
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
+	ParallelTempering m(h0, mydata, FleetArgs::nchains, maxT);
 	m.swap_every = 1000; // this seems to matter a lot for Feynman 
 	m.adapt_every = 60000;
 	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") ) { //| show_statistics(10000, m) ) { // (NOTE: If we show_Statistics it will only be that many yielded (diferent) samples)

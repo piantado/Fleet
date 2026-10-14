@@ -227,7 +227,7 @@ public:
 	}
 	
 	double compute_single_likelihood(const datum_t& d) override {
-		auto v = call(d.input); // something of the type
+		auto v = compute_output(d.input); // something of the type
 		
 		// average likelihood when sampling from this posterior
 		return log( exp(v.lp(U)) * (1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability * exp(v.lp(d.output)) );
@@ -281,7 +281,7 @@ std::vector<MyHypothesis::data_t> alldata;
 MyHypothesis::datum_t sample_datum() { 
 	
 	set s = ""; word w = U; objectkind t{};
-	int ntypes=0;
+	//int ntypes=0;
 	int NT = myrandom(1,4); // how many times do I try to add types?
 	
 	for(int i=0;i<NT;i++) {
@@ -298,9 +298,9 @@ MyHypothesis::datum_t sample_datum() {
 			else       	   	    w = nx; // not noise
 			t = tx; // the type is never considered to be noise here
 		}				
-		ntypes++;     
+		//ntypes++;     
 	}
-	std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not a friendly strategy
+	std::shuffle( s.begin(), s.end(), DefaultRNG); // randomize the order so select is not a friendly strategy
 	
 	return {utterance{s,t}, w, alpha};
 }
@@ -383,7 +383,7 @@ int main(int argc, char** argv) {
 		size_t di = alldata.size()-1; 
 		auto h0 = MyHypothesis::sample();
 //		MCMCChain samp(h0, &alldata[di]);
-		ParallelTempering samp(h0, &alldata[di], FleetArgs::nchains, 1.20);
+		ParallelTempering samp(h0, alldata[di], FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control()) | alltops[di] | printer(FleetArgs::print)) {
 			UNUSED(h);
 		}
