@@ -14,33 +14,45 @@
  */
 
 class OrderedLock {
-public:
-    std::queue<std::condition_variable*> cvar;
-    std::mutex                           cvar_lock;
-    bool                                 locked;
+private:
+    struct Waiter {
+        std::condition_variable cv;
+        bool notified = false;
+    };
 
-    OrderedLock() : locked(false) {}
-	
+    std::queue<Waiter*> waiters;
+    std::mutex mtx;
+    bool locked = false;
+
+public:
     void lock() {
-        std::unique_lock<std::mutex> acquire(cvar_lock);
-        if(locked) {
-            std::condition_variable signal;
-            cvar.emplace(&signal);
-            signal.wait(acquire);
-        } 
-		else {
+        std::unique_lock<std::mutex> lk(mtx);
+
+        if (!locked && waiters.empty()) {
             locked = true;
+            return;
         }
+
+        Waiter waiter;
+        waiters.push(&waiter);
+
+        waiter.cv.wait(lk, [&] {
+            return waiter.notified;
+        });
     }
-	
+
     void unlock() {
-        std::unique_lock<std::mutex> acquire(cvar_lock);
-        if(cvar.empty()) {
+        std::unique_lock<std::mutex> lk(mtx);
+
+        if (waiters.empty()) {
             locked = false;
-        } 
-		else {
-            cvar.front()->notify_one();
-            cvar.pop();
+            return;
         }
+
+        Waiter* next = waiters.front();
+        waiters.pop();
+
+        next->notified = true;
+        next->cv.notify_one();
     }
 };
