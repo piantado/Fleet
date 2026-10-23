@@ -325,7 +325,7 @@ int main(int argc, char** argv){
 
 	// This uses string_to to convert datastr into a vector of defaultdatum_t. This uses some fanciness in
 	// Strings.h that unpacks comma-separated vectors and then input/output types for defaultdatum_t
-	mydata = string_to<std::vector<MyHypothesis::datum_t>>(datastr);
+	mydata = str_to<std::vector<MyHypothesis::datum_t>>(datastr);
 
 	// Let's include a check on our alphabet
 	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work

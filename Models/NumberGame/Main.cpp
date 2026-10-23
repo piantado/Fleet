@@ -183,6 +183,7 @@ public:
 #include "Fleet.h"
 #include "TopN.h"
 #include "MCMCChain.h"
+#include "SampleStreams.h"
 
 int main(int argc, char** argv){ 	
 	Fleet fleet("Number Game");
@@ -192,13 +193,13 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 
 	// our data
-	MyHypothesis::data_t mydata = { std::multiset<int>{2,4,32} };	
+	std::vector<MyHypothesis::datum_t> mydata = { std::multiset<int>{2,4,32} };	
 
 	// and sample with just one chain
 	auto h0 = MyHypothesis::sample();
-	MCMCChain samp(h0, &mydata);
-	for(auto& h : samp.run(Control())) {
-		top << h;
+	MCMCChain samp(h0, mydata);
+	for(auto& h : samp.run(Control()) | top | printer() ) {
+		UNUSED(h);
 	}
 
 	// print the results

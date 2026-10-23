@@ -127,7 +127,7 @@ public:
 	}
 	
 	
-	const HYP& getMax() { 
+	const double getMax() { 
 		return maxval; 
 	} 
 	
@@ -321,7 +321,10 @@ public:
 		/**
 		 * @brief Run forever
 		 */
-		run(Control(0,0)); 
+		auto samples = run(Control(0, 0));
+		for (auto&& current : samples) {
+			co_yield current;
+		}
 	}
 
 	double acceptance_ratio() {

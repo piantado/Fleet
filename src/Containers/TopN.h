@@ -64,6 +64,9 @@ public:
 	}
 	
 	void operator=(const TopN<T>& x) {
+		if (this == &x)
+			return *this;
+		
 		clear();
 		set_print_best(x.print_best);				
 		set_size(x.N);

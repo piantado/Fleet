@@ -49,7 +49,7 @@ std::vector<T> value;
 	void push(const T& val) {
 		value.push_back(val);
 	}
-	void push(const T&& val) {
+	void push(T&& val) {
 		value.push_back(std::move(val));
 	}
 	

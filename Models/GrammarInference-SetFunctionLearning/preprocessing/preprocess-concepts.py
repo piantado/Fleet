@@ -32,6 +32,13 @@ for filename in os.listdir(CONCEPT_DIR):
         concept, list = m.groups()
 
         target = lines[0].strip()
+
+
+        #if(re.search(r"forall|exists", target)):
+        #    continue
+
+        print("# Keeping concept", target)
+
         setNumber = 1
         condition_sets = []
         for l in lines[1:]:
