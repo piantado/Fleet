@@ -101,12 +101,19 @@ public:
 		// now yield as long as we have some that are running
 		while(__nrunning > 0) { // we don't want to stop when its empty because a thread might fill it
 			if(not to_yield.empty())  {
-				
+
 				auto val = to_yield.pop(); // search through until we find one
-				if(val.has_value())	
+				if(val.has_value())
 					co_yield val.value();
 			}
-			
+			else {
+				// Previously this loop busy-spun at 100% CPU whenever the queue was empty
+				// (which is most of the time when e.g. MCMCYieldOnlyChanges is set), stealing
+				// a core from the worker threads. A short sleep costs at most ~0.1ms of extra
+				// latency per batch of samples and frees the core for the workers.
+				std::this_thread::sleep_for(std::chrono::microseconds(100));
+			}
+
 		}
 		
 		// now we're done filling but we still may have stuff in the queue
@@ -125,17 +132,16 @@ public:
 	
 	generator<X&> unthreaded_run(Control ctl, Args... args) {
 
-		// This is a simple version where we don't use threads -- useful 
-		// because it's hard to debug otherwise 
-		
+		// This is a simple version where we don't use threads -- useful
+		// because it's hard to debug otherwise
+
 		std::cerr << "*** Warning running unthreaded_run (intended for debugging)" << std::endl;
 		ctl.start();
 		for(auto& x : run_thread(ctl, args...)) {
-			auto val = to_yield.pop(); // search through until we find one
-			if(val.has_value())	
-				co_yield val.value();	
-			
-		}		
+			// NOTE: this used to pop from to_yield, which nothing fills in the unthreaded
+			// case (run_thread yields directly), so it never yielded anything. Just yield x.
+			co_yield x;
+		}
 	}
 	
 };

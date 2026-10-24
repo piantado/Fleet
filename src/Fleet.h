@@ -547,7 +547,10 @@ public:
 			std::string exc = system_exec(tmp); exc.erase(exc.length()-1); // came with a newline?
 			
 			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			print("# Running Fleet on " +  std::string(hostname) + " with PID=" + str(getpid()) + " by user " + getenv("USER") + " at " + datestring());
+			// NOTE: getenv can return nullptr (e.g. in containers or clusters where USER is unset),
+		// and concatenating a nullptr char* into std::string segfaults -- so we must guard it
+		const char* username = getenv("USER");
+		print("# Running Fleet on " +  std::string(hostname) + " with PID=" + str(getpid()) + " by user " + (username == nullptr ? "<unknown>" : username) + " at " + datestring());
 			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			print("# Fleet version: ", FLEET_VERSION);
 			print("# Executable checksum: ", exc);

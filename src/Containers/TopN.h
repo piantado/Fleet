@@ -156,23 +156,25 @@ public:
 		// if we aren't in there and our posterior is better than the worst
 		if(not contains(x)) {
 			if(s.size() < N or (empty() or worst() < x )) { // skip adding if its the worst -- can't call worst_score due to lock
-				T xcpy = x;
-				
+
 				if(print_best and (empty() or best() < x ))  {
+					// show() is non-const (it may run the hypothesis), so call it on a copy;
+					// this copy is only made in the rare case that we print a new best
+					T xcpy = x;
 					xcpy.show();
 				}
-			
-				// add this one
-				s.insert(xcpy); 
-				
+
+				// add this one (a single copy into the set -- previously x was copied twice)
+				s.insert(x);
+
 				// and remove until we are the right size
 				while(s.size() > N) {
-					s.erase(s.begin()); 
+					s.erase(s.begin());
 				}
-				
+
 				return true; // we added
 			}
-		} 
+		}
 		
 		return false; // we didn't add
 		

@@ -60,13 +60,13 @@ std::string datestring() {
 	//https://stackoverflow.com/questions/40100507/how-do-i-get-the-current-date-in-c
 	
 	time_t rawtime;
-	struct tm * timeinfo;
+	struct tm timeinfo;
 	char buffer[80];
 
 	time (&rawtime);
-	timeinfo = localtime(&rawtime);
+	localtime_r(&rawtime, &timeinfo); // localtime_r: localtime() uses a shared static buffer and is not thread-safe
 
-	strftime(buffer,80,"%Y-%m-%d %I:%M:%S",timeinfo);
+	strftime(buffer,80,"%Y-%m-%d %I:%M:%S",&timeinfo);
 	return std::string(buffer);
 }
 
