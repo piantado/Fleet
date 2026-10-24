@@ -157,7 +157,9 @@ T random_laplace(T mu=0.0, T b=1.0) {
 	 * @param sd
 	 * @return 
 	 */
-	return mu + random_exponential(b) - random_exponential(b);
+	// NOTE: b is the Laplace *scale* (Var = 2 b^2), but random_exponential takes a *rate*;
+	// passing b directly gave exponentials with mean 1/b and thus Var = 2/b^2. 
+	return mu + random_exponential(1.0/b) - random_exponential(1.0/b);
 }
 
 
@@ -293,7 +295,7 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
-		if(r <= 0.0) 
+		if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element 
 			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
 	}
 	
@@ -333,7 +335,7 @@ std::pair<t*,double> sample_lp(const T& s, double z, const std::function<double(
 		auto fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		tot = logplusexp(tot, fx);
-		if(tot > r) return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+		if(tot > r) return std::make_pair(const_cast<t*>(&x), fx-z); // NOTE: fx and z are already logs -- log(fx)-log(z) here was NaN for negative log probabilities
 	}
 	
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
@@ -376,7 +378,7 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
-		if(r <= 0.0) 
+		if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element 
 			return std::make_pair(i, log(fx)-log(z));
 	}
 	
@@ -488,7 +490,7 @@ std::pair<t*,double> sample(const T& s, double z, double(*f)(const t&)) {
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
-		if(r <= 0.0)
+		if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element
 			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
 	}
 

@@ -188,18 +188,26 @@ public:
 		 * @return 
 		 */		
 		
-		if(posterior != other.posterior) {
-			return fp_ordering(posterior, other.posterior); 
+		// NOTE: these must use fp_ordering's notion of equivalence, not operator!=. The old
+		// check `posterior != other.posterior` is TRUE when both are NaN, and fp_ordering then
+		// declared them equivalent -- so any two NaN-posterior hypotheses compared equal no
+		// matter their priors or values (and e.g. could displace each other in sets).
+		// NaNs still sort together (fp_ordering), but ties fall through to prior and then hash.
+
+		const auto pc = fp_ordering(posterior, other.posterior);
+		if(pc != std::strong_ordering::equivalent) {
+			return pc;
 		}
-		else if(prior != other.prior) {
-			return fp_ordering(prior,other.prior); 
+
+		const auto prc = fp_ordering(prior, other.prior);
+		if(prc != std::strong_ordering::equivalent) {
+			return prc;
 		}
-		else {
-			// we could be equal, but we only want to say that if we are. 
-			// otherwise this is decided by the hash function 
-			// so we must ensure that the hash function is only equal for equal values
-			return this->hash() <=> other.hash(); 
-		}
+
+		// we could be equal, but we only want to say that if we are.
+		// otherwise this is decided by the hash function
+		// so we must ensure that the hash function is only equal for equal values
+		return this->hash() <=> other.hash();
 	}
 	
 	virtual void show(std::string prefix="") {

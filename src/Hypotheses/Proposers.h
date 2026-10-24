@@ -128,16 +128,24 @@ namespace Proposals {
 //			DEBUG("REGENERATE", from, *s, s->can_resample);
 //		#endif
 			
-		double oldgp = grammar->log_probability(*s); // reverse probability generating 
+		double oldgp = grammar->log_probability(*s); // reverse probability generating
 
-		s->assign(grammar->generate(s->nt())); 
+		s->assign(grammar->generate(s->nt()));
 		// also removed 9/2023:
 //		__regenerate_when_can_resample(grammar,*s);
-		
-		//double fb = slp + grammar->log_probability(*s) 
+
+		// The backward move must choose s out of the NEW tree, which may have a different
+		// number of (resampleable) nodes than the old one.
+		const double z_new = sample_z<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
+
+		//double fb = slp + grammar->log_probability(*s)
 		//		  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
-		double fb = (-log(from.count()) + grammar->log_probability(*s)) - 
-				    (-log(ret.count()) + oldgp);
+		// NOTE: the proposal above samples s uniformly among the nodes with can_resample set,
+		// so the Metropolis-Hastings correction must use the number of *resampleable* nodes
+		// (z and z_new), not the total node counts: using count() here (as this used to) is
+		// identical when every node is resampleable, and wrong otherwise.
+		double fb = (-log(z)     + grammar->log_probability(*s)) -
+				    (-log(z_new) + oldgp);
 
 		#ifdef DEBUG_PROPOSE
 			CERR "FORWARD" TAB slp + grammar->log_probability(*s) ENDL;
