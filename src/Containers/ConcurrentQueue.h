@@ -1,5 +1,7 @@
 #pragma once 
 
+#include <atomic>
+#include <cassert>
 #include <vector>
 #include <mutex>
 #include <condition_variable>
@@ -14,19 +16,32 @@
  * @date 31/08/21
  * @file ConcurrentQueue.h
  * @brief A concurrent queue class that allows multiple threads to push and consume. Note that this
- *        has a fixed, finite size (n) and when its full, we'll block. This prevents us from 
+ *        has a fixed, finite size and when it is full, push() blocks. This prevents us from 
  *        eating up too much memory. 
+ *
+ *        It is a ring buffer of N slots holding at most N-1 elements: one slot is always left
+ *        unused so that push_idx == pop_idx unambiguously means "empty" and 
+ *        (push_idx+1) % N == pop_idx means "full". Consequently N must be at least 2.
+ *
+ *        Elements live in [pop_idx, push_idx) taken modulo N, and are popped in FIFO order.
+ *        push() and pop() block (on full and empty, respectively) and are safe to call from any
+ *        number of threads. Waiting threads re-acquire the internal OrderedLock in FIFO order.
+ *
+ *        empty() is lock-free and returns a snapshot. A "not empty" answer stays true for a
+ *        caller that is the *only* consumer (nobody else can remove the element), which is how
+ *        ConcurrentQueueRing uses it. With several consumers, treat it as a hint only; pop() is
+ *        still correct and will simply block if another consumer took the element first.
  */
-
 template<typename T>
 class ConcurrentQueue {
 	static const size_t DEFAULT_CONCURRENT_QUEUE_SIZE = 64;
 	
-	size_t N;  // length of the queue
-
+	size_t N;  // number of slots in to_yield (capacity is N-1); only modified under lock
+	
 	// NOTE: We have tried to align to_yield better for multithreading, but nothing seems to improve speed
 	std::vector<T> to_yield;
 
+	// Atomic so that empty() can be read without the lock; only modified under lock
 	std::atomic<size_t> push_idx;
 	std::atomic<size_t> pop_idx; 	
 
@@ -35,28 +50,79 @@ class ConcurrentQueue {
 	
 	mutable OrderedLock lock; 
 	
+	// These require the caller to hold lock
+	bool full_locked()   const { return (push_idx+1) % N == pop_idx; }
+	size_t size_locked() const { return (push_idx + N - pop_idx) % N; }
+	
 public:
 	
+	/**
+	 * @brief Construct a queue with n slots, holding at most n-1 elements.
+	 * @param n -- number of slots, must be >= 2
+	 */
 	ConcurrentQueue(size_t n=DEFAULT_CONCURRENT_QUEUE_SIZE) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
-		
+		assert(n >= 2 && "*** ConcurrentQueue needs at least 2 slots (it holds at most n-1 elements)");
 	}
 	
+	/**
+	 * @brief Change the number of slots to n, keeping all current elements in order. The current
+	 *        elements must fit (size() <= n-1). Threads blocked in push() are woken, since 
+	 *        there may now be room for them.
+	 * @param n -- new number of slots, must be >= 2
+	 */
 	void resize(size_t n) {
-		assert(n >= 2);
+		assert(n >= 2 && "*** ConcurrentQueue needs at least 2 slots (it holds at most n-1 elements)");
+		
+		std::unique_lock lck(lock);
+		
+		const size_t count = size_locked();
+		assert(count <= n-1 && "*** Cannot resize ConcurrentQueue below its current number of elements");
+		
+		// lay the current elements out contiguously starting at slot 0
+		std::vector<T> next(n);
+		for(size_t i=0;i<count;i++) {
+			next[i] = std::move(to_yield[(pop_idx + i) % N]);
+		}
+		
+		to_yield = std::move(next);
 		N = n;
-		to_yield.resize(n);
+		pop_idx  = 0;
+		push_idx = count;
+		
+		full_cv.notify_all();
 	}
 	
-	bool empty()  { return push_idx == pop_idx; }
-	bool full()   { return (push_idx+1) % N == pop_idx; }
-	size_t size() { return (pop_idx - push_idx + N) % N; } 
+	/**
+	 * @brief Is the queue empty? Lock-free snapshot; see the class documentation.
+	 */
+	bool empty() const { return push_idx == pop_idx; }
 	
+	/**
+	 * @brief Is the queue full (holding N-1 elements)? A snapshot, which may be stale by the time it returns.
+	 */
+	bool full() const { 
+		std::unique_lock lck(lock);
+		return full_locked();
+	}
+	
+	/**
+	 * @brief Number of elements currently stored. A snapshot, which may be stale by the time it returns.
+	 */
+	size_t size() const { 
+		std::unique_lock lck(lock);
+		return size_locked();
+	} 
+	
+	/**
+	 * @brief Add x to the back of the queue, blocking while the queue is full.
+	 * @param x
+	 */
 	void push(const T& x) {	
 	
 		std::unique_lock lck(lock);
 		
 		// if we are here, we must wait until a spot frees up
-		while(full()) full_cv.wait(lck);
+		while(full_locked()) full_cv.wait(lck);
 		
 		to_yield[push_idx] = x;
 
@@ -66,15 +132,18 @@ public:
 		empty_cv.notify_one();
 	}
 	
+	/**
+	 * @brief Remove and return the front of the queue, blocking while the queue is empty.
+	 * @return 
+	 */
 	T pop() {
 		std::unique_lock lck(lock);
 		
 		// we are empty so we must wait
-		while(empty()) empty_cv.wait(lck);
+		while(push_idx == pop_idx) empty_cv.wait(lck);
 		
-		assert(push_idx != pop_idx); // better not
 		T ret = std::move(to_yield[pop_idx]);
-		pop_idx = (pop_idx + 1) % N;;
+		pop_idx = (pop_idx + 1) % N;
 
 		full_cv.notify_one();		
 
