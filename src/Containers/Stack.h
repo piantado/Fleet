@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vector> 
+#include <vector>
+#include <utility>
 #include <assert.h>
  
 #include "Strings.h"
@@ -54,7 +55,17 @@ std::vector<T> value;
 	}
 	
 	/**
-	 * @brief Remove top from the stack 
+	 * @brief Append the entire contents of another stack onto the top of this one,
+	 *        preserving order (s's bottom is pushed first). This is a bulk operation
+	 *        (a single vector::insert) and is much faster than pushing element by element.
+	 * @param s
+	 */
+	void append(const Stack<T>& s) {
+		value.insert(value.end(), s.value.begin(), s.value.end());
+	}
+
+	/**
+	 * @brief Remove top from the stack
 	 */
 	void pop() {
 		/**
@@ -100,10 +111,12 @@ std::vector<T> value;
 
 	[[nodiscard]] T toppop() {
 		/**
-		 * @brief Return the top element.
-		 * @return 
+		 * @brief Return the top element, removing it from the stack.
+		 * @return
 		 */
-		auto o = value.back();
+		T o = std::move(value.back()); // move, don't copy -- it's popped right after
+		                               // (declared as T, not auto, so std::vector<bool>'s proxy
+		                               //  reference is converted to a value *before* the pop)
 		pop();
 		return o;
 	}

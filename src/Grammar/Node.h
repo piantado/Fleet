@@ -41,12 +41,16 @@ public:
 			children.resize(r->N);
 	}
 	
-	/* We must define our own copy and move since parent can't just be simply copied */	
+	/* We must define our own copy and move since parent can't just be simply copied */
 	Node(const Node& n) :
 		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 	}
-	Node(Node&& n) :
-		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+	Node(Node&& n) noexcept :
+		BaseNode(std::move(n)), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		// NOTE: BaseNode must be passed std::move(n) -- inside this constructor n is an
+		// lvalue, so BaseNode(n) selects the *copy* constructor and deep-copies the tree.
+		// (rule/lp/can_resample are scalars of n untouched by the base move, so reading
+		// them afterwards is fine.) noexcept lets std::vector<Node> relocate by moving.
 	}
 	
 	virtual ~Node() {}
@@ -122,10 +126,11 @@ public:
 		this->can_resample = n.can_resample;
 	}
 
-	void operator=(Node&& n) {
-		
-		BaseNode<Node>::operator=(n);
-		
+	void operator=(Node&& n) noexcept {
+
+		// must std::move -- passing n as an lvalue selects the copy overload and deep-copies
+		BaseNode<Node>::operator=(std::move(n));
+
 		this->rule = n.rule;
 		this->lp = n.lp;
 		this->can_resample = n.can_resample;

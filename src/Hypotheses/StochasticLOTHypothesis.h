@@ -71,13 +71,13 @@ public:
 			this->was_called = true; 
 
 			pool.push(vms); // put vms into the pool
-			
-			const auto out = pool.run();	
-			
+
+			auto out = pool.run(); // NOTE: not const -- a const local cannot be moved from on return
+
 			// update some stats
 			this->total_instruction_count_last_call = pool.total_instruction_count;
 			this->total_vms_steps = pool.total_vms_steps;
-			
+
 			return out;
 			
 	  } else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }

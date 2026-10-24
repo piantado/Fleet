@@ -63,7 +63,7 @@ public:
 			// save that we've been called
 			this->was_called = true; 
 			
-			const auto out = vms.run(); 	
+			auto out = vms.run(); // NOTE: not const -- a const local cannot be moved from on return
 			this->total_instruction_count_last_call = vms.runtime_counter.total;
 			this->total_vms_steps = 1;
 			

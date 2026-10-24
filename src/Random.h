@@ -37,7 +37,10 @@ int rbinomial(const int n, const double p) {
 }
 
 double random_normal(double mu=0, double sd=1.0) {
-	std::normal_distribution<float> normal(0.0, 1.0);
+	// NOTE: this used normal_distribution<float>, which generates the variate at float
+	// precision (~7 digits) even though everything downstream is double.
+	// (This changes the random stream for seeded runs that draw normals.)
+	std::normal_distribution<double> normal(0.0, 1.0);
 	return normal(DefaultRNG)*sd + mu;
 }
 
@@ -159,7 +162,10 @@ T random_laplace(T mu=0.0, T b=1.0) {
 
 
 double geometric_lpdf(size_t k, double p) {
-	return log(p) + (k-1)*log(1-p);
+	// the geometric distribution is defined on k=1,2,3,...; k is a size_t, so k=0 would
+	// underflow (k-1 wraps to SIZE_MAX) and silently return garbage -- catch that here
+	assert(k >= 1 && "*** geometric_lpdf is defined on k=1,2,3,... (use k+1 if your count starts at 0)");
+	return log(p) + (double)(k-1)*log(1-p);
 }
 
 double random_gamma(double a, double b) { // shape and RATE here
@@ -265,10 +271,10 @@ double sample_z(const T& s, const std::function<double(const t&)>& f) {
 		auto fx = f(x);
 		if(not std::isnan(fx)) {
 			assert(fx >= 0.0 && "*** Cannot use sample/sample_z with negative probabilities. Did you mean to use sample_lp/sample_lp_z?");
-			z += f(x);			
+			z += fx; // NOTE: reuse fx -- this used to call f(x) a second time, doubling the work for every element
 		}
 	}
-	return z; 
+	return z;
 }
 
 template<typename t, typename T> 
@@ -378,8 +384,9 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 }
 
 
-std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 1.0;}) {
+std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 0.0;}) {
 	// special form for where the ints (e.g. indices) Are what f takes)
+	// NOTE: f returns LOG probabilities, so the uniform default is 0.0 (=log 1), not 1.0
 	double z = -infinity;
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);

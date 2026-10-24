@@ -27,8 +27,19 @@ class MyGrammar : public Grammar<S,S,  S,char,bool>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
-		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
-		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+		// tail and head are implemented in-place on the string on top of the stack
+		// (like append and pair below), which avoids popping, allocating a new string,
+		// and pushing on every call. The semantics are identical to:
+		//   tail: s.empty() ? "" : s.substr(1)
+		//   head: s.empty() ? "" : S(1,s.at(0))
+		add_vms<S,S>("tail(%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			S& s = vms->stack<S>().topref();
+			if(not s.empty()) s.erase(0,1);
+		}));
+		add_vms<S,S>("head(%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			S& s = vms->stack<S>().topref();
+			if(s.length() > 1) s.erase(1); // keep only the first character; "" stays ""
+		}));
 //
 //		add("append(%s,%s)",   +[](S a, S b) -> S { 
 //			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
@@ -115,20 +126,19 @@ public:
 	 */
 	
 	[[nodiscard]] virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
-		std::pair<Node,double> x;
+		// NOTE: we keep the proposal in the optional and move out of it, rather than
+		// copy-assigning into a local pair, which deep-copied the whole proposed tree
+		std::optional<std::pair<Node,double>> p;
 		if(flip(regenerate_p)) {
-			auto p = Proposals::regenerate(&grammar, value);	
-			if(not p) return {};
-			x = p.value();
+			p = Proposals::regenerate(&grammar, value);
 		}
 		else {
-			auto p = flip() ? Proposals::insert_tree(&grammar, value) :
-							  Proposals::delete_tree(&grammar, value);	
-			if(not p) return {};
-			x = p.value();
+			p = flip() ? Proposals::insert_tree(&grammar, value) :
+						 Proposals::delete_tree(&grammar, value);
 		}
-		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 		
-	}	
+		if(not p) return {};
+		return std::make_pair(MyHypothesis(std::move(p->first)), p->second);
+	}
 //	
 	void show(std::string prefix="") override {
 		// we're going to make this print by showing the language we created on the line before

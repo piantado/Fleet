@@ -112,6 +112,8 @@ public:
 		std::unique_lock lck(lock);
 		return size_locked();
 	} 
+	bool empty()  { return push_idx == pop_idx; }
+	bool full()   { return (push_idx+1) % N == pop_idx; }
 	
 	/**
 	 * @brief Add x to the back of the queue, blocking while the queue is full.
