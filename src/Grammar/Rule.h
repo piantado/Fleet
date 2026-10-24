@@ -118,6 +118,8 @@ public:
 		}
 		else if(format != r.format) // if probabilities and children are equal, set a fixed order based on hash
 			return format <=> r.format;
+		else if(fptr != r.fptr) 
+			return fptr <=> r.fptr;
 		else
 			return my_hash <=> r.my_hash;
 	}
@@ -156,8 +158,8 @@ public:
 		 * @return 
 		 */
 		
-		assert(i <= N && "*** Cannot get the type of something out of range");
-		return child_types[i];
+		assert(i < N && "*** Cannot get the type of something out of range");
+		return child_types.at(i);
 	}
 	
 	auto& get_child_types() const {

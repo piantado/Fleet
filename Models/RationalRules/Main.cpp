@@ -56,7 +56,7 @@ public:
 
 #include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar> {
+class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar> {
 public:
 	using Super = DeterministicLOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
@@ -73,6 +73,7 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#ifndef NO_INCLUDE_MAIN
 
 #include "TopN.h"
 #include "ParallelTempering.h"
@@ -113,3 +114,5 @@ int main(int argc, char** argv){
 	// Show the best we've found
 	top.print();
 }
+
+#endif 

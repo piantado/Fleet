@@ -206,6 +206,8 @@ int main(int argc, char** argv){
 		human_data = slice(human_data,0,250);
 		gh0.add_HumanData(human_data);
 		
+		print("# Human data size: ", human_data.size());
+		
 		print("# Running sampler");
 		
 		size_t nsamples = 0;

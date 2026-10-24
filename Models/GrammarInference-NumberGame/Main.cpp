@@ -1,5 +1,3 @@
-
-// We will define this so we can read from the NumberGame without main
 #define NUMBER_GAME_DO_NOT_INCLUDE_MAIN 1
 
 #include "../NumberGame/Main.cpp"
@@ -11,27 +9,54 @@
 #include "Strings.h"
 #include "MCMCChain.h"
 
-std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
+#include <assert.h>
+#include <set>
+#include <string>
+#include <tuple>
+#include <regex>
+#include <vector>
+#include <tuple>
+#include <utility>
+#include <functional>
+#include <cmath>
+
+#include "EigenLib.h"
+
+const size_t A = 10; // alphabet, from zero 
 
 std::string hypothesis_path = "hypotheses.txt";
-std::string runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
+std::string runtype = "both";
+
+
+// responses to yes/no to each set
+using Response_t {
+	int yes;
+	int no; 
+};
 
 // We're going to define a new kind of HumanDatum where the input is an int and the 
 // response type is a lsit of yes/no counts for each integer (rather than yes/no counts for
 // each possible NumberSet)
 // NOTE: This overrides the standard HumanDatum types since NumberGame naturally has a different format
-using MyHumanDatum = HumanDatum<MyHypothesis, int, NumberSet, std::vector<std::pair<int,int>>>;
+using MyHumanDatum = HumanDatum<MyHypothesis, 
+								NumberSet, 
+								Response_t>;
 
-#include "DeterministicGrammarHypothesis.h"
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define the GrammarHypothesis
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Now define a GrammarHypothesis that uses this data type
-// TODO: This does NOT incorporate into the likelihood the fact that we can't respond with the existing set, 
-// and that is bad news. 
-class MyGrammarHypothesis final : public DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum> {
+#include "NewGrammarHypothesis.h"
+
+// we are condition to condition on vectors instead of spans as the data
+class MyGrammarHypothesis final : public NewGrammarHypothesis<MyGrammarHypothesis, 
+															  MyHypothesis,
+															  MyHumanDatum> {
 public:
-	using Super = DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum>;
+	using Super = NewGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum>;
 	using Super::Super;
-	using data_t = Super::data_t;		
+	using this_t = MyGrammarHypothesis;
+	
 	
 	virtual double compute_likelihood(const data_t& human_data, const double breakout=-infinity) override {
 		// recompute our likelihood if its the wrong size or not using this data
@@ -81,112 +106,109 @@ public:
 };
 
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+#include "TopN.h"
+#include "Fleet.h"
+#include "Miscellaneous.h"
+#include "MCMCChain.h"
+
+// For grammar inference:
+#include "Generate.h"
+#include "HumanDatum.h"
+
 int main(int argc, char** argv){ 	
 	Fleet fleet("An example of grammar inference for boolean concepts");
 	fleet.add_option("--hypotheses",  hypothesis_path, "Where to load or save hypotheses.");
-	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
+	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; mcmc = run grammar inference; both = do both");
 	fleet.initialize(argc, argv);
+		
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	print("# Loading human data");
 	
-	// two main things we are building -- a list of human data points
-	std::vector<MyHumanDatum> human_data;
+	std::vector<HumanDatum<MyHypothesis,
+						   std::vector<MyHypothesis::datum_t> 
+						   >> human_data;
+	
+	std::ifstream infile("clean_learn_per_trial_expanded.csv"); //(FleetArgs::input_path);
+	std::string line; 
+	std::getline(infile, line); // skip header
+	
+	while(! infile.eof() ) {
+		if(CTRL_C) break;
+		
+		auto& b = std::getline(infile, line);
+		if(not b) break;
+		
+		auto[subjectno,cond1,cond2,cond_s,gen_s,res_s] = split<6>(line, '\t');
+		
+		auto cond = string_to<std::vector<MyHypothesis::datum_t>>(cond_s, ';');
+		auto gen  = string_to<MyHypothesis::input_t>(gen_s);
+		auto res  = string_to<MyHypothesis::output_t>(res_s);
+		std::map<List,int> responses; responses[res] = 1; // 
+		
+		std::vector<float> decays;
+		for(size_t i=0;i<cond.size();i++){
+			decays.push_back(cond.size()-i); // so [a,b,c] goes to [3,2,1] so that the previous data point has *no* decay 
+		}
+				
+		human_data.emplace_back(cond, decays, gen, responses);
 
-	// and a list of MCMC data points
-	std::vector<MyHypothesis::data_t*> mcmc_data; 
-	
-	// an auxiliary data structure of sets and counts of yes/no for each number
-	std::map<std::multiset<int>,std::vector<std::pair<int,int>>> d;
-	
-	///////////////////////////////
-	// We'll read all the input here and dump it into a map
-	///////////////////////////////	
-	
-	int* one = new int(1);
-	
-	// need to give the decay position
-	auto decay_position = new std::vector<int>();
-	decay_position->push_back(0); // everything is just zero here
-	
-	// here we build up a mapping from mutliset<int> to a vector of 
-	// responses, using d to hold them
-	for(auto [target, setstr, yes, no] : read_csv<4>("human-data.txt", true, '\t')) {
-		auto set = string_to<std::multiset<int>>(setstr);
+	}
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	std::vector<MyHypothesis> hypotheses;
+	if(runtype == "hypotheses" or runtype == "both"){	
+		print("# Generating hypotheses");
+
+
+		hypotheses = generate_from(human_data);
+
+		print("# Using ", hypotheses.size(), " hypotheses.");
 		
-		// if this doesn't exist, add it
-		if(d.find(set) == d.end()) {
-			d[set] = std::vector(N+1,std::make_pair(0,0));
-		}
-		
-		// then store this
-		d[set][string_to<int>(target)] = std::make_pair(string_to<int>(yes),
-		                                                string_to<int>(no));
+
+		save(hypothesis_path, hypotheses);
+	}
+	else {
+		print("# Loading", hypothesis_path);
+		hypotheses = load<MyHypothesis>(hypothesis_path);
 	}
 	
-	// Next, go through and convert this data to the form we need. 	
-	for(const auto& k : d) {		
-		// the learner sees 0 -> the set (first in values of d)
-		// NOTE: We must put these on the heap so that they can be accessed outside of this loop
-		auto learner_data = new MyHypothesis::data_t();
-		
-		// the data for NumberGame is actually a multiset (which is different than a NumberSet)
-		learner_data->push_back(k.first);
-		
-		// store this as something we run MCMC on 
-		mcmc_data.push_back(learner_data);
-		
-		// now the human data comes from d:
-		// k.second already is a vector of yes/no pairs
-		// Hmm 1/N is not really the right chance rate here -- its really the probability
-		// for each individual number, but it's probably good for it to be sparse?
-		human_data.push_back({.data=learner_data, 
-							  .ndata=learner_data->size(), 
-							  .predict=one, 
-							  .responses=k.second,
-							  .chance=1.0/N,
-							  .decay_position=decay_position,
-							  .my_decay_position=0
-							  });
-	}
-	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	///////////////////////////////
-	// Now handle main running 
-	///////////////////////////////	
-	
-	if(runtype == "hypotheses" or runtype == "both") {
-		
-		auto h0 = MyHypothesis::sample(); 
-		auto hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), ntops);
-		
-		for(size_t t=0;t<ntops.size();t++) 
-			save(hypothesis_path+"."+str(ntops[t]), hypotheses[t]);
-	}
-	
-	
-	if(runtype == "grammar" or runtype == "both") { 
-		
-		auto hypotheses = load<MyHypothesis>(hypothesis_path);
-		COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
-		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
-		
-		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
-		
-		// Set this up so that we don't do MCMC on some grammar rules
-		size_t i = 0;
-		for(auto& r : grammar) {
-			// we'll not propose to all those goddamn integers we added
-			// NOTE when we do this, GrammarHypothesis won't print these either
-			// Here, we fine them because we have prefixed raw integers in MyGrammar with "#"
-			if(r.format.at(0) == '#') {
-				h0.logA.set(i, 0.0); // set the value to 1 (you MUST do this) 
-				h0.set_can_propose(i, false);
-			}
-			i++;
-		}
+	if(runtype == "mcmc" or runtype == "both") {
 			
-		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
-		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
-			COUT h.string(str(thechain.samples)+"\t") ENDL;
+
+		MyGrammarHypothesis gh0(hypotheses);
+		
+		// Set the constantIntegers not to be sampled
+		for(auto& [r,ri] : *gh0.rule_indexer) {
+			if(r->nt == grammar.nt<ConstantInteger>()) {
+				gh0.logA.at(ri).can_propose = false; // don't propose to these
+				gh0.logA.at(ri).value = 1.0; 
+			}
 		}	
+		
+		print("# Setting data.");
+
+		// add our data to g0
+		for(auto& d : human_data) {
+			gh0.add_HumanData(d);
+		}
+		
+		print("# Running sampler");
+		
+		size_t nsamples = 0;
+		std::vector<NullDatum_t> Gdata;
+		auto Gchain = MCMCChain(gh0, Gdata);
+		for(auto& h : Gchain.run(Control()) | thin(FleetArgs::thin) ) {
+			h.show(str(nsamples)+"\t");
+			nsamples++;
+		}
 	}
-	
+
+	return 0;	
 }
+	

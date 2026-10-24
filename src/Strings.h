@@ -191,7 +191,7 @@ std::string reverse(std::string x) {
 
 std::string QQ(const std::string& x) {
 	/**
-	 * @brief Handy adding double quotes to a string
+	 * @brief Handy adding double quotes around a string
 	 * @param x - input string
 	 * @return 
 	 */
@@ -200,7 +200,7 @@ std::string QQ(const std::string& x) {
 }
 std::string Q(const std::string& x) {
 	/**
-	 * @brief Handy adding single quotes to a string 
+	 * @brief Handy adding single quotes around a string 
 	 * @param x - input string
 	 * @return 
 	 */
@@ -335,6 +335,7 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	return lp_yGx;
 	
 }
+
 
 ////////////////////////////////////////////////////////////
 // Printing of types  (ugly, sorry)

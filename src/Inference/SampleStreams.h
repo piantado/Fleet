@@ -14,7 +14,7 @@ struct thin {
 	size_t m;
 	size_t cnt;
 	
-	thin(size_t _m) : m(_m), cnt(0) { 
+	thin(size_t _m=FleetArgs::thin) : m(_m), cnt(0) { 
 	}
 
 	// funny little increment here returns true for 0 mod m
@@ -41,7 +41,7 @@ struct burn {
 	size_t m;
 	size_t cnt;
 	
-	burn(size_t _m) : m(_m), cnt(0) { 
+	burn(size_t _m=FleetArgs::burn) : m(_m), cnt(0) { 
 	}
 
 	// funny little increment here returns true for 0 mod m
@@ -68,7 +68,7 @@ struct printer {
 	size_t cnt;
 	std::string prefix; 
 	
-	printer(size_t e, const std::string p="") : every(e), cnt(0), prefix(p) { }
+	printer(size_t e=FleetArgs::print, const std::string p="") : every(e), cnt(0), prefix(p) { }
 
 	// funny little increment here returns true for when we print
 	bool operator++() {
