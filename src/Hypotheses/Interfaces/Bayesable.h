@@ -194,14 +194,21 @@ public:
 		// matter their priors or values (and e.g. could displace each other in sets).
 		// NaNs still sort together (fp_ordering), but ties fall through to prior and then hash.
 
-		const auto pc = fp_ordering(posterior, other.posterior);
-		if(pc != std::strong_ordering::equivalent) {
-			return pc;
+		// (the `!=` gates are a fast path: for equal, non-NaN values we skip fp_ordering's 
+		// isnan checks entirely; `!=` is also true when either side is NaN, so every NaN 
+		// case still goes through fp_ordering, and a NaN-NaN tie falls through to the next key)
+		if(posterior != other.posterior) {
+			const auto pc = fp_ordering(posterior, other.posterior);
+			if(pc != std::strong_ordering::equivalent) {
+				return pc;
+			}
 		}
-
-		const auto prc = fp_ordering(prior, other.prior);
-		if(prc != std::strong_ordering::equivalent) {
-			return prc;
+		
+		if(prior != other.prior) {
+			const auto prc = fp_ordering(prior, other.prior);
+			if(prc != std::strong_ordering::equivalent) {
+				return prc;
+			}
 		}
 
 		// we could be equal, but we only want to say that if we are.

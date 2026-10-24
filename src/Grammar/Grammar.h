@@ -665,7 +665,7 @@ public:
 			if(std::isnan(fx)) continue; // treat as zero prob (as sample() does)
 			assert(fx >= 0.0);
 			r -= fx;
-			if(r <= 0.0) 
+			if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability rule
 				return const_cast<Rule*>(&x);
 		}
 		

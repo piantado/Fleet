@@ -110,10 +110,13 @@ namespace Proposals {
 
 		Node ret = from; // copy
 
-		// compute the normalizer once and reuse it: previously the tree was traversed three
-		// times to choose a node (a sum for this zero-check, a sum inside sample, and the
-		// selection scan); now twice. z==0 means nothing is resampleable.
-		const double z = sample_z<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
+		// Compute the normalizer once and reuse it (z==0 means nothing is resampleable). 
+		// NOTE: we use the recursive BaseNode::sum rather than the iterator-based sample_z: 
+		// the recursion inlines (see max-inline-insns-recursive in Fleet.mk) while the 
+		// NodeIterator walks parent pointers with a function call per node, which showed up 
+		// as a few percent of total MCMC time. The weights are exactly 0.0/1.0, so the sum 
+		// is an exact integer in any summation order and the value is identical. 
+		const double z = ret.sum<double>(+[](const Node& n) { return 1.0*n.can_resample;});
 		if(z == 0.0)
 			return {};
 
@@ -135,8 +138,8 @@ namespace Proposals {
 //		__regenerate_when_can_resample(grammar,*s);
 
 		// The backward move must choose s out of the NEW tree, which may have a different
-		// number of (resampleable) nodes than the old one.
-		const double z_new = sample_z<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
+		// number of (resampleable) nodes than the old one. (sum, not sample_z: see above.)
+		const double z_new = ret.sum<double>(+[](const Node& n) { return 1.0*n.can_resample;});
 
 		//double fb = slp + grammar->log_probability(*s)
 		//		  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
