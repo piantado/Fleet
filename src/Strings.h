@@ -68,10 +68,14 @@ bool contains(const std::string& s, const char x) {
  * @param add -- replace x plus this many characters
  */
 void replace_all(std::string& s, const std::string& x, const std::string& y, int add=0) {
+	// NOTE: this used to restart the search from the beginning of s after every replacement,
+	// which (a) was quadratic and (b) looped forever whenever y contains x (e.g. "a" -> "aa").
+	// We now continue searching after the inserted replacement, so each position is processed once.
+	if(x.empty()) return; // otherwise find() matches at every position and we'd loop forever
 	auto pos = s.find(x);
 	while(pos != std::string::npos) {
-		s.replace(pos,x.length()+add,y);
-		pos = s.find(x);
+		s.replace(pos, x.length()+add, y);
+		pos = s.find(x, pos + y.length());
 	}
 }
 
@@ -268,7 +272,7 @@ unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) 
  * @param nalphabet
  * @return 
  */
-double p_KashyapOommen1984_edit(const std::string x, const std::string y, const double perr, const size_t nalphabet) {
+double p_KashyapOommen1984_edit(const std::string& x, const std::string& y, const double perr, const size_t nalphabet) {
 	// From Kashyap & Oommen, 1984
 	// perr gets used here to define the probability of each of these operations
 	// BUT Note here that we use the logs of these 

@@ -74,11 +74,11 @@ public:
 	 * @param d
 	 */	
 	template<typename... ARGS>
-	void add_chain(ARGS... args) {
-		
+	void add_chain(ARGS&&... args) {
+
 		std::lock_guard guard(running_lock);
-		
-		pool.emplace_back(args...);
+
+		pool.emplace_back(std::forward<ARGS>(args)...); // forward: don't copy the hypothesis and data an extra time
 		running.push_back(RunningState::READY);
 	}
 	
@@ -123,10 +123,10 @@ public:
 					running.at(idx) = RunningState::RUNNING; // say I'm running this one 
 				}
 				
-				// Actually run and yield, being sure to save where everything came from 
+				// Actually run and yield, being sure to save where everything came from
 				Control c = ctl; // make a copy of everything in control
-				c.steps = steps_before_change; c.nthreads = 1; c.runtime = 0; // but update to 
-				for(auto x : pool.at(idx).run(c)) {
+				c.steps = steps_before_change; c.nthreads = 1; c.runtime = 0; // but update to
+				for(auto& x : pool.at(idx).run(c)) { // by reference (as in the steps branch below) -- auto x deep-copied every yielded sample
 					x.born_chain_idx = idx; // set this
 					
 					#ifdef YIELD_ONLY_CHAIN_ZERO

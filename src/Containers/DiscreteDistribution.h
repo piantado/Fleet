@@ -96,16 +96,16 @@ public:
 		 */
 		
 		// We can't store NaN in this container ugh
-		if constexpr (std::is_same<T, double>::value or 
+		if constexpr (std::is_same<T, double>::value or
 					  std::is_same<T, float>::value){
 			assert((not std::isnan(x)) && "*** Cannot store NaNs here, sorry. They don't work with maps and you'll be in for an unholy nightmare");
 		}
-		
-		if(m.find(x) == m.end()) {
-			m[x] = v;
-		}
-		else {
-			m[x] = logplusexp(m[x], v);
+
+		// try_emplace: a single map lookup (the find/operator[] version did two), and it
+		// moves the key in rather than copying it when x is not already present
+		auto [it, inserted] = m.try_emplace(std::move(x), v);
+		if(not inserted) {
+			it->second = logplusexp(it->second, v);
 		}
 	}
 	
@@ -135,7 +135,7 @@ public:
 	
 	void operator<<(const DiscreteDistribution<T>& x) {
 		// adds all of x to me
-		for(auto a : x.values()) {
+		for(const auto& a : x.values()) { // by reference: don't copy each (key,value) pair
 			addmass(a.first, a.second);
 		}
 	}
