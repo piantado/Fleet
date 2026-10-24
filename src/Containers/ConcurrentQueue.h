@@ -162,70 +162,87 @@ public:
  * 		  stores a separate ConcurrentQueue for each thread, and then loops through them. Each
  * 		  thread is therefore pushing onto a different ConcurrentQueue (NOTE: These must be 
  * 		  ConcurrentQueues instead of e.g. std::queues, since the pusher and the popper are 
- * 		  different threads, so they ened all of their locking). ConcurrentQueueRing 
+ * 		  different threads, so they need all of their locking). ConcurrentQueueRing 
  *        prevents most of the locking/synchronization slowness, with only a 
  * 		  little bit of wasted time for the yielding thread.
  * 
- * 		  This provides no guarantees on the order of pops, which may vary erratically based on
- * 	 	  occupancy of the underlying queues.
+ * 		  Pops are served round-robin: after each successful pop, the ring moves on to the next
+ * 		  thread's queue. This guarantees that no producer starves. (If the ring stayed on one 
+ * 		  queue until it emptied, a producer that refills its queue faster than the consumer
+ * 		  drains it would monopolize the consumer, and every other producer would block forever
+ * 		  on its full queue.) Within one thread's queue, items come out in the order pushed; 
+ * 		  across threads there is no ordering guarantee.
  * 
- * 		  NOTE: A ConcurrentQueueRing is meant to be read by a single thread
+ * 		  Threading contract:
+ * 		    - push(item, thr) may be called concurrently from many threads; thr must be < nthreads.
+ * 		      Each queue is a ConcurrentQueue, so pushes block while that thread's queue is full.
+ * 		    - pop() and empty() must be called from a single consumer thread only. They move
+ * 		      pop_index without synchronization between them, and pop() relies on the fact that 
+ * 		      nobody else can drain a queue it has just seen as non-empty.
  */
 template<typename T>
 class ConcurrentQueueRing {
 	
 	size_t nthreads;
 	std::vector<ConcurrentQueue<T>> QS;
-	std::atomic<size_t> pop_index;
+	std::atomic<size_t> pop_index; // next queue to serve; only modified by the consumer thread
 public:
+	/**
+	 * @brief Construct a ring with one queue per producer thread.
+	 * @param t -- number of producer threads, must be >= 1
+	 */
 	ConcurrentQueueRing(size_t t) : nthreads(t), QS(nthreads), pop_index(0){
-		
+		assert(nthreads >= 1 && "*** ConcurrentQueueRing needs at least one thread");
 	}
 	
+	/**
+	 * @brief Push item onto thread thr's queue, blocking while that queue is full.
+	 * @param item
+	 * @param thr -- index of the calling producer thread, in [0, nthreads)
+	 */
 	void push(const T& item, size_t thr) {
-		assert(thr < nthreads); // must have thr >= 0
+		assert(thr < nthreads && "*** ConcurrentQueueRing::push thread index out of range");
 		QS[thr].push(item);
 	}
 	
+	/**
+	 * @brief Try to pop from the current queue. Never blocks. On success, returns the item and
+	 * 		  moves to the next queue (round-robin). If the current queue is empty, moves to the
+	 * 		  next queue and returns std::nullopt, so repeated calls cycle through all queues.
+	 * 		  Calling empty() first positions the ring on a non-empty queue, so a pop() right 
+	 * 		  after empty() returned false always succeeds. Consumer thread only.
+	 * @return 
+	 */
 	std::optional<T> pop() {
 		
+		const size_t i = pop_index;
+		pop_index = (i + 1) % nthreads;
+		
 		// on empty, we just move to the next slot -- no waiting here.
-		if(not QS[pop_index].empty()) {
-			return QS[pop_index].pop();
+		if(not QS[i].empty()) {
+			return QS[i].pop();
 		}
 		
-		pop_index = (pop_index + 1) % nthreads;
-		
-//			print("looping", (size_t)pop_index);
-	
 		return std::nullopt;
-//		assert(false && "*** Should not get here"); return T{};
 	}
 	
+	/**
+	 * @brief Are all queues empty? If not, this leaves pop_index on the next non-empty queue
+	 * 		  (starting the search at the current pop_index), so that pop() serves it. 
+	 * 		  A snapshot: producers may push right after this returns true. Consumer thread only.
+	 * @return 
+	 */
 	bool empty() {
-		// this, helpfully, leaves pop_index on the next 
-		// non-empty queue
 		
-		size_t start_index = pop_index; // check if we loop around
-		
-		while(true) {
-//			print("here", (size_t)start_index, (size_t)pop_index, QS[pop_index].empty());
-			
+		for(size_t k=0;k<nthreads;k++) {
 			if(not QS[pop_index].empty()) {
 				return false; 
 			}
-			else {				
-				pop_index = (pop_index + 1) % nthreads;
-				
-			}
-			
-			if(pop_index == start_index) // if we make it all the way around, we're empty
-				return true; 
-			
-			
+			pop_index = (pop_index + 1) % nthreads;
 		}
-
-		assert(false && "*** Should not get here"); return false;
+		
+		// we made it all the way around (back to where we started), so all are empty
+		return true;
 	}
 	
 };
