@@ -38,11 +38,11 @@ public:
 	}
 	
 	FiniteHistory(FiniteHistory&& fh) {
-		history = fh.history;
+		history = std::move(fh.history); // move, don't copy
 		history_size = (size_t)fh.history_size;
 		history_index = (size_t)fh.history_index;
 		N = (unsigned long)fh.N;
-	}	
+	}
 	
 	void operator=(const FiniteHistory &fh) {
 		history = fh.history;

@@ -44,9 +44,14 @@ struct Control {
 		start(); // just defaultly because it's easier
 	}
 	
-	Control(const Control& c)  : steps(c.steps), runtime(c.runtime), nthreads(c.nthreads), restart(c.restart), break_CTRLC(true) {		
-		
-		// NOTE: this is weird if using multiple threads 
+	Control(const Control& c)  : steps(c.steps), runtime(c.runtime), nthreads(c.nthreads), restart(c.restart),
+								 start_time(c.start_time), break_CTRLC(c.break_CTRLC) {
+		// NOTE: previously this did not copy start_time (leaving it default-constructed, so a
+		// copied Control with runtime>0 that never called start() would compare times against
+		// garbage) and it silently reset break_CTRLC to true. All current callers call start()
+		// after copying, so copying these changes nothing for them -- it just removes the trap.
+
+		// NOTE: this is weird if using multiple threads
 		done_steps = c.done_steps.load();
 	}
 	

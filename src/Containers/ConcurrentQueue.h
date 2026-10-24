@@ -49,7 +49,7 @@ public:
 	
 	bool empty()  { return push_idx == pop_idx; }
 	bool full()   { return (push_idx+1) % N == pop_idx; }
-	size_t size() { return (pop_idx - push_idx + N) % N; } 
+	size_t size() { return (push_idx - pop_idx + N) % N; } // NOTE: was (pop-push+N)%N, which gave N-size
 	
 	void push(const T& x) {	
 	

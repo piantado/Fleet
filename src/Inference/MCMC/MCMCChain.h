@@ -47,15 +47,15 @@ public:
 	
 	FiniteHistory<bool> history;
 	
-	MCMCChain(HYP& h0, typename HYP::data_t d) : 
-			current(h0), data(d), maxval(-infinity), 
+	MCMCChain(HYP& h0, typename HYP::data_t d) :
+			current(h0), data(std::move(d)), maxval(-infinity),
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
-	
-	MCMCChain(HYP&& h0, typename HYP::data_t d) : 
-			current(h0), data(d), maxval(-infinity),
+
+	MCMCChain(HYP&& h0, typename HYP::data_t d) :
+			current(std::move(h0)), data(std::move(d)), maxval(-infinity),
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
@@ -63,23 +63,23 @@ public:
 
 	MCMCChain(const MCMCChain& m) :
 		current(m.current), data(m.data), maxval(m.maxval),
-		samples(m.samples), proposals(m.proposals), acceptances(m.acceptances), 
+		samples(m.samples), proposals(m.proposals), acceptances(m.acceptances),
 		steps_since_improvement(m.steps_since_improvement)	{
 		temperature = m.temperature.load();
 		history     = m.history;
-		
+
 	}
 	MCMCChain(MCMCChain&& m) {
-		current = m.current;
-		data = m.data;
+		current = std::move(m.current); // move, don't copy, the hypothesis and data
+		data = std::move(m.data);
 		maxval = m.maxval;
 		samples = m.samples;
 		proposals = m.proposals;
 		acceptances = m.acceptances;
 		steps_since_improvement = m.steps_since_improvement;
-		
+
 		temperature = m.temperature.load();
-		history = std::move(m.history);		
+		history = std::move(m.history);
 	}
 	
 	virtual ~MCMCChain() { }
@@ -204,21 +204,21 @@ public:
 				// propose, but restart if we're -infinity
 				auto p = current.propose();
 				if(not p) { continue;  }// proposal failed
-					
-				auto [proposal, fb] = p.value();			
+
+				auto [proposal, fb] = std::move(p.value()); // move: don't deep-copy the proposed hypothesis out of the optional
 				
 				++proposals;
 				
 				// A lot of proposals end up with the same function, so if so, save time by not
 				// computing the posterior
 				if(proposal == current) {
-					// copy all the properties
-					// NOTE: This is necessary because == might just check value, but operator= will copy everything else
-					proposal = current; 
-				
+					// NOTE: proposal is not used again in this branch (we keep and yield current),
+					// so there is no need to copy current's properties into it -- doing so was a
+					// full deep copy of the hypothesis on every value-equal proposal
+
 					// we treat this as an accept
-					history << true; 
-					++acceptances;		
+					history << true;
+					++acceptances;
 
 					#ifdef DEBUG_MCMC
 					// they are equal but we just use current here
@@ -317,14 +317,13 @@ public:
 		}
 	}
 	
-	void run() { 
+	generator<HYP&> run() {
 		/**
 		 * @brief Run forever
+		 * NOTE: this previously was declared void but contained co_yield, which does not
+		 * compile if the function is ever instantiated. We just return the generator directly.
 		 */
-		auto samples = run(Control(0, 0));
-		for (auto&& current : samples) {
-			co_yield current;
-		}
+		return run(Control(0, 0));
 	}
 
 	double acceptance_ratio() {

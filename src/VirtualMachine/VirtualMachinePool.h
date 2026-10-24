@@ -125,7 +125,7 @@ public:
 		if(wouldIadd(x->lp + lpinc)) {	
 			assert(x->status == vmstatus_t::GOOD);
 			auto s = new VirtualMachineState_t(*x); // copy
-			s->template push<T>(v); // add v
+			s->template push<T>(std::move(v)); // add v (we own v by value, so move it onto the stack)
 			s->lp += lpinc;
 			this->push(s);	
 			return true;
@@ -144,7 +144,7 @@ public:
 	bool increment_push(VirtualMachineState_t* s, T v, double lpinc) {		
 		if(wouldIadd(s->lp + lpinc)) {		
 			assert(s->status == vmstatus_t::GOOD);
-			s->template push<T>(v); // add this
+			s->template push<T>(std::move(v)); // add this (we own v by value, so move it onto the stack)
 			s->lp += lpinc;
 			this->push(s);	
 			return true;
@@ -179,7 +179,7 @@ public:
 			//print("!", (int)vms->status, vms->recursion_depth, total_vms_steps);
 			
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
-				out.addmass(y, vms->lp);
+				out.addmass(std::move(y), vms->lp); // y is dead after this; don't copy the output
 				total_instruction_count += vms->runtime_counter.total;
 			}
 			

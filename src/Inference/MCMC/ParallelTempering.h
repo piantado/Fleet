@@ -85,9 +85,9 @@ public:
 	}
 	
 	template<typename... ARGS>
-	void add_chain(ARGS... args) {
-		
-		Super::add_chain(args...);	
+	void add_chain(ARGS&&... args) {
+
+		Super::add_chain(std::forward<ARGS>(args)...);
 		this->swap_history.emplace_back();
 	}
 	
@@ -198,9 +198,9 @@ public:
 	
 	
 	generator<HYP&> run(Control ctl) {
-		
+
 //		print("Starting swapper thread");
-		
+
 		// Start a swapper and adapter thread
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
 		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this);
@@ -208,6 +208,10 @@ public:
 		#ifdef PARALLEL_TEMPERING_SHOW
 		std::thread shower(&ParallelTempering<HYP>::__shower_thread, this);
 		#endif
+		// NOTE: if a consumer destroys this generator before it completes, the joinable
+		// std::threads here (and ChainPool's worker threads underneath) are destroyed, which
+		// calls std::terminate. All current Fleet entry points run their sample loops to
+		// completion, so this only matters for code that breaks out of the sample loop early.
 
 		// run normal pool run
 		for(auto& h : ChainPool<HYP>::run(ctl)) {
@@ -223,8 +227,6 @@ public:
 		#ifdef PARALLEL_TEMPERING_SHOW
 		shower.join();
 		#endif
-
-		
 	}
 	
 	void show_statistics() {
@@ -289,7 +291,12 @@ public:
 		
 		// and then convert S to temperatures again
 		// but never adjust i=0 (T=1) OR the last one
-		for(size_t i=1;i<this->pool.size();i++) { 
+		// NOTE: this loop must stop at size()-1: it used to run over the last chain too,
+		// whose sw was never computed above (so sw[last]==0.0), which overwrote the top
+		// temperature with pool[last-1].temperature + exp(0) = T[last-1]+1 on every
+		// adaptation -- destroying the top of the ladder (e.g. with 2 chains, T went to 2).
+		// Per the adaptation scheme (arXiv:1501.05823), both endpoint temperatures stay fixed.
+		for(size_t i=1;i+1<this->pool.size();i++) {
 			this->pool[i].temperature = this->pool[i-1].temperature + exp(sw[i]);
 		}
 	}

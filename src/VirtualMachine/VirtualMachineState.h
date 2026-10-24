@@ -154,9 +154,7 @@ public:
 			assert(false);
 		}
 		
-		T x = stack<T>().top();
-		stack<T>().pop();
-		return x;
+		return stack<T>().toppop(); // moves off the stack (the old top()+pop() made a copy)
 	}
 	
 	/**
