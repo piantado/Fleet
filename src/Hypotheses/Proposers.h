@@ -143,7 +143,7 @@ namespace Proposals {
 			
 		#endif
 
-		return std::make_pair(ret, fb);
+		return std::make_pair(std::move(ret), fb); // move: ret is a whole tree, don't deep-copy it into the pair
 	}
 
 	
@@ -268,7 +268,7 @@ namespace Proposals {
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
 		
-		return std::make_pair(ret, forward-backward);
+		return std::make_pair(std::move(ret), forward-backward); // move: don't deep-copy the tree
 	}
 	
 	template<typename GrammarType>
@@ -316,7 +316,7 @@ namespace Proposals {
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
 		
-		return std::make_pair(ret, forward-backward);
+		return std::make_pair(std::move(ret), forward-backward); // move: don't deep-copy the tree
 	}
 	
 	
@@ -375,7 +375,7 @@ namespace Proposals {
 		// here we compute fb while ignoring the normalizing constants which is why we don't use rp
 		double fb = log(sampler(*newr))-log(sampler(oldRule));
 		
-		return std::make_pair(ret,fb); // forward-backward is just probability of sampling rp since s cancels
+		return std::make_pair(std::move(ret),fb); // forward-backward is just probability of sampling rp since s cancels
 	}
 
 
@@ -427,7 +427,7 @@ namespace Proposals {
 		s->set_child(y, std::move(tmp));
 //		print("SWAPPED:", ret);
 
-		return std::make_pair(ret,0.0);
+		return std::make_pair(std::move(ret),0.0);
 	}
 		
 		

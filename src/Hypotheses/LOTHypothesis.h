@@ -86,7 +86,7 @@ public:
 	}
 
 	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>() {
-		set_value(x);
+		set_value(std::move(x)); // forward the rvalue-ness; x is an lvalue in here
 	}
 	
 	// parse this from a string
@@ -98,8 +98,8 @@ public:
 		this->operator=(c); // copy all this garbage -- not sure what to do here
 	}
 
-	LOTHypothesis(const LOTHypothesis&& c) {
-		this->operator=(std::move(c)); 
+	LOTHypothesis(LOTHypothesis&& c) {
+		this->operator=(std::move(c));
 	}
 
 	LOTHypothesis& operator=(const LOTHypothesis& c) {
@@ -114,17 +114,26 @@ public:
 		return *this;
 	}
 
-	LOTHypothesis& operator=(const LOTHypothesis&& c) {
-		MCMCable<this_t,_datum_t,_data_t>::operator=(c);
-		
+	LOTHypothesis& operator=(LOTHypothesis&& c) {
+		// NOTE: this must NOT take (const LOTHypothesis&&) -- a const rvalue cannot actually
+		// be moved from, so the old version deep-copied the program and the whole value tree
+		// on every "move" (e.g. on every MCMC accept and every parallel-tempering swap).
+		MCMCable<this_t,_datum_t,_data_t>::operator=(c); // bases hold scalars; copying them is cheap
+
 		total_instruction_count_last_call = c.total_instruction_count_last_call;
 		total_vms_steps = c.total_vms_steps;
-		program = c.program; //std::move(c.program); 
-		value = c.value; // std::move(c.value); // no setting -- just copy the program
-		if(c.program.loader == &c) 
-			program.loader = this;  // something special here -- if c's loader was itself, make this myself; else leave it
+
+		// something special here -- if c's loader was itself, make this myself; else leave it
+		// (must be checked *before* we move the program out of c)
+		const bool self_loader = (c.program.loader == &c);
+
+		program = std::move(c.program); // moves the instruction stack; keeps the loader pointer, fixed below
+		value   = std::move(c.value);   // moves the tree -- no re-compile needed, the program already matches
+
+		if(self_loader)
+			program.loader = this;
 		return *this;
-	}	
+	}
 	
 	
 	/**
@@ -134,17 +143,15 @@ public:
 	[[nodiscard]] virtual ProposalType propose() const override {
 
 		// simplest way of doing proposals
-		auto p = Proposals::regenerate(grammar, value);	
+		auto p = Proposals::regenerate(grammar, value);
 		if(not p) return {}; // if failed
-		
-		auto x = p.value();
-		
+
 		this_t ret = *static_cast<const this_t*>(this); // copy so we copy everything
-		ret.set_value(x.first);
-		
+		ret.set_value(std::move(p->first)); // move the proposed tree in rather than copying it
+
 		// return a pair of Hypothesis and forward-backward probabilities
-		return std::make_pair(ret, x.second); // return this_t and fb
-	}	
+		return std::make_pair(std::move(ret), p->second); // return this_t and fb
+	}
 
 	[[nodiscard]] static this_t sample() {
 		return this_t(grammar->generate());
@@ -179,8 +186,8 @@ public:
 		if(should_compile) 
 			this->compile(); // compile with myself defaultly as a loader
 	}
-	void set_value(Node&& v, bool should_compile=true) { 
-		value = v;
+	void set_value(Node&& v, bool should_compile=true) {
+		value = std::move(v); // v is an lvalue in here; without std::move this overload silently copied
 		if(should_compile)
 			this->compile();
 	}
@@ -219,10 +226,10 @@ public:
 	 */
 	virtual void push_program(Program<VirtualMachineState_t>& s) override {
 		this->was_called = true; // by definition we should be setting this if we're a program loader
-		
-		for(auto it = this->program.begin(); it != this->program.end(); it++) {
-			s.push(*it);
-		}		
+
+		// bulk-append the instructions (identical order to pushing them one at a time,
+		// but a single vector insert instead of per-instruction push_backs)
+		s.append(this->program);
 	}
 
 	virtual std::string string(std::string prefix="") const override {

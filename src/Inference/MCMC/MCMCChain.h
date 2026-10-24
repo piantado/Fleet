@@ -204,8 +204,8 @@ public:
 				// propose, but restart if we're -infinity
 				auto p = current.propose();
 				if(not p) { continue;  }// proposal failed
-					
-				auto [proposal, fb] = p.value();			
+
+				auto [proposal, fb] = std::move(p.value()); // move: don't deep-copy the proposed hypothesis out of the optional
 				
 				++proposals;
 				

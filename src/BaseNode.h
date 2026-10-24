@@ -54,7 +54,11 @@ public:
 		children = t.children;
 		fix_child_info();
 	}
-	void operator=(const this_t&& t) {
+	void operator=(this_t&& t) {
+		// NOTE: this must NOT take a const reference -- with (const this_t&&),
+		// std::move(t.children) below silently selects the *copy* assignment of
+		// std::vector, so every "move" of a node was actually a deep copy.
+		if(this == &t) return; // guard against self-move (e.g. via set_child aliasing)
 		parent = t.parent;
 		pi = t.pi;
 		children = std::move(t.children);
@@ -296,25 +300,26 @@ public:
 	}
 	void set_child(const size_t i, this_t&& n) {
 		/**
-		 * @brief Child setter for move
+		 * @brief Child setter for move. NOTE: n must actually be moved from here
+		 *        (children[i] = std::move(n)) or else this silently deep-copies.
 		 * @param i
 		 */
-		
+
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
-		
-		while(children.size() <= i) // make it big enough for i  
+
+		while(children.size() <= i) // make it big enough for i
 			children.push_back(this_t());
 
-		children[i] = n;
+		children[i] = std::move(n);
 		children[i].pi = i;
 		children[i].parent = static_cast<this_t*>(this);
 	}
-	
+
 	void push_back(this_t& n) {
 		set_child(children.size(), n);
 	}
 	void push_back(this_t&& n) {
-		set_child(children.size(), n);
+		set_child(children.size(), std::move(n));
 	}
 
 	/**
