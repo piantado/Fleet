@@ -457,10 +457,47 @@ std::pair<t*,double> max_of(const T& s, const std::function<double(const t&)>& f
 	return std::make_pair(out, mx);
 }
 
-template<typename t, typename T> 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Plain-function-pointer versions of sample_z/sample. These are called in very hot
+// loops (e.g. node selection in every MCMC proposal), where wrapping f into a
+// std::function on every call and dispatching through it for every element is
+// measurably expensive. The logic -- including the treatment of NaN, the order of
+// summation, and the randomness consumed -- is identical to the std::function
+// versions above, so results are bit-for-bit the same.
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template<typename t, typename T>
+double sample_z(const T& s, double(*f)(const t&)) {
+	double z = 0.0;
+	for(auto& x: s) {
+		auto fx = f(x);
+		if(not std::isnan(fx)) {
+			assert(fx >= 0.0 && "*** Cannot use sample/sample_z with negative probabilities. Did you mean to use sample_lp/sample_lp_z?");
+			z += fx;
+		}
+	}
+	return z;
+}
+
+template<typename t, typename T>
+std::pair<t*,double> sample(const T& s, double z, double(*f)(const t&)) {
+	assert(z > 0 && "*** Cannot call sample with zero normalizer -- is s empty?");
+	double r = z * uniform();
+	for(auto& x : s) {
+		auto fx = f(x);
+		if(std::isnan(fx)) continue; // treat as zero prob
+		assert(fx >= 0.0);
+		r -= fx;
+		if(r <= 0.0)
+			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+	}
+
+	throw YouShouldNotBeHereError("*** Should not get here in sampling");
+}
+
+template<typename t, typename T>
 std::pair<t*,double> sample(const T& s, double(*f)(const t&)) {
-	std::function sf = f;
-	return sample<t,T>(s,sf);
+	return sample<t,T>(s, sample_z<t,T>(s,f), f);
 }
 
 template<typename t, typename T> 

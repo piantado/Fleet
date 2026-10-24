@@ -110,15 +110,19 @@ namespace Proposals {
 
 		Node ret = from; // copy
 
-		if(from.sum<double>(can_resample) == 0.0) 
+		// compute the normalizer once and reuse it: previously the tree was traversed three
+		// times to choose a node (a sum for this zero-check, a sum inside sample, and the
+		// selection scan); now twice. z==0 means nothing is resampleable.
+		const double z = sample_z<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
+		if(z == 0.0)
 			return {};
-		
-		// 9/2023 -- No ide what this note below was, or what that edit was. 
+
+		// 9/2023 -- No ide what this note below was, or what that edit was.
 			// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but
 			// we won't actually change any unless can_resample is true
-			// BUT if we DO change a can_resample node, we change everything below it. 
+			// BUT if we DO change a can_resample node, we change everything below it.
 		// I changed to sample only those we can resample:
-		auto [s, slp] = sample<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
+		auto [s, slp] = sample<Node,Node>(ret, z, +[](const Node& n) { return 1.0*n.can_resample;});
 		
 //		#ifdef DEBUG_PROPOSE
 //			DEBUG("REGENERATE", from, *s, s->can_resample);

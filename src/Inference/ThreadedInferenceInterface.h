@@ -99,18 +99,29 @@ public:
 		}
 	
 		// now yield as long as we have some that are running
+		//
+		// When the queue is empty we back off ADAPTIVELY. The original code busy-spun at 100%
+		// CPU, stealing a core from the worker chains whenever yields are sparse (e.g. with
+		// MCMCYieldOnlyChanges). A fixed 100us sleep fixes that but throttles workloads that
+		// yield on every step, where the samplers momentarily outrun this consumer many
+		// thousands of times per second and each catch-up then costs a full sleep (measured:
+		// ~2x fewer samples/sec on RationalRules). So: on a briefly-empty queue we yield() the
+		// CPU a bounded number of times (cheap, stays responsive to fast producers), and only
+		// fall back to sleeping when the queue stays empty (rare yields -- then the sleep is
+		// what frees the core for the workers).
+		size_t idle = 0;
 		while(__nrunning > 0) { // we don't want to stop when its empty because a thread might fill it
 			if(not to_yield.empty())  {
+				idle = 0;
 
 				auto val = to_yield.pop(); // search through until we find one
 				if(val.has_value())
 					co_yield val.value();
 			}
+			else if(++idle <= 64) {
+				std::this_thread::yield();
+			}
 			else {
-				// Previously this loop busy-spun at 100% CPU whenever the queue was empty
-				// (which is most of the time when e.g. MCMCYieldOnlyChanges is set), stealing
-				// a core from the worker threads. A short sleep costs at most ~0.1ms of extra
-				// latency per batch of samples and frees the core for the workers.
 				std::this_thread::sleep_for(std::chrono::microseconds(100));
 			}
 
