@@ -330,7 +330,10 @@ public:
 		 * NOTE: this previously was declared void but contained co_yield, which does not
 		 * compile if the function is ever instantiated. We just return the generator directly.
 		 */
-		return run(Control(0, 0));
+		auto samples = run(Control(0, 0));
+		for (auto&& current : samples) {
+			co_yield current;
+		}
 	}
 
 	double acceptance_ratio() {
