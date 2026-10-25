@@ -205,80 +205,67 @@ namespace Proposals {
 
 	template<typename GrammarType>
 	std::optional<std::pair<Node, double>> insert_tree(GrammarType* grammar, const Node& from) {
-		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
-		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
-		// since that's what's being replaced! 
+		// This proposal selects a node s, generates a replacement subtree t of the same type, 
+		// and then re-inserts the old s at a randomly chosen slot of matching type inside t. 
+		//
+		// FORWARD-BACKWARD DERIVATION (pathwise, with the overwritten subtree as an auxiliary
+		// variable -- this is what makes the correction exact; see Testing/DetailedBalance):
+		//   forward path:  choose s uniformly among resampleable nodes       1/Zx
+		//                  generate t                                        G(t)
+		//                  choose the slot q among type-matching,            1/Zt
+		//                  resampleable nodes of t
+		//                  (the generated subtree u that sat at q is overwritten by old_s)
+		//   reverse path (a delete_tree move): choose the same position      1/Zy
+		//                  choose the old_s slot among type-matching         1/ZT
+		//                  nodes of the final subtree T
+		//                  draw its auxiliary subtree u' = u                 G(u)
+		// so fb = [ -log Zx + lp(t) - log Zt ] - [ -log Zy + lp(u) - log ZT ],
+		// and lp(t) - lp(u) = lp(T) - lp(old_s), which makes fb_insert(a->b) exactly equal to
+		// -fb_delete(b->a) path by path. 
+		//
+		// NOTE: the old version used lp(t) - lp(old_s) for the generation term and symmetric
+		// lp_sample_eq terms that cancelled, so its correction contained the log probability 
+		// of the *discarded* subtree u -- a path-dependent error of many nats that measurably
+		// broke detailed balance (see Testing/DetailedBalance). 
 		
 		Node ret = from; // copy
 
-		if(ret.sum<double>(can_resample) == 0.0) 
+		const double Zx = ret.sum<double>(can_resample);
+		if(Zx == 0.0) 
 			return {};
 		
-		// So: 
-		// we pick node s to be replaced.
-		// we create t to replace it with
-		// then somewhere below t, we choose something of type s.nt(), called q, to put s
-		
-		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr into ret
-//		print("Choosing s=", s->string());
+		auto [s, slp] = sample<Node,Node>(ret, Zx, can_resample); // s is a ptr into ret; slp = -log Zx
 		
 		#ifdef DEBUG_PROPOSE
 			DEBUG("INSERT-TREE", from, *s);
 		#endif
-
 		
-		Node old_s = *s; // the old value of s, copied -- needed for fb and for replacement
+		Node old_s = *s; // the old value of s, copied -- it gets pasted back in below
 		
 		Node* captured_s = s; // clang doesn't like taking s for some reason
 		std::function can_resample_matches_s_nt = [captured_s](const Node& n) -> double { 
 			return can_resample(n)*(n.nt() == captured_s->nt()); 
 		};
 		
-		// make something of the same type as s that we can 
-		// put s into as a subtree below
+		// make something of the same type as s that we can put old_s into as a subtree below
 		Node t = grammar->generate(s->nt()); 
-//		print("Generated t=", t.string());
-		s->assign(t);// copy, not move, since we need it below
-//		s->fullprint();
-//		checkNode(grammar, *s);
+		const double lp_t = grammar->log_probability(t);
+		s->assign(std::move(t));
 				
-		// q is the thing in t that s will replace
-		// this is sampeld from t, but we do it from s after assignment
-		// since that was a bug before ught
-		auto [q, qlp] = sample<Node,Node>(*s, can_resample_matches_s_nt); 
-//		print("Choosing q=", q->string());
+		// q is the slot in t that old_s will replace
+		// (sampled after the assignment so q points into ret)
+		auto [q, qlp] = sample<Node,Node>(*s, can_resample_matches_s_nt); // qlp = -log Zt
 		
-		// and then we assign the subtree, q, to be the original s
-		q->assign(old_s);
-//		print("Ret after Q assignment=", ret.string());
-//		s->fullprint();
+		const double lp_u = grammar->log_probability(*q); // the generated subtree we are about to overwrite
 		
-//		checkNode(grammar, *s);
-
-		// now if we replace something below t with s, there are multiples ones we could have done...
-		auto lpq = lp_sample_eq(*q, *s, can_resample_matches_s_nt); // 
-			
-//		CERR "----INSERT-----------" ENDL;
-//		CERR from ENDL;
-//		CERR *s ENDL;
-//		CERR t ENDL;
-//		CERR s.second TAB grammar->log_probability(t) TAB grammar->log_probability(old_s) TAB lpq ENDL;
+		// and then we assign the slot q to be the original s
+		q->assign(std::move(old_s));
 		
-		// forward is choosing s, generating everything *except* what replaced s, and then replacing
-		double forward = slp +  // must get exactly this s
-						 (grammar->log_probability(t)-grammar->log_probability(old_s)) +  // generate the rest of the tree
-						 lpq; // probability of getting any s
+		const double logZT = log(s->template sum<double>(can_resample_matches_s_nt)); // matching slots in the final subtree
+		const double Zy    = ret.sum<double>(can_resample);                  // resampleable nodes of the result
 		
-		/// backward is we choose t exactly, then we pick anything below that is equal to s
-		double backward = lp_sample_one<Node,Node>(t, ret, can_resample) + 
-						  lp_sample_eq<Node,Node>(old_s, *s, can_resample_matches_s_nt);
-//		print("RETURNINGI", ret);
-		
-//		if(std::isinf(forward)) {
-//			print(slp, lpq, grammar->log_probability(t), grammar->log_probability(old_s) );
-//			print(s->string(), t.string());
-//			
-//		}
+		const double forward  = slp + lp_t + qlp;
+		const double backward = -log(Zy) + lp_u - logZT;
 		
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
@@ -288,45 +275,66 @@ namespace Proposals {
 	
 	template<typename GrammarType>
 	std::optional<std::pair<Node, double>> delete_tree(GrammarType* grammar, const Node& from) {
-		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
-		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
-		// since that's what's being replaced
+		// The reverse of insert_tree: select a node s, select a type-matching node q inside 
+		// it, and promote q to replace s (deleting everything in s around q). 
+		//
+		// FORWARD-BACKWARD DERIVATION (see insert_tree): the reverse move is an insert_tree 
+		// that regenerates old_s around q, i.e. generates t_rev = old_s with some subtree u' 
+		// in place of q. u' is an auxiliary variable of the reverse path: its generation 
+		// probability cancels (it appears in both lp(t_rev) and the forward side of the 
+		// pairing), but the number of type-matching slots of t_rev -- the normalizer of the 
+		// reverse slot choice -- depends on u', so we DRAW u' from the grammar and use its 
+		// matching count. This makes fb_delete(a->b) exactly -fb_insert(b->a) path by path. 
+		//   forward path:  choose s                                          1/Zx
+		//                  choose q among type-matching nodes of s           1/Zsub
+		//                  (draw the reverse move's auxiliary u'             G(u') -- cancels)
+		//   reverse path:  choose the same position                          1/Zy
+		//                  generate t_rev = old_s with u' at q's slot        G(old_s)/G(q)*G(u')
+		//                  choose the slot among type-matching nodes         1/Ztrev,
+		//                  of t_rev                                          Ztrev = Zsub - m(q) + m(u')
 
 		Node ret = from; // copy
 
-		if(ret.sum(can_resample) == 0.0) 
+		const double Zx = ret.sum<double>(can_resample);
+		if(Zx == 0.0) 
 			return {};
 		
 		// s is who we edit at
-		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr to ret
-		Node old_s = *s; // the old value of s, copied -- needed for fb
+		auto [s, slp] = sample<Node,Node>(ret, Zx, can_resample); // s is a ptr to ret; slp = -log Zx
 		
 		#ifdef DEBUG_PROPOSE
 			DEBUG("DELETE-TREE", from, *s);
 		#endif
 
 		Node* captured_s = s; // clang doesn't like capturing s for some reason
-		std::function can_resample_matches_s_nt = [&](const Node& n) -> double { 
+		std::function can_resample_matches_s_nt = [captured_s](const Node& n) -> double { 
 			return can_resample(n)*(n.nt() == captured_s->nt()); 
 		};
 		
+		const double lp_old_s = grammar->log_probability(*s);
+		const double Zsub     = s->template sum<double>(can_resample_matches_s_nt);
+		
 		// q is who we promote here
-		auto [q, qlp] = sample(*s, can_resample_matches_s_nt);
-		Node newq = *q; // must make a copy since q gets deleted in assignment... TODO: Can clean up with std::move?
+		auto [q, qlp] = sample<Node,Node>(*s, Zsub, can_resample_matches_s_nt); // qlp = -log Zsub
 		
-		// forward is choosing s, and then anything equal to q within
-		double forward = slp + lp_sample_eq<Node,Node>(*q, *s, can_resample_matches_s_nt); 
+		const double lp_q = grammar->log_probability(*q);
+		const double m_q  = q->template sum<double>(can_resample_matches_s_nt); // matching slots inside the promoted subtree
 		
-		// probability of generating everything in s except q
-		double tlp = grammar->log_probability(old_s) - grammar->log_probability(*q); 
+		// the reverse insert's auxiliary subtree u' (only its matching count enters fb; 
+		// its generation probability cancels between the two path directions)
+		Node uprime = grammar->generate(s->nt());
+		const double m_u = uprime.sum<double>(can_resample_matches_s_nt);
+		
+		Node newq = *q; // must make a copy since q lives inside what the assignment destroys
 		
 		// promote q here
-		s->assign(newq);
+		s->assign(std::move(newq));
 	
-		/// backward is we choose the *new* s, then generate everything else, and choose anything equal
-		double backward = lp_sample_one<Node,Node>(*s,ret,can_resample) + 
-						  tlp + 
-						  lp_sample_eq<Node,Node>(newq,old_s,can_resample_matches_s_nt);
+		const double Zy     = ret.sum<double>(can_resample);
+		const double logZtrev = log(Zsub - m_q + m_u);
+		
+		const double forward  = slp + qlp;
+		const double backward = -log(Zy) + (lp_old_s - lp_q) - logZtrev;
 		
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
