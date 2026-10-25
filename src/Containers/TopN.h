@@ -69,7 +69,7 @@ public:
 	
 	void operator=(const TopN<T>& x) {
 		if (this == &x)
-			return *this;
+			return; // NOTE: must be a bare return -- this operator returns void, and `return *this;` does not compile
 
 		clear();
 		set_print_best(x.print_best);				
