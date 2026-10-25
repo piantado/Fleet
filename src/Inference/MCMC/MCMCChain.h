@@ -245,6 +245,13 @@ public:
 					// TODO: This is a little inefficient in that we compute log(uniform()) even
 					// when we are special (and it is thus unused)
 					const double u = log(uniform());
+
+					// Load the (atomic) temperature once and evaluate current's tempered posterior
+					// once: previously these were read/computed again for the acceptance ratio below,
+					// and the ParallelTempering adapter could even change the temperature in between,
+					// making the MH decision use inconsistent temperatures within one step.
+					const double temp = temperature;
+					const double current_at = current.at_temperature(temp);
 									
 					// NOTE: The above is NOT right because the prior is not at temperature, so
 					// instead of multiplying by temperature we have to do something smarter to fix the fact that
@@ -259,7 +266,7 @@ public:
 					// account tempearture
 					// NOTE: This breakout is on *posteriors* but in compute_posterior it is converted to one 
 					// on likelihoods for compute_likelihood
-					const auto breakoutpair = std::make_pair(u + current.at_temperature(temperature) + fb, (double)temperature);
+					const auto breakoutpair = std::make_pair(u + current_at + fb, temp);
 					
 					proposal.compute_posterior(data, breakoutpair);
 //					proposal.compute_posterior(data);
@@ -271,7 +278,7 @@ public:
 						print("#Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
 					}
 					
-					const double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
+					const double ratio = proposal.at_temperature(temp) - current_at - fb;
 					
 					// this is just a little debugging/checking code to see that we are making the same decision as 
 					// without breakout. It should be commented out unless we're check
@@ -323,7 +330,10 @@ public:
 		 * NOTE: this previously was declared void but contained co_yield, which does not
 		 * compile if the function is ever instantiated. We just return the generator directly.
 		 */
-		return run(Control(0, 0));
+		auto samples = run(Control(0, 0));
+		for (auto&& current : samples) {
+			co_yield current;
+		}
 	}
 
 	double acceptance_ratio() {

@@ -43,11 +43,15 @@ public:
 	 * @file Top.h
 	 * @brief Check if a type has a posterior function or not
 	 */
-	template <typename X, typename = double>
+	template <typename X, typename = int>
 	struct HasPosterior : std::false_type { };
 	template <typename X>
 	struct HasPosterior <X, decltype((void) X::posterior, 0)> : std::true_type { };
 	//https://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
+	// NOTE: the primary template's default parameter must be int (the type of the
+	// specialization's `0` expression). It used to be double, so HasPosterior<T> meant
+	// HasPosterior<T,double>, which NEVER matched the specialization -- so the check below
+	// that keeps -infinity/NaN-posterior hypotheses out of TopN was silently disabled.
 		
 	TopN(size_t n=FleetArgs::ntop) : N(n) { set_print_best(FleetArgs::top_print_best); }
 	
@@ -65,7 +69,7 @@ public:
 	
 	void operator=(const TopN<T>& x) {
 		if (this == &x)
-			return;
+			return *this;
 
 		clear();
 		set_print_best(x.print_best);				

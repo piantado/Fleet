@@ -99,21 +99,22 @@ public:
 		}
 	
 		// now yield as long as we have some that are running
+		//
+		// NOTE: when the queue is empty this loop deliberately BUSY-SPINS. Fast models push
+		// millions of samples per second through here, and the consumer momentarily catches up
+		// many thousands of times a second; sleeping (even ~100us) on each of those catch-ups
+		// throttles throughput badly, and even sched_yield showed up. The cost of spinning is
+		// that this thread burns a core whenever yields are sparse (e.g. with
+		// MCMCYieldOnlyChanges) -- that is the accepted trade-off, so don't "fix" it by adding
+		// a sleep here. 
 		while(__nrunning > 0) { // we don't want to stop when its empty because a thread might fill it
 			if(not to_yield.empty())  {
-
+				
 				auto val = to_yield.pop(); // search through until we find one
 				if(val.has_value())
 					co_yield val.value();
 			}
-			else {
-				// Previously this loop busy-spun at 100% CPU whenever the queue was empty
-				// (which is most of the time when e.g. MCMCYieldOnlyChanges is set), stealing
-				// a core from the worker threads. A short sleep costs at most ~0.1ms of extra
-				// latency per batch of samples and frees the core for the workers.
-				std::this_thread::sleep_for(std::chrono::microseconds(100));
-			}
-
+			
 		}
 		
 		// now we're done filling but we still may have stuff in the queue

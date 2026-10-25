@@ -110,30 +110,45 @@ namespace Proposals {
 
 		Node ret = from; // copy
 
-		if(from.sum<double>(can_resample) == 0.0) 
+		// Compute the normalizer once and reuse it (z==0 means nothing is resampleable). 
+		// NOTE: we use the recursive BaseNode::sum rather than the iterator-based sample_z: 
+		// the recursion inlines (see max-inline-insns-recursive in Fleet.mk) while the 
+		// NodeIterator walks parent pointers with a function call per node, which showed up 
+		// as a few percent of total MCMC time. The weights are exactly 0.0/1.0, so the sum 
+		// is an exact integer in any summation order and the value is identical. 
+		const double z = ret.sum<double>(+[](const Node& n) { return 1.0*n.can_resample;});
+		if(z == 0.0)
 			return {};
-		
-		// 9/2023 -- No ide what this note below was, or what that edit was. 
+
+		// 9/2023 -- No ide what this note below was, or what that edit was.
 			// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but
 			// we won't actually change any unless can_resample is true
-			// BUT if we DO change a can_resample node, we change everything below it. 
+			// BUT if we DO change a can_resample node, we change everything below it.
 		// I changed to sample only those we can resample:
-		auto [s, slp] = sample<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
+		auto [s, slp] = sample<Node,Node>(ret, z, +[](const Node& n) { return 1.0*n.can_resample;});
 		
 //		#ifdef DEBUG_PROPOSE
 //			DEBUG("REGENERATE", from, *s, s->can_resample);
 //		#endif
 			
-		double oldgp = grammar->log_probability(*s); // reverse probability generating 
+		double oldgp = grammar->log_probability(*s); // reverse probability generating
 
-		s->assign(grammar->generate(s->nt())); 
+		s->assign(grammar->generate(s->nt()));
 		// also removed 9/2023:
 //		__regenerate_when_can_resample(grammar,*s);
-		
-		//double fb = slp + grammar->log_probability(*s) 
+
+		// The backward move must choose s out of the NEW tree, which may have a different
+		// number of (resampleable) nodes than the old one. (sum, not sample_z: see above.)
+		const double z_new = ret.sum<double>(+[](const Node& n) { return 1.0*n.can_resample;});
+
+		//double fb = slp + grammar->log_probability(*s)
 		//		  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
-		double fb = (-log(from.count()) + grammar->log_probability(*s)) - 
-				    (-log(ret.count()) + oldgp);
+		// NOTE: the proposal above samples s uniformly among the nodes with can_resample set,
+		// so the Metropolis-Hastings correction must use the number of *resampleable* nodes
+		// (z and z_new), not the total node counts: using count() here (as this used to) is
+		// identical when every node is resampleable, and wrong otherwise.
+		double fb = (-log(z)     + grammar->log_probability(*s)) -
+				    (-log(z_new) + oldgp);
 
 		#ifdef DEBUG_PROPOSE
 			CERR "FORWARD" TAB slp + grammar->log_probability(*s) ENDL;

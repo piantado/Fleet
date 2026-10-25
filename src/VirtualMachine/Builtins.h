@@ -66,8 +66,11 @@ namespace Builtins {
 	
 	template<typename Grammar_t>
 	Primitive<bool,bool,bool> Implies(Op::Implies, BUILTIN_LAMBDA {
-		bool x = vms->template getpop<bool>(); 
-		bool y = vms->template getpop<bool>(); 
+		// NOTE: arguments come off the stack in REVERSE order (the second argument is on
+		// top -- see how Grammar::add pops a1 before a0). The old code popped into x first,
+		// so implies(a,b) actually computed b -> a.
+		bool y = vms->template getpop<bool>(); // second argument (consequent)
+		bool x = vms->template getpop<bool>(); // first argument (antecedent)
 		vms->template push<bool>( (not x) or y);
 	});
 	

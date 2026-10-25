@@ -429,12 +429,14 @@ public:
 	template<typename T>
 	T sum(std::function<T(const this_t&)>& f ) const {
 		/**
-		 * @brief Apply f to me and everything below me, adding up the result. 
+		 * @brief Apply f to me and everything below me, adding up the result.
 		 * @param f
-		 * @return 
+		 * @return
 		 */
-		
-		T s = f(* dynamic_cast<const this_t*>(this)); // a little ugly here because it needs to be the subclass type
+
+		// NOTE: static_cast, not dynamic_cast -- by the CRTP construction this is always a
+		// this_t, and dynamic_cast did an RTTI lookup on every node of every traversal
+		T s = f(* static_cast<const this_t*>(this)); // a little ugly here because it needs to be the subclass type
 		for(auto& c: this->children) {
 			s += c.sum(f);
 		}
@@ -443,8 +445,13 @@ public:
 
 	template<typename T>
 	T sum(T(*f)(const this_t&) ) const {
-		std::function ff = f;
-		return sum(ff);
+		// direct version for plain function pointers: this used to wrap f in a std::function
+		// (constructed on every call) and dispatch through it for every node
+		T s = f(* static_cast<const this_t*>(this));
+		for(auto& c: this->children) {
+			s += c.sum(f);
+		}
+		return s;
 	}
 	
 	
@@ -455,7 +462,7 @@ public:
 		 * @return 
 		 */
 		
-		if(not f(* dynamic_cast<const this_t*>(this))) 
+		if(not f(* static_cast<const this_t*>(this))) // static_cast: always valid under CRTP, no RTTI lookup
 			return false;
 			
 		for(auto& c: this->children) {
