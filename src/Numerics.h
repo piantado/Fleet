@@ -151,6 +151,10 @@ T logplusexp(const T a, const T b) {
 	// It is easy to derive a good polynomial approximation that is a bit faster (using sollya) on [-25,0] but that appears
 	// not to be worth it at this point. 
 	
+	// NaN must propagate: without this check, max/min treat NaN inconsistently and 
+	// logplusexp(a, NaN) silently returned a + log(2). 
+	if(std::isnan(a) or std::isnan(b)) return NaN;
+	
 	if     (a == -infinity) return b;
 	else if(b == -infinity) return a;
 	
@@ -185,27 +189,47 @@ T logplusexp_full(const T a, const T b) {
 
 
 /**
- * @brief Compute log(sum(exp(v)).
- * 		  For now, this just unrolls logplusexp, but we might consider the faster (standard) variant where we pull out the max.
+ * @brief Compute log(sum(exp(v)) -- exactly, with the standard max trick. 
+ * 		  NOTE: this used to unroll logplusexp, whose fast-path drops any term more than 
+ * 		  ~13.8 below the running max. That is fine for a single pair, but across a large 
+ * 		  collection the dropped terms add up: logsumexp of {0} + 1e5 copies of -15 
+ * 		  returned 0 instead of 0.0301. Here nothing is dropped. 
  * @param v
  * @return 
  */
 template<typename t>
 double logsumexp(const t& v) {
-	double lse = -infinity;
+	double mx = -infinity;
 	for(auto& x : v) {
-		lse = logplusexp(lse,x);
+		if(std::isnan(x)) return NaN;
+		if(x > mx) mx = x;
 	}
-	return lse;
+	if(mx == -infinity) return -infinity; // empty, or everything was -infinity
+	if(mx ==  infinity) return  infinity;
+	
+	double s = 0.0;
+	for(auto& x : v) {
+		s += exp(x - mx);
+	}
+	return mx + log(s);
 }
 
 template<typename t>
 double logsumexp(const std::vector<t>& v, double f(const t&) ) {
-	double lse = -infinity;
+	double mx = -infinity;
 	for(auto& x : v) {
-		lse = logplusexp(lse,f(x));
+		const double fx = f(x);
+		if(std::isnan(fx)) return NaN;
+		if(fx > mx) mx = fx;
 	}
-	return lse;
+	if(mx == -infinity) return -infinity;
+	if(mx ==  infinity) return  infinity;
+	
+	double s = 0.0;
+	for(auto& x : v) {
+		s += exp(f(x) - mx);
+	}
+	return mx + log(s);
 }
 
 /**
@@ -525,7 +549,7 @@ K mymax(std::map<T,K>& v) {
 
 
 template<typename T> 
-std::strong_ordering fp_ordering(T& x, T& y) {
+std::strong_ordering fp_ordering(const T& x, const T& y) {
 /**
  * @brief Convert a std::partial_ordering on x and y (floats or doubles) into a strong one by sorting NaN to last.
  * 		  so that fp_ordering(x,y) is the same as (x<=>y) with NaN sorting to last, and NaNs comparing to equal 

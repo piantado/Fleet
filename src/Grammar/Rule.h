@@ -28,7 +28,10 @@ public:
 	std::string                        format; // how am I printed?
 	size_t                             N; // how many children?
 	double                             p;
-	
+	double                             logp; // cached log(p) -- recomputing log() per node per prior is expensive.
+	                                         // NOTE: p must only be changed through Grammar::change_probability,
+	                                         // which keeps p, logp, Z and logZ consistent.
+
 	// store this information for creating instructions
 	void*					   fptr;
 	Op 						   op; // for ops that need names
@@ -48,7 +51,7 @@ public:
 		 double _p=1.0, 
 		 Op o=Op::Standard, 
 		 int a=0) :
-		nt(rt), format(fmt), N(c.size()), p(_p), fptr(f),  op(o), arg(a), child_types(c) {
+		nt(rt), format(fmt), N(c.size()), p(_p), logp(log(_p)), fptr(f),  op(o), arg(a), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
 		// NOTE: We do NOT want to hash anything about the function pointer, since then our ordering

@@ -56,7 +56,10 @@ public:
 
 #include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis : public DeterministicLOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar> {
+// NOTE: final matters for speed here: it lets the compiler devirtualize the virtual calls
+// (call, compute_single_likelihood, at_temperature, ...) made on MyHypothesis in the hot
+// MCMC loop (the FormalLanguageTheory-Simple model does the same).
+class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar> {
 public:
 	using Super = DeterministicLOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors

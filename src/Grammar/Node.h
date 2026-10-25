@@ -33,12 +33,18 @@ public:
 	double       lp; 
 	bool         can_resample;	
 
-	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		BaseNode(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) :
+		BaseNode(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
 		// in trees with set_child
-		if(r != nullptr)
-			children.resize(r->N);
+
+		// The null children BaseNode just made must get their parent pointers and indices set,
+		// or else iterating over a partial tree stops at the first null child (NodeIterator
+		// navigates via parent pointers) -- e.g. log_probability of and(null,null) returned 0
+		// because the 'and' node itself was never reached.
+		// (BaseNode's constructor already sized children to r->N; the resize that used to be
+		// here was redundant.)
+		fix_child_info();
 	}
 	
 	/* We must define our own copy and move since parent can't just be simply copied */
@@ -118,22 +124,38 @@ public:
 	void operator=(const Node& n) {
 		// Here in the assignment operator we don't set the parent to n.parent, otherwise the parent pointers get broken
 		// (nor pi). This leaves them in their place in a tree (so e.g. we can set a node of a tree and it still works)
+		// NOTE: this used to call BaseNode::operator=, which DID overwrite parent and pi, 
+		// contradicting the comment above. It was also undefined behavior when n was a node 
+		// inside our own subtree (replacing our children destroys n mid-copy), which is exactly 
+		// what happens when promoting a descendant (e.g. t = t.child(0)). So: read everything 
+		// out of n BEFORE touching our children. 
 		
-		BaseNode<Node>::operator=(n);
+		const Rule*  r  = n.rule;
+		const double l  = n.lp;
+		const bool   cr = n.can_resample;
+		auto tmp = n.children;       // deep-copy n's children first; n may live inside ours
 		
-		this->rule = n.rule;
-		this->lp = n.lp;
-		this->can_resample = n.can_resample;
+		children = std::move(tmp);
+		this->rule = r;
+		this->lp = l;
+		this->can_resample = cr;
+		fix_child_info(); // the new children belong to me now
 	}
 
 	void operator=(Node&& n) noexcept {
-
-		// must std::move -- passing n as an lvalue selects the copy overload and deep-copies
-		BaseNode<Node>::operator=(std::move(n));
-
-		this->rule = n.rule;
-		this->lp = n.lp;
-		this->can_resample = n.can_resample;
+		// See the copy version above: parent and pi are deliberately left alone, and we must 
+		// detach n's children before replacing ours in case n lives inside our own subtree. 
+		
+		const Rule*  r  = n.rule;
+		const double l  = n.lp;
+		const bool   cr = n.can_resample;
+		auto tmp = std::move(n.children); // steal n's children first; n may live inside ours
+		
+		children = std::move(tmp);
+		this->rule = r;
+		this->lp = l;
+		this->can_resample = cr;
+		fix_child_info();
 	}
 	
 	auto operator<=>(const Node& other) const {

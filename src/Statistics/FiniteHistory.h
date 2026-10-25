@@ -23,7 +23,11 @@ public:
 	std::atomic<size_t> history_index;
 	std::atomic<unsigned long> N;
 
-	OrderedLock mutex; 
+	// NOTE: a plain std::mutex, not an OrderedLock. add() is called on every single MCMC
+	// step (to record accept/reject) and is essentially uncontended, so the FIFO fairness
+	// of OrderedLock (a mutex + a waiter queue + condition variables) buys nothing here
+	// and costs real time in the sampling loop. 
+	std::mutex mutex; 
 	
 	FiniteHistory(size_t n) : history_size(n), history_index(0), N(0) {	}
 	

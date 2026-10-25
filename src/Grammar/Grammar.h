@@ -79,6 +79,8 @@ public:
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
 	std::vector<Rule>        rules[N_NTs];
 	std::array<double,N_NTs> Z; // keep the normalizer handy for each nonterminal (not log space)
+	std::array<double,N_NTs> logZ; // cached log(Z) -- maintained everywhere Z changes, so that
+	                               // log_probability and makeNode don't recompute log() per node
 	
 	size_t GRAMMAR_MAX_DEPTH = 64;
 	
@@ -96,6 +98,7 @@ public:
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
+			logZ[i] = -infinity; // log(0)
 		}
 	}
 	
@@ -218,7 +221,9 @@ public:
 		Rule* r = get_rule(s);
 		Z[r->nt] -= r->p;
 		r->p = newp;
+		r->logp = log(newp); // keep the cached log in sync with p
 		Z[r->nt] += r->p;
+		logZ[r->nt] = log(Z[r->nt]); // and the cached log normalizer in sync with Z
 	}
 	
 	size_t count_terminals(nonterminal_t nt) const {
@@ -304,6 +309,7 @@ public:
 		nonterminal_t Tnt = this->nt<T>();
 		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o, a);
 		Z[Tnt] += r.p; // keep track of the total probability
+		logZ[Tnt] = log(Z[Tnt]); // keep the cached log normalizer in sync
 		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
 		rules[Tnt].insert( pos, r ); // put this before	
 	}
@@ -491,6 +497,7 @@ public:
 	void remove_all(nonterminal_t nt) {
 		rules[nt].clear();
 		Z[nt] = 0.0;
+		logZ[nt] = -infinity; // log(0)
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -643,12 +650,26 @@ public:
 		 * @return 
 		 */
 		
-		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
 		if(rules[nt].size() == 0) {
 			print("Failed nonterminal, not in grammar:", nt);
 			assert(false && "*** You are trying to sample from a nonterminal with no rules!");			
 		}
-		return sample<Rule,std::vector<Rule>>(rules[nt], Z[nt], f).first; // ignore the probabiltiy 
+		
+		// This is sample<Rule,...>(rules[nt], Z[nt], f).first with f(r)=r.p, specialized: 
+		// the general version built a std::function every call, dispatched through it per rule,
+		// and computed log(p)-log(Z) for a return value this caller throws away. 
+		// The selection logic (and so the consumed randomness) is identical. 
+		double r = Z[nt] * uniform();
+		for(auto& x : rules[nt]) {
+			const double fx = x.p;
+			if(std::isnan(fx)) continue; // treat as zero prob (as sample() does)
+			assert(fx >= 0.0);
+			r -= fx;
+			if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability rule
+				return const_cast<Rule*>(&x);
+		}
+		
+		throw YouShouldNotBeHereError("*** Should not get here in sample_rule");
 	}
 	
 	
@@ -664,7 +685,7 @@ public:
 		 * @return 
 		 */
 		
-		return Node(r, log(r->p)-log(rule_normalizer(r->nt)));
+		return Node(r, r->logp - logZ[r->nt]); // cached: same value as log(r->p)-log(rule_normalizer(r->nt))
 	}
 	
 
@@ -900,7 +921,7 @@ public:
 		double lp = 0.0;		
 		for(auto& x : n) {
 			if(x.rule == NullRule) continue;
-			lp += log(x.rule->p) - log(rule_normalizer(x.rule->nt));
+			lp += x.rule->logp - logZ[x.rule->nt]; // cached log(p) and log(Z): identical values, no libm call per node
 		}
 	
 		return lp;		
