@@ -343,6 +343,8 @@ public:
 	 */	
 	virtual std::string serialize() const override { 
 		// NOTE: This doesn't preseve everything (it doesn't save can_propose, for example)
+		// NOTE: exact round-trip of the doubles relies on cppstr's str(double), which formats
+		// the shortest representation that parses back bit-identically
 		return str(this->prior)      + SerializationDelimiter + 
 		       str(this->likelihood) + SerializationDelimiter +
 			   str(this->posterior)  + SerializationDelimiter +

@@ -45,10 +45,15 @@ class ConcurrentQueue {
 	std::atomic<size_t> push_idx;
 	std::atomic<size_t> pop_idx; 	
 
-	std::condition_variable_any full_cv; // any needed here to use OrderedLock 
-	std::condition_variable_any empty_cv;
+	// NOTE: a plain std::mutex + std::condition_variable, not an OrderedLock. This queue has
+	// a single consumer and (possibly) many fast producers; with a FIFO lock the consumer 
+	// must wait its turn behind every queued producer, so when producers outrun the consumer
+	// the whole pipeline throughput collapses to the fair-queueing rate. With a plain mutex 
+	// the consumer can take the lock as soon as it is free and drain. 
+	std::condition_variable full_cv;
+	std::condition_variable empty_cv;
 	
-	mutable OrderedLock lock; 
+	mutable std::mutex lock; 
 	
 	// These require the caller to hold lock
 	bool full_locked()   const { return (push_idx+1) % N == pop_idx; }
@@ -126,12 +131,20 @@ public:
 		// if we are here, we must wait until a spot frees up
 		while(full_locked()) full_cv.wait(lck);
 		
+		const bool was_empty = empty();
+		
 		to_yield[push_idx] = x;
 
 		push_idx = (push_idx + 1) % N;
 		assert(push_idx != pop_idx); // better not
 		
-		empty_cv.notify_one();
+		// Only signal on the empty->nonempty transition: a waiter can only be waiting if it
+		// saw the queue empty, so notifying on every push is just wasted syscalls.
+		// NOTE: transition-only notify_one assumes at most one consumer and one producer per
+		// queue (which is how ConcurrentQueueRing uses these: one queue per producer thread,
+		// drained by the single main thread). With multiple consumers a second waiter could
+		// sleep through a nonempty queue; notify on every push/pop if you ever need that.
+		if(was_empty) empty_cv.notify_one();
 	}
 	
 	/**
@@ -144,10 +157,14 @@ public:
 		// we are empty so we must wait
 		while(push_idx == pop_idx) empty_cv.wait(lck);
 		
+		const bool was_full = full();
+		
+		assert(push_idx != pop_idx); // better not
 		T ret = std::move(to_yield[pop_idx]);
 		pop_idx = (pop_idx + 1) % N;
 
-		full_cv.notify_one();		
+		// only signal on the full->not-full transition (see push)
+		if(was_full) full_cv.notify_one();		
 
 		return ret;
 	}
