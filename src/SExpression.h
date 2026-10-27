@@ -5,8 +5,11 @@
 #include<optional>
 #include<cctype>
 #include<stdexcept>
+#include<vector>
+#include<type_traits>
 
 #include "BaseNode.h"
+#include "Nonterminal.h"
 
 // Code for parsing and dealing with S-expressions
 namespace SExpression {
@@ -198,6 +201,72 @@ namespace SExpression {
 		return parse(tok);
 	}
 
-	
-	
+	/**
+	 * @brief Build a grammar Node from a parsed s-expression, for any grammar whose rule *format strings
+	 *        are themselves s-expressions* (i.e. the grammar prints in s-expression syntax). A list node
+	 *        (operator atom h followed by n argument nodes) is matched to the rule of nonterminal `nt`
+	 *        whose format is "(h %s ... %s)" with n copies of %s; a leaf atom a is matched to the rule
+	 *        whose format is "a" (constants, variables, nullary operators). The target nonterminal `nt`
+	 *        disambiguates rules that share a spelling across types (e.g. an int 0 vs. a key 0), and
+	 *        children are parsed recursively at the nonterminal each argument slot requires.
+	 *
+	 *        Templated on the grammar so this header stays independent of any particular grammar's types.
+	 *        Throws std::invalid_argument on a malformed s-expression or a format with no matching rule.
+	 * @param g  - the grammar (provides rules[nt], makeNode, and Rule's format/N/type)
+	 * @param e  - the parsed s-expression
+	 * @param nt - the nonterminal the whole expression must produce
+	 * @return a Node (whatever g.makeNode returns)
+	 */
+	template<typename Grammar_t>
+	auto build_node(Grammar_t& g, const SExpNode& e, nonterminal_t nt)
+		-> decltype(g.makeNode(&g.rules[nt][0]))
+	{
+		using Rule_t = std::remove_reference_t<decltype(g.rules[nt][0])>;
+
+		// an SExpNode is a leaf (it has a label: the atom) or a list (no label; child 0 is the operator)
+		std::string head;
+		std::vector<const SExpNode*> args;
+		if(e.label.has_value()) {
+			head = e.label.value();
+		}
+		else {
+			if(e.nchildren() == 0 or not e.child(0).label.has_value())
+				throw std::invalid_argument("*** Malformed s-expression: a list must start with an operator name");
+			head = e.child(0).label.value();
+			for(size_t i=1;i<e.nchildren();i++) args.push_back(&e.child(i));
+		}
+
+		// the grammar format this should match: "head" for an atom, else "(head %s ... %s)"
+		std::string fmt = head;
+		if(not args.empty()) {
+			fmt = "(" + head;
+			for(size_t i=0;i<args.size();i++) fmt += " %s";
+			fmt += ")";
+		}
+
+		const Rule_t* found = nullptr;
+		for(const auto& r : g.rules[nt]) {
+			if(r.format == fmt) {
+				if(found != nullptr) throw std::logic_error("*** Two grammar rules of nonterminal "+std::to_string((int)nt)+" share the format "+fmt);
+				found = &r;
+			}
+		}
+		if(found == nullptr)
+			throw std::invalid_argument("*** No grammar rule with format '"+fmt+"' (from '"+head+"') for nonterminal "+std::to_string((int)nt));
+
+		auto n = g.makeNode(found);
+		for(size_t i=0;i<found->N;i++) {
+			n.set_child(i, build_node(g, *args[i], found->type(i)));
+		}
+		return n;
+	}
+
+	// convenience: parse a string, then build
+	template<typename Grammar_t>
+	auto build_node(Grammar_t& g, const std::string& s, nonterminal_t nt)
+		-> decltype(g.makeNode(&g.rules[nt][0]))
+	{
+		return build_node(g, parse(s), nt);
+	}
+
 }
