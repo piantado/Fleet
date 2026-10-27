@@ -3,6 +3,8 @@
 #include<utility>
 #include<string>
 #include<optional>
+#include<cctype>
+#include<stdexcept>
 
 #include "BaseNode.h"
 
@@ -71,50 +73,56 @@ namespace SExpression {
 	};
 
 	
-	void assert_check_parens(const std::string& s) {
+	// Check that parentheses are balanced and never close before they open. Throws std::invalid_argument
+	// on malformed input, rather than asserting: a library should report bad input in a way the caller can
+	// catch, and asserts are compiled out under NDEBUG (where a bad string would otherwise parse silently).
+	void check_parens(const std::string& s) {
 		int nopen = 0;
 		for(char c : s) {
 			if     (c == '(') nopen++;
 			else if(c == ')') nopen--;
-			assert(nopen >= 0);
+			if(nopen < 0) throw std::invalid_argument("*** Unbalanced parentheses (')' before '(') in: " + s);
 		}
-		if(nopen != 0) {
-			CERR "*** Bad parentheses in " << s ENDL;
-			assert(false);
-		}
+		if(nopen != 0) throw std::invalid_argument("*** Unbalanced parentheses in: " + s);
 	}
+
+	// kept for backward compatibility (older callers used this name)
+	void assert_check_parens(const std::string& s) { check_parens(s); }
 	
-	std::string trim(std::string x) {
-		// remove leading spaces
-		while(x[0] == ' ') {
-			x.erase(0, 1);
-		}
-		
-		// remove trailing spaces
-		while(x[x.size()-1] == ' ') {
-			x.erase(x.size()-1, 1);
-		}
-		return x; 
+	// Whitespace characters that separate tokens (space, tab, newline, carriage return, form feed, vtab).
+	inline bool is_sexpr_space(const char c) { return std::isspace((unsigned char)c) != 0; }
+
+	// Remove leading and trailing whitespace. Returns "" when x is empty or all whitespace.
+	// (The previous version indexed x[x.size()-1] on an empty string, which is out of bounds: any
+	//  leading/trailing/repeated whitespace -- or a token adjacent to a paren -- could trigger it.)
+	std::string trim(const std::string& x) {
+		const char* ws = " \t\r\n\f\v";
+		const auto a = x.find_first_not_of(ws);
+		if(a == std::string::npos) return ""; // empty or all whitespace
+		const auto b = x.find_last_not_of(ws);
+		return x.substr(a, b - a + 1);
 	}
-	
-	
+
+
 	std::vector<std::string> tokenize(std::string s) {
 		assert_check_parens(s);
 		std::vector<std::string> out; // list of tokens
-		
-		std::string x; // build up the token 
+
+		std::string x; // build up the token
 		for(char c : s) {
-			if(c == '(' or c == ')' or c == ' ') {
-				
+			// A token ends at a parenthesis or ANY whitespace. Treating only ' ' as whitespace (as
+			// before) meant tabs and newlines were swallowed into tokens, so s-expressions could not be
+			// laid out across multiple lines or with indentation.
+			if(c == '(' or c == ')' or is_sexpr_space(c)) {
+
 				x = trim(x);
-				
-				if(x != "" and x != " ") {
+				if(x != "") {
 					out.push_back(x);
 				}
 				x = "";
-				
-				// and accumulate the paren if its parens
-				if(c != ' ') {
+
+				// accumulate the paren itself as its own token (but not whitespace)
+				if(c == '(' or c == ')') {
 					out.push_back(std::string(1,c));
 				}
 			}
@@ -122,14 +130,15 @@ namespace SExpression {
 				x += c;
 			}
 		}
-		
+
+		x = trim(x);
 		if(x != "") {
-			out.push_back(trim(x));
+			out.push_back(x);
 		}
-		
+
 		//PRINTN(str(out));
-		return out;	
-	}	
+		return out;
+	}
 	
 	std::string pop_front(std::vector<std::string>& q) {
 		// not great for vector, but this is just data pre-processing -- could switch to std::list
@@ -148,10 +157,10 @@ namespace SExpression {
 	 * @return 
 	 */
 	SExpNode __parse(std::vector<std::string>& tok) {
-		
-		assert(tok.size() > 0);
-		
-		SExpNode out;		
+
+		if(tok.empty()) throw std::invalid_argument("*** Unexpected end of s-expression");
+
+		SExpNode out;
 		while(not tok.empty()) {
 			auto x = pop_front(tok);
 			//print("x=",x);
@@ -170,17 +179,19 @@ namespace SExpression {
 	 * @return 
 	 */	
 	SExpNode parse(std::vector<std::string>& tok) {
-		
+
+		if(tok.empty()) throw std::invalid_argument("*** Empty s-expression");
+
 		if(tok.size() == 1) {
 			return SExpNode(pop_front(tok));
 		}
-		
-		if(tok.front() == "(") { 
+
+		if(tok.front() == "(") {
 			pop_front(tok);
 		}
-		
-		return __parse(tok); 
-	}	
+
+		return __parse(tok);
+	}
 
 	SExpNode parse(std::string s) {
 		auto tok = tokenize(s);
