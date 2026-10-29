@@ -260,6 +260,7 @@ int main() {
 		// q = 1.0 must give the maximum (not index out of range)
 		bool died = dies([]{ std::vector<double> v = {1,2,3}; volatile double r = quantile(v, 1.0); (void)r; });
 		CHECK(not died, "quantile(v, 1.0) crashes/throws (index floor(n*1.0)=n is out of range)");
+		if(not died) { std::vector<double> v = {2,3,1}; CHECK(quantile(v, 1.0) == 3, "quantile(v, 1.0) is the maximum"); }
 
 		// trimmed_mean(v,a,b): mean of sorted[i] for a*n <= i < b*n
 		std::vector<double> t = {9,1,8,2,7,3,6,4,5,10};

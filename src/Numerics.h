@@ -427,7 +427,9 @@ T quantile(std::vector<T>& v, double q) {
 	assert(n> 0);
 	std::sort(v.begin(), v.end(),  floating_point_compare<T>());
 	
-	int i = floor(n*q); // floor for small n
+	assert(q >= 0.0 and q <= 1.0 && "*** quantile requires q in [0,1]");
+	// floor for small n; q=1 gives floor(n)=n, one past the end, so clamp to the maximum
+	const size_t i = std::min((size_t)floor(n*q), n-1);
 	return v.at(i);
 }
 
