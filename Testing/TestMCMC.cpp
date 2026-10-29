@@ -123,12 +123,13 @@ public:
 			if constexpr (IDENTITY_ON_FAILURE) return std::make_pair(*this, 0.0);
 			else return {};
 		}
-		// independence proposal from the prior. (NOTE: Proposals::prior_proposal does exactly this but
-		// does not compile when instantiated -- `return {g, ...}` cannot initialize a std::optional<std::pair>.)
-		// B is closed on the non-plus programs (it neither leaves nor enters plus-rooted ones), so B
-		// alone is reversible w.r.t. the posterior; the restricted prior's normalizer cancels in fb.
-		Node g; do { g = finite_grammar.generate(); } while(g.rule->format == "plus(%s,%s)");
-		const double fb = finite_grammar.log_probability(g) - finite_grammar.log_probability(this->value);
+		// independence proposal from the prior restricted to non-plus programs. B is closed on the
+		// non-plus programs (it neither leaves nor enters plus-rooted ones), so B alone is reversible
+		// w.r.t. the posterior; the restricted prior's normalizer cancels in fb.
+		std::optional<std::pair<Node,double>> p;
+		do { p = Proposals::prior_proposal(&finite_grammar, this->value); } while(p->first.rule->format == "plus(%s,%s)");
+		Node g = std::move(p->first);
+		const double fb = p->second;
 		return std::make_pair(MixtureHypothesis(std::move(g)), fb);
 	}
 };

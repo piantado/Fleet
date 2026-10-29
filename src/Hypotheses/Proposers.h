@@ -22,7 +22,8 @@ namespace Proposals {
 	template<typename GrammarType>
 	std::optional<std::pair<Node,double>> prior_proposal(GrammarType* grammar, const Node& from) {
 		auto g = grammar->generate(from.nt());
-		return {g, grammar->log_probability(g) - grammar->log_probability(from)};
+		const double fb = grammar->log_probability(g) - grammar->log_probability(from); // independence proposal: q(x) = prior(x)
+		return std::make_pair(std::move(g), fb); // (a braced {g, fb} cannot initialize the std::optional<std::pair>)
 	}
 	
 	/**
