@@ -972,7 +972,8 @@ public:
 		
 			v.set_child(i, from_parseable(q));
 
-			if(r->type(i) != v.child(i).rule->nt) {
+			// (null gaps are untyped: the NullRule's nt is always 0, whatever type the gap is)
+			if(not v.child(i).is_null() and r->type(i) != v.child(i).rule->nt) {
 				CERR "*** Grammar expected type " << r->type(i) << " but got type " << v.child(i).rule->nt << " at " << r->format << " argument " << i ENDL;
 				assert(false && "Bad names in from_parseable."); // just check that we didn't miss this up
 			}
