@@ -3,9 +3,11 @@
 #include "InnerHypothesis.h"
 #include "Lexicon.h"
 
-class MyHypothesis : public Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string> {
+using MyDatum = defaultdatum_t<BindingTree*, std::string>;
+
+class MyHypothesis : public Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string, MyDatum, std::vector<MyDatum>> {
 	// Takes a node (in a bigger tree) and a word
-	using Super = Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string>;
+	using Super = Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string, MyDatum, std::vector<MyDatum>>;
 	using Super::Super; // inherit the constructors
 public:	
 
