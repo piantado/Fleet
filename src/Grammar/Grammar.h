@@ -1127,7 +1127,8 @@ public:
 		//print("Parsing ", s);
 		
 		// remove the lambda x. if its there
-		if(s.substr(0,3) == LAMBDAXDOT_STRING) s.erase(0,3);			
+		// (LAMBDAXDOT_STRING is 4 bytes: the lambda is 2 bytes in UTF-8)
+		if(s.compare(0, LAMBDAXDOT_STRING.size(), LAMBDAXDOT_STRING) == 0) s.erase(0, LAMBDAXDOT_STRING.size());			
 		// remove leading whitespace
 		while(s.at(0) == ' ' or s.at(0) == '\t') s.erase(0,1);		
 		// remove trailing whitespace
