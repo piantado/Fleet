@@ -610,17 +610,30 @@ public:
 		 * @return 
 		 */
 		
+		// An exact match wins over prefix matches (as in get_rule(nt, s)): otherwise a terminal like "n"
+		// could never be found when another rule's format (e.g. "neg(%s)") starts with "n".
+		Rule* exact = nullptr;
 		Rule* ret = nullptr;
+		size_t nprefix = 0;
 		for(auto& r : *this) {
-			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
-				if(ret != nullptr) {
+			if(s == r.format) {
+				if(exact != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 					assert(0);
 				}
+				exact = &r;
+			}
+			else if(s != "" and is_prefix(s, r.format)) {
 				ret = &r;
+				nprefix++;
 			}
 		}
 		
+		if(exact != nullptr) { return exact; }
+		if(nprefix > 1) {
+			CERR "*** Multiple rules found matching " << s ENDL;
+			assert(0);
+		}
 		if(ret != nullptr) { return ret; }
 		else {			
 			CERR "*** No rule found to match " TAB QQ(s) ENDL;
