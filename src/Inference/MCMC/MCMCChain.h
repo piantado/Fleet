@@ -203,7 +203,17 @@ public:
 				
 				// propose, but restart if we're -infinity
 				auto p = current.propose();
-				if(not p) { continue;  }// proposal failed
+				if(not p) {
+					// The proposal failed (this kernel cannot propose from the current state). This must count as a
+					// REJECTED step -- stay here and yield -- not as a silent retry: retrying makes the kernels of a
+					// mixture (e.g. regenerate + swap_args) state-dependently weighted, and the chain then no longer
+					// targets the posterior (see Testing/TestMCMC). It used to `continue` here.
+					history << false;
+					if(not FleetArgs::MCMCYieldOnlyChanges) {
+						co_yield current; // must be done with lock
+					}
+				}
+				else {
 
 				auto [proposal, fb] = std::move(p.value()); // move: don't deep-copy the proposed hypothesis out of the optional
 				
@@ -235,10 +245,14 @@ public:
 					// this is useful for enforcing some constraints on the proposals
 					// defaultly, check does nothing. NOTE: it is important to the shibbholeth sampler that
 					// this happens before we compute posteriors
-					if(not check(proposal)) {						
-						history << false;						
-						continue;
+					if(not check(proposal)) {
+						// a proposal rejected by check() is a rejected step too (stay and yield; it used to `continue`)
+						history << false;
+						if(not FleetArgs::MCMCYieldOnlyChanges) {
+							co_yield current;
+						}
 					}
+					else {
 										
 					
 					// here we actually need to compute, but we can do so at the breakout
@@ -311,9 +325,11 @@ public:
 							co_yield current; 
 						}
 					}
+					} // end of check(proposal) passed
 				
 					
-				}				
+				}
+				} // end of proposal did not fail
 			}
 			
 			++samples;			
