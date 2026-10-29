@@ -50,6 +50,13 @@ public:
 	/* We must define our own copy and move since parent can't just be simply copied */
 	Node(const Node& n) :
 		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		// A copy is a new, free-standing tree: it must not point into the source's tree (BaseNode's copy
+		// constructor copies parent/pi, which left copies of subtrees with a parent pointer into -- and
+		// dangling after the destruction of -- the original). Copies of children are re-linked to their
+		// new parent by BaseNode's fix_child_info, and std::vector relocation uses the (noexcept) move
+		// constructor below, which keeps parent/pi, so tree structure is unaffected.
+		this->parent = nullptr;
+		this->pi = 0;
 	}
 	Node(Node&& n) noexcept :
 		BaseNode(std::move(n)), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
@@ -247,7 +254,7 @@ public:
 			std::vector<std::string> childStrings(this->children.size());
 		
 			for(size_t i=0;i<this->rule->N;i++) {
-				childStrings[i] = this->children[i].string();
+				childStrings[i] = this->children[i].string(usedot); // pass usedot down (it used to apply to the root only)
 			}
 			
 			// mark for can resample (useful in MCTS)

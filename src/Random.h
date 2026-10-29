@@ -316,11 +316,14 @@ double sample_lp_z(const T& s, const std::function<double(const t&)>& f) {
 	 * @return 
 	 */
 		
+	// NOTE: logplusexp_full, not logplusexp: the approximate version drops each term more than ~13.8
+	// below the running total, and many such terms can carry real mass (see logsumexp). sample_lp
+	// accumulates with the same function in the same order, so its running total ends exactly at z.
 	double z = -infinity; 
 	for(auto& x: s) {
 		auto fx = f(x);
 		if(not std::isnan(fx))
-			z = logplusexp(z,fx);
+			z = logplusexp_full(z,fx);
 	}
 	return z; 
 }
@@ -334,7 +337,7 @@ std::pair<t*,double> sample_lp(const T& s, double z, const std::function<double(
 	for(auto& x : s) {		
 		auto fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
-		tot = logplusexp(tot, fx);
+		tot = logplusexp_full(tot, fx); // must match sample_lp_z (see there)
 		if(tot > r) return std::make_pair(const_cast<t*>(&x), fx-z); // NOTE: fx and z are already logs -- log(fx)-log(z) here was NaN for negative log probabilities
 	}
 	
@@ -368,8 +371,11 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 	// special form for where the ints (e.g. indices) are what f takes
 	double z = 0.0;
 	for(size_t i=0;i<max;i++){
-		z += f(i);
+		const double fx = f(i);
+		if(std::isnan(fx)) continue; // treat as zero prob, as the selection loop below does (else z is NaN)
+		z += fx;
 	}
+	assert(z > 0 && "*** Cannot call sample_int with zero normalizer");
 	
 	double r = z * uniform();
 	
@@ -393,7 +399,7 @@ std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);
 		if(std::isnan(fx)) continue; // treat as zero prob
-		z = logplusexp(z, fx);
+		z = logplusexp_full(z, fx); // exact (see sample_lp_z)
 	}
 	
 	double r = z + log(uniform());
@@ -403,7 +409,7 @@ std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double
 		double fx = f(i);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		//assert(fx <= 0.0); // we actually can have lp > 0 if we wanted...
-		fz = logplusexp(fz, fx);
+		fz = logplusexp_full(fz, fx);
 		if(r <= fz) 
 			return std::make_pair(i, fx-z);
 	}

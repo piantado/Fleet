@@ -295,7 +295,7 @@ public:
 #include "Fleet.h" 
 
 // we need to declare mydata up here so that it can be accessed in print
-std::vector<MyHypothesis::datum_t> mydata;
+MyHypothesis::data_t mydata; // a std::vector<datum_t> (StochasticLOTHypothesis's default data_t)
 
 int main(int argc, char** argv){ 
 	std::string arg_prefix = ""; // if we pass in a prefix as argument 
@@ -325,7 +325,7 @@ int main(int argc, char** argv){
 
 	// This uses string_to to convert datastr into a vector of defaultdatum_t. This uses some fanciness in
 	// Strings.h that unpacks comma-separated vectors and then input/output types for defaultdatum_t
-	mydata = str_to<std::vector<MyHypothesis::datum_t>>(datastr);
+	mydata = str_to<MyHypothesis::data_t>(datastr);
 
 	// Let's include a check on our alphabet
 	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
@@ -370,7 +370,7 @@ int main(int argc, char** argv){
 		}
 	}
 	else if(method == "prior-sampling") {
-		PriorInference<MyHypothesis> pri(&grammar, mydata);
+		PriorInference<MyHypothesis> pri(mydata);
 		for(auto& h : pri.run(Control()) | printer(FleetArgs::print)) {
 			top << h;
 		}

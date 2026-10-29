@@ -2,6 +2,7 @@
 
 
 #include <atomic>
+#include <memory>
 #include <mutex>
 #include <thread>
 
@@ -34,9 +35,12 @@ public:
 	size_t __nthreads; 
 	std::atomic<size_t> __nrunning;// everyone updates this when they are done
 	
-	ConcurrentQueueRing<X> to_yield;
+	// one queue per worker thread. This is (re)created in run() with ctl.nthreads queues: it used to be
+	// sized from FleetArgs::nthreads at construction, so run(ctl) with ctl.nthreads > FleetArgs::nthreads
+	// pushed out of range (an assert failure).
+	std::unique_ptr<ConcurrentQueueRing<X>> to_yield;
 
-	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), to_yield(FleetArgs::nthreads) { }
+	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0) { }
 	
 	/**
 	 * @brief Return the next index to operate on (in a thread-safe way).
@@ -61,7 +65,7 @@ public:
 		
 		for(auto& x : run_thread(ctl, args...)) {
 			if(x.born_chain_idx == 0 or not FleetArgs::yieldOnlyChainOne) {
-				to_yield.push(x, thr);
+				to_yield->push(x, thr);
 			}
 			
 		}
@@ -78,9 +82,11 @@ public:
 	 */	
 	generator<X&> run(Control ctl, Args... args) {
 		
+		assert(ctl.nthreads >= 1 && "*** Cannot run with zero threads");
 		std::vector<std::thread> threads(ctl.nthreads); 
 		__nthreads = ctl.nthreads; // save this for children
 		assert(__nrunning==0);
+		to_yield = std::make_unique<ConcurrentQueueRing<X>>(ctl.nthreads); // no threads are running yet
 		
 		// Make a new control to run on each thread and then pass this to 
 		// each subthread. This way multiple threads all share the same control
@@ -108,9 +114,9 @@ public:
 		// MCMCYieldOnlyChanges) -- that is the accepted trade-off, so don't "fix" it by adding
 		// a sleep here. 
 		while(__nrunning > 0) { // we don't want to stop when its empty because a thread might fill it
-			if(not to_yield.empty())  {
+			if(not to_yield->empty())  {
 				
-				auto val = to_yield.pop(); // search through until we find one
+				auto val = to_yield->pop(); // search through until we find one
 				if(val.has_value())
 					co_yield val.value();
 			}
@@ -119,8 +125,8 @@ public:
 		
 		// now we're done filling but we still may have stuff in the queue
 		// some threads may be waiting so we can't join yet. 
-		while(not to_yield.empty()) {
-			auto val = to_yield.pop(); // search through until we find one
+		while(not to_yield->empty()) {
+			auto val = to_yield->pop(); // search through until we find one
 			if(val.has_value())	
 				co_yield val.value();
 		}

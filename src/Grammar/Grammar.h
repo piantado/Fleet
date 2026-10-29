@@ -610,17 +610,30 @@ public:
 		 * @return 
 		 */
 		
+		// An exact match wins over prefix matches (as in get_rule(nt, s)): otherwise a terminal like "n"
+		// could never be found when another rule's format (e.g. "neg(%s)") starts with "n".
+		Rule* exact = nullptr;
 		Rule* ret = nullptr;
+		size_t nprefix = 0;
 		for(auto& r : *this) {
-			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
-				if(ret != nullptr) {
+			if(s == r.format) {
+				if(exact != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 					assert(0);
 				}
+				exact = &r;
+			}
+			else if(s != "" and is_prefix(s, r.format)) {
 				ret = &r;
+				nprefix++;
 			}
 		}
 		
+		if(exact != nullptr) { return exact; }
+		if(nprefix > 1) {
+			CERR "*** Multiple rules found matching " << s ENDL;
+			assert(0);
+		}
 		if(ret != nullptr) { return ret; }
 		else {			
 			CERR "*** No rule found to match " TAB QQ(s) ENDL;
@@ -959,7 +972,8 @@ public:
 		
 			v.set_child(i, from_parseable(q));
 
-			if(r->type(i) != v.child(i).rule->nt) {
+			// (null gaps are untyped: the NullRule's nt is always 0, whatever type the gap is)
+			if(not v.child(i).is_null() and r->type(i) != v.child(i).rule->nt) {
 				CERR "*** Grammar expected type " << r->type(i) << " but got type " << v.child(i).rule->nt << " at " << r->format << " argument " << i ENDL;
 				assert(false && "Bad names in from_parseable."); // just check that we didn't miss this up
 			}
@@ -1114,7 +1128,8 @@ public:
 		//print("Parsing ", s);
 		
 		// remove the lambda x. if its there
-		if(s.substr(0,3) == LAMBDAXDOT_STRING) s.erase(0,3);			
+		// (LAMBDAXDOT_STRING is 4 bytes: the lambda is 2 bytes in UTF-8)
+		if(s.compare(0, LAMBDAXDOT_STRING.size(), LAMBDAXDOT_STRING) == 0) s.erase(0, LAMBDAXDOT_STRING.size());			
 		// remove leading whitespace
 		while(s.at(0) == ' ' or s.at(0) == '\t') s.erase(0,1);		
 		// remove trailing whitespace
