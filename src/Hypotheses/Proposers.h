@@ -27,7 +27,54 @@ namespace Proposals {
 	}
 	
 	/**
-	 * @brief Probability of proposing from a to b under regeneration
+	 * @brief Helpers for p_regeneration_propose_to. Regeneration only creates can_resample nodes and only
+	 *        changes the chosen subtree, so can_resample flags are part of what must match.
+	 */
+	inline bool __all_resampleable(const Node& n) {
+		for(const auto& x : n) if(not x.can_resample) return false;
+		return true;
+	}
+	inline bool __identical(const Node& a, const Node& b) { // same rules AND same can_resample flags
+		if(a.rule != b.rule or a.can_resample != b.can_resample or a.nchildren() != b.nchildren()) return false;
+		for(size_t i=0;i<a.nchildren();i++) if(not __identical(a.child(i), b.child(i))) return false;
+		return true;
+	}
+	
+	/**
+	 * @brief log of the sum, over the node positions P inside a at which regenerating a's subtree could
+	 *        produce b's subtree, of the probability of generating b's subtree at P. (This does NOT include
+	 *        the probability of choosing P.)
+	 */
+	template<typename GrammarType>
+	double __lp_regeneration_positions(GrammarType* grammar, const Node& a, const Node& b) {
+		
+		// regenerate right here (possible only if a is resampleable and b's subtree is freshly generated)
+		double lp = (a.can_resample and a.nt() == b.nt() and __all_resampleable(b)) ? grammar->log_probability(b) : -infinity;
+		
+		// or somewhere below, if a and b agree here and in all but (at most) one child
+		if(a.rule == b.rule and a.can_resample == b.can_resample and a.nchildren() == b.nchildren()) {
+			size_t ndiff = 0, who = 0;
+			for(size_t i=0;i<a.nchildren();i++) {
+				if(not __identical(a.child(i), b.child(i))) { ndiff++; who = i; }
+			}
+			
+			if(ndiff == 0) { // identical: could regenerate inside any child
+				for(size_t i=0;i<a.nchildren();i++) 
+					lp = logplusexp_full(lp, __lp_regeneration_positions(grammar, a.child(i), b.child(i)));
+			}
+			else if(ndiff == 1) { // must be inside the one child that differs
+				lp = logplusexp_full(lp, __lp_regeneration_positions(grammar, a.child(who), b.child(who)));
+			}
+		}
+		return lp;
+	}
+	
+	/**
+	 * @brief Probability of proposing from a to b under regeneration (Proposals::regenerate): a node is chosen
+	 *        uniformly among a's can_resample nodes and regenerated from the grammar, so
+	 *            q(a->b) = (1/#resampleable(a)) * sum over valid positions P of P(generate b's subtree at P).
+	 *        NOTE: this used to add -log(count) of each SUBTREE on every recursive step, on top of the
+	 *        outer -log(count), so positions inside subtrees were double-penalized; and it ignored can_resample.
 	 * @param grammar
 	 * @param a
 	 * @param b
@@ -35,49 +82,9 @@ namespace Proposals {
 	 */	
 	template<typename GrammarType>
 	double p_regeneration_propose_to(GrammarType* grammar, const Node& a, const Node& b) {
-		
-		// TODO: Currently does not take into account can_resample
-		// TODO: FIX THAT PLEASE
-		
-		// what's the probability of replacing the root of a and generating b?
-		double alp = -log(a.count()); // probability of choosing any given node o in a
-		double wholetree = alp + grammar->log_probability(b);
-		
-		if(a.rule != b.rule) {
-			// I must regenerate this whole tree
-			return wholetree;
-		}
-		else {
-			assert(a.nchildren() == b.nchildren()); // not handling missing kids
-			
-			size_t ndiff = 0; // how many children are different?
-			int who = 0; // if there is exactly one difference, who is it?
-			for(size_t i = 0;i<a.nchildren();i++) {
-				if(a.child(i) != b.child(i)) { 
-					who = i;
-					ndiff++;
-				}
-			}
-			
-			if(ndiff == 0) {
-				// if all the kids are the same, we could propose to any of them...
-				double lp = wholetree; // could propose to whole tree
-				for(size_t i=0;i<a.nchildren();i++) {
-					lp = logplusexp(lp, alp + p_regeneration_propose_to(grammar, a.child(i), b.child(i)));
-				}
-				return lp;
-			}
-			else if(ndiff == 1) {
-				// we have to propose to who or root
-				return logplusexp(wholetree, 
-								  alp + p_regeneration_propose_to(grammar, a.child(who), b.child(who)));
-			}
-			else {
-				// more than one difference means we have to propose to the root
-				return wholetree; 
-			}
-				
-		}
+		const double z = a.sum<double>(+[](const Node& n) { return 1.0*n.can_resample; });
+		if(z == 0.0) return -infinity;
+		return __lp_regeneration_positions(grammar, a, b) - log(z);
 	}
 
 //	/**

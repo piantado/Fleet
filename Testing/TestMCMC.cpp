@@ -262,9 +262,8 @@ int main() {
 			CHECK(not outside, "regenerate proposed something unreachable from " << full(a));
 			CHECK_PVALUE(chisq_test(o, e, "regenerate from " + full(a)), "regeneration proposal distribution from " << full(a));
 
-			// p_regeneration_propose_to is documented as "probability of proposing from a to b under
-			// regeneration" (and documented NOT to handle can_resample, so only test those cases)
-			if(which < 3) {
+			// p_regeneration_propose_to: "probability of proposing from a to b under regeneration"
+			{
 				for(auto& [k, qv] : q) {
 					if(qv < 1e-6) continue;
 					// rebuild b from the key: find it among single-position regenerations
@@ -283,9 +282,7 @@ int main() {
 			}
 		}
 		CHECK(pr_mismatch == 0, "Proposals::p_regeneration_propose_to disagrees with the exact proposal probability for "
-		      << pr_mismatch << " of " << pr_checked << " (a,b) pairs, e.g. " << pr_example
-		      << ". (Its recursive call adds -log(count) of the SUBTREE on top of the outer -log(count), so proposals "
-		      "inside a subtree are double-penalized.)");
+		      << pr_mismatch << " of " << pr_checked << " (a,b) pairs, e.g. " << pr_example);
 	}
 
 	// ==================================================================================
