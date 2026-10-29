@@ -101,11 +101,13 @@ public:
 
 #include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar> {
+using MyDatum = defaultdatum_t<set,word>;
+
+class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar,MyDatum,std::vector<MyDatum>> {
 public:
-	using Super = DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar>;
+	using Super = DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar,MyDatum,std::vector<MyDatum>>;
 	using Super::Super;
-	using data_t = MyHypothesis::data_t;
+	using data_t = Super::data_t;
 	
 	double compute_prior() override {
 		// include recusion penalty
@@ -116,7 +118,7 @@ public:
 	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) override {
 		this->likelihood = 0.0;
 		for(int x=1;x<10;x++) {
-			auto v = compute_output(make_set(x), U);
+			auto v = call(make_set(x), U);
 			// Likelihood is a little special here -- if we have U, then we treat it as though there
 			// were no predictions (not out of 10)
 			this->likelihood += Ndata*Np[x]*log( v == U ? (1.0-alpha) : (1.0-alpha)/10.0 + (v==x)*alpha);
@@ -154,7 +156,7 @@ int main(int argc, char** argv) {
 	fleet.add_option("--ndata", Ndata, "How many data points do we simulate on?");
 	fleet.initialize(argc, argv);
 	
-	std::vector<MyHypothesis::datum_t> mydata; // just dummy data because it's computed on its own in the likelihood
+	MyHypothesis::data_t mydata; // just dummy data because it's computed on its own in the likelihood
 
 //	mydata.add( {1}, "one" );
 //	mydata.add( {1,1,1}, "two" );
