@@ -371,8 +371,11 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 	// special form for where the ints (e.g. indices) are what f takes
 	double z = 0.0;
 	for(size_t i=0;i<max;i++){
-		z += f(i);
+		const double fx = f(i);
+		if(std::isnan(fx)) continue; // treat as zero prob, as the selection loop below does (else z is NaN)
+		z += fx;
 	}
+	assert(z > 0 && "*** Cannot call sample_int with zero normalizer");
 	
 	double r = z * uniform();
 	
