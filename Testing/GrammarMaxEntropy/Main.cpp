@@ -330,7 +330,8 @@ int main() {
 				// Q is at the boundary iff every tree has the same cost (Var = 0); check by sampling
 				g.GRAMMAR_MAX_DEPTH = 100000;
 				bool constant = true;
-				for(int k=0;k<500 and constant;k++) constant = (tree_cost(g.generate(start), UnitCost{}) == LQ);
+				// (compare up to rounding: LQ is computed and may be off by an ulp, e.g. 1 - 2^-53)
+				for(int k=0;k<500 and constant;k++) constant = std::abs(tree_cost(g.generate(start), UnitCost{}) - LQ) <= 1e-12 * LQ;
 				CHECK(constant, "trial " << trial << " threw but Q has non-constant length: " << e.what());
 				skipped++; continue;
 			}
