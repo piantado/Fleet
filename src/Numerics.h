@@ -158,6 +158,9 @@ T logplusexp(const T a, const T b) {
 	if     (a == -infinity) return b;
 	else if(b == -infinity) return a;
 	
+	// +inf with anything (but NaN) is +inf; without this, (inf,inf) computed inf + log1p(exp(inf-inf)) = NaN
+	if(a == infinity or b == infinity) return infinity;
+	
 	T mx = std::max(a,b);
 	
 	// compute a bound here at such that log1p(exp(z)) doesn't affect the result much (up to 1e-6)
@@ -183,6 +186,12 @@ T logplusexp(const T a, const T b) {
  */
 template<typename T>
 T logplusexp_full(const T a, const T b) {
+	// infinities and NaN are handled first: otherwise (-inf,-inf) and (+inf,+inf) give inf-inf = NaN
+	if(std::isnan(a) or std::isnan(b)) return NaN;
+	if(a == -infinity) return b;
+	if(b == -infinity) return a;
+	if(a == infinity or b == infinity) return infinity;
+	
 	T mx = std::max(a,b);
 	return mx + log1p(exp(std::min(a,b)-mx));
 }
