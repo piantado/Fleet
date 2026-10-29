@@ -30,12 +30,14 @@ double compoundNormalLogUniform_lpdf(const double _x) {
 		   LOG2 - log(x) - log(MAX_SCALE-MIN_SCALE);
 }
 
+using MyDatum = defaultdatum_t<X_t,D>;
+
 class MyHypothesis final : public ConstantContainer,
-						   public DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
+						   public DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar,MyDatum,std::vector<MyDatum>> {
 	
 public:
 
-	using Super = DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar>;
+	using Super = DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar,MyDatum,std::vector<MyDatum>>;
 	using Super::Super;
 
 	virtual D call(const X_t x, const D err=NaN) {
