@@ -416,24 +416,6 @@ T sd(std::vector<T>& v) {
 
 
 /**
- * @brief Median absolute deviation
- * @param v
- * @return 
- */
-template<typename T>
-T MAD(std::vector<T>& v) {
-	auto m = median(v);
-	auto n = v.size();
-	
-	std::vector<T> d(n);
-	for(size_t i=0;i<n;i++) {
-		d[i] = std::abs(v.at(i) - m);
-	}
-	
-	return median(d);
-}
-
-/**
  * @brief Return a quantile of a set of samples
  * @param v
  * @param q
@@ -470,6 +452,25 @@ T median(std::vector<T>& v) {
 	}
 }
 
+
+/**
+ * @brief Median absolute deviation
+ * 		  (NOTE: must be defined after median(), which it calls -- otherwise it cannot be instantiated)
+ * @param v
+ * @return 
+ */
+template<typename T>
+T MAD(std::vector<T>& v) {
+	auto m = median(v);
+	auto n = v.size();
+	
+	std::vector<T> d(n);
+	for(size_t i=0;i<n;i++) {
+		d[i] = std::abs(v.at(i) - m);
+	}
+	
+	return median(d);
+}
 
 /**
  * @brief Trim based on quantiles to [a,b] and return the mean

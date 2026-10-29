@@ -242,9 +242,8 @@ int main() {
 			std::vector<double> dev(n); for(size_t i=0;i<n;i++) dev[i] = std::abs(v[i]-med);
 			std::sort(dev.begin(), dev.end());
 			const double mad = (n%2) ? dev[n/2] : (dev[n/2-1]+dev[n/2])/2;
-			// NOTE: MAD() cannot be tested -- it does not compile when instantiated, because it calls
-			// median(), which Numerics.h declares *below* MAD (two-phase lookup finds nothing).
-			(void)mad;
+			auto v3 = v;
+			CHECK_CLOSE(MAD(v3), mad, 1e-15, 1e-15, "MAD");
 			// quantile: documented as v[floor(n*q)] of the sorted values
 			for(double q : {0.0, 0.1, 0.25, 0.5, 0.9, 0.999}) {
 				auto v4 = v;
