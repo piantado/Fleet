@@ -209,7 +209,7 @@ public:
 	}
 
 	// wrapper to get the terface right
-	virtual double compute_likelihood(std::span<NullDatum_t> null_data, double breakout=-infinity) override {
+	virtual double compute_likelihood(const std::span<NullDatum_t>& null_data, double breakout=-infinity) override {
 		assert(null_data.size() == 0); // we don't have data
 		return compute_likelihood();
 	}	

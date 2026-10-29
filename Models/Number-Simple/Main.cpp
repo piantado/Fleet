@@ -115,7 +115,7 @@ public:
 	}
 		
 	// As in the original paper, we compute hte likelihood by averaging over all numbers, weighting by their probabilities
-	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) override {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		this->likelihood = 0.0;
 		for(int x=1;x<10;x++) {
 			auto v = call(make_set(x), U);
