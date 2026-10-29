@@ -12,6 +12,8 @@
 #
 # Variables you may override:
 #   STD=-std=c++23        (Fleet.mk uses -std=c++26; older g++ needs c++23 / c++2c)
+#   EIGEN=/opt/include    extra include dir containing eigen3/ (only if Eigen is not under a system
+#                         include path; EigenLib.h includes "eigen3/Eigen/Core")
 #   CXX=clang++           OPT=-O1     JOBS=4
 #   FLEET_TEST_SEED=7     (environment) reruns the statistical tests with another seed
 #   SANITIZE=1            build with -fsanitize=address,undefined
@@ -24,6 +26,7 @@ CXX  ?= g++
 STD  ?= -std=c++26
 OPT  ?= -O2
 JOBS ?= $(shell nproc 2>/dev/null || echo 4)
+EIGEN ?=
 
 # Fleet.mk's flags, but with the language standard replaceable via STD
 CXXFLAGS_TEST = $(STD) $(filter-out -std=%,$(FLEET_FLAGS)) $(OPT) -g -MMD -MP
@@ -45,7 +48,7 @@ build:
 # Compile one test. Compiler output always goes to logs/<Test>.build.log.
 bin/%: %.cpp TestHarness.h Makefile
 	@mkdir -p bin logs
-	@$(CXX) $< -o $@ $(CXXFLAGS_TEST) $(FLEET_INCLUDE) $(FLEET_LIBS) > logs/$*.build.log 2>&1 \
+	@$(CXX) $< -o $@ $(CXXFLAGS_TEST) $(FLEET_INCLUDE) $(if $(EIGEN),-I$(EIGEN)) $(FLEET_LIBS) > logs/$*.build.log 2>&1 \
 		|| { rm -f $@; exit 1; }
 
 # Run one compiled test and print exactly one result line. A test that crashes (assert,
