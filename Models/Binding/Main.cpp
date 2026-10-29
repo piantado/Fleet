@@ -54,7 +54,7 @@ class TreeException : public std::exception {};
 
 
 MyHypothesis::data_t load_data(std::string filename) {
-	std::vector<MyHypothesis::datum_t> data;
+	MyHypothesis::data_t data;
 	
 	for(auto& [ds, sentence] : read_csv<2>(filename, false, ',')){
 		
@@ -115,7 +115,7 @@ MyHypothesis::data_t load_data(std::string filename) {
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-std::vector<MyHypothesis::datum_t> target_precisionrecall_data; // data for computing precision/recall 
+MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
 MyHypothesis target;
 	
 int main(int argc, char** argv){ 
@@ -255,8 +255,8 @@ int main(int argc, char** argv){
 		target.compute_posterior(mydata);
 		print("# Target[", str(di), "]:", target.posterior, target.likelihood);
 		
-		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, MAX_T);
-		// MCMCChain chain(h0, &mydata);
+		ParallelTempering chain(h0, mydata, FleetArgs::nchains, MAX_T);
+		// MCMCChain chain(h0, mydata);
 		for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 			UNUSED(h);
 		}

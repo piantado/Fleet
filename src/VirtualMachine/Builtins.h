@@ -278,7 +278,7 @@ namespace Builtins {
 			
 			assert(vms->program.loader != nullptr);
 							
-			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+			if(vms->recursion_depth++ >= vms->MAX_RECURSE) { // there is one of these for each recurse
 				throw VMSRuntimeError();
 			}
 
@@ -328,7 +328,7 @@ namespace Builtins {
 		
 		using mykey_t = short; // this is just the default type used for non-lex recursion
 		
-		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+		if(vms->recursion_depth++ >= vms->MAX_RECURSE) { // there is one of these for each recurse
 			throw VMSRuntimeError();
 		}
 				
@@ -378,7 +378,7 @@ namespace Builtins {
 			
 			assert(vms->program.loader != nullptr);
 							
-			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+			if(vms->recursion_depth++ >= vms->MAX_RECURSE) { // there is one of these for each recurse
 				auto mynewx = vms->template getpop<input_t>();
 				vms->template push<output_t>(output_t{});
 			}
@@ -411,7 +411,7 @@ namespace Builtins {
 			
 			assert(vms->program.loader != nullptr);
 							
-			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+			if(vms->recursion_depth++ >= vms->MAX_RECURSE) { // there is one of these for each recurse
 				vms->template push<output_t>(output_t{});
 			}
 			else {
@@ -446,7 +446,7 @@ namespace Builtins {
 			
 			assert(vms->program.loader != nullptr);
 							
-			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+			if(vms->recursion_depth++ >= vms->MAX_RECURSE) { // there is one of these for each recurse
 				throw VMSRuntimeError();
 			}
 			
@@ -496,7 +496,7 @@ namespace Builtins {
 	Primitive<output_t,key_t,input_t> LexiconMemRecurse(Op::LexiconMemRecurse, BUILTIN_LAMBDA {
 		assert(vms->program.loader != nullptr);
 						
-		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+		if(vms->recursion_depth++ >= vms->MAX_RECURSE) { // there is one of these for each recurse
 			throw VMSRuntimeError();
 		}
 		

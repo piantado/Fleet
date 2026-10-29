@@ -81,7 +81,7 @@ public:
 	 * @param breakout
 	 * @return 
 	 */	
-	virtual double compute_likelihood(const data_t data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
 	
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<data_t>) { 
@@ -118,7 +118,7 @@ public:
 	}
 	
 	
-	virtual double compute_tempered_likelihood(const data_t data, int ladder_rank, const double breakout=-infinity) {
+	virtual double compute_tempered_likelihood(const data_t& data, int ladder_rank, const double breakout=-infinity) {
 		return compute_likelihood(data,breakout); 
 	}
 
@@ -139,7 +139,7 @@ public:
 	 * @param breakout
 	 * @return 
 	 */
-	virtual double compute_posterior(const data_t data, const std::pair<double,double> breakoutpair=std::make_pair(-infinity,1.0)) {
+	virtual double compute_posterior(const data_t& data, const std::pair<double,double> breakoutpair=std::make_pair(-infinity,1.0)) {
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		

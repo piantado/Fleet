@@ -158,6 +158,9 @@ T logplusexp(const T a, const T b) {
 	if     (a == -infinity) return b;
 	else if(b == -infinity) return a;
 	
+	// +inf with anything (but NaN) is +inf; without this, (inf,inf) computed inf + log1p(exp(inf-inf)) = NaN
+	if(a == infinity or b == infinity) return infinity;
+	
 	T mx = std::max(a,b);
 	
 	// compute a bound here at such that log1p(exp(z)) doesn't affect the result much (up to 1e-6)
@@ -183,6 +186,12 @@ T logplusexp(const T a, const T b) {
  */
 template<typename T>
 T logplusexp_full(const T a, const T b) {
+	// infinities and NaN are handled first: otherwise (-inf,-inf) and (+inf,+inf) give inf-inf = NaN
+	if(std::isnan(a) or std::isnan(b)) return NaN;
+	if(a == -infinity) return b;
+	if(b == -infinity) return a;
+	if(a == infinity or b == infinity) return infinity;
+	
 	T mx = std::max(a,b);
 	return mx + log1p(exp(std::min(a,b)-mx));
 }
@@ -407,24 +416,6 @@ T sd(std::vector<T>& v) {
 
 
 /**
- * @brief Median absolute deviation
- * @param v
- * @return 
- */
-template<typename T>
-T MAD(std::vector<T>& v) {
-	auto m = median(v);
-	auto n = v.size();
-	
-	std::vector<T> d(n);
-	for(size_t i=0;i<n;i++) {
-		d[i] = std::abs(v.at(i) - m);
-	}
-	
-	return median(d);
-}
-
-/**
  * @brief Return a quantile of a set of samples
  * @param v
  * @param q
@@ -436,7 +427,9 @@ T quantile(std::vector<T>& v, double q) {
 	assert(n> 0);
 	std::sort(v.begin(), v.end(),  floating_point_compare<T>());
 	
-	int i = floor(n*q); // floor for small n
+	assert(q >= 0.0 and q <= 1.0 && "*** quantile requires q in [0,1]");
+	// floor for small n; q=1 gives floor(n)=n, one past the end, so clamp to the maximum
+	const size_t i = std::min((size_t)floor(n*q), n-1);
 	return v.at(i);
 }
 
@@ -461,6 +454,25 @@ T median(std::vector<T>& v) {
 	}
 }
 
+
+/**
+ * @brief Median absolute deviation
+ * 		  (NOTE: must be defined after median(), which it calls -- otherwise it cannot be instantiated)
+ * @param v
+ * @return 
+ */
+template<typename T>
+T MAD(std::vector<T>& v) {
+	auto m = median(v);
+	auto n = v.size();
+	
+	std::vector<T> d(n);
+	for(size_t i=0;i<n;i++) {
+		d[i] = std::abs(v.at(i) - m);
+	}
+	
+	return median(d);
+}
 
 /**
  * @brief Trim based on quantiles to [a,b] and return the mean
@@ -496,8 +508,8 @@ T trimmed_mean(std::vector<T>& v, float a, float b) {
  */
 template<typename T>
 T trimmed_mean(std::vector<T>& v, float pct) {
-	assert(pct < 0.5);
-	return trimmed_mean(v,pct,pct);
+	assert(pct >= 0.0 and pct < 0.5);
+	return trimmed_mean(v,pct,1.0f-pct); // keep the quantile range [pct, 1-pct]
 }
 
 
