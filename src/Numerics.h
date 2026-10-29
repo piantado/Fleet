@@ -508,8 +508,8 @@ T trimmed_mean(std::vector<T>& v, float a, float b) {
  */
 template<typename T>
 T trimmed_mean(std::vector<T>& v, float pct) {
-	assert(pct < 0.5);
-	return trimmed_mean(v,pct,pct);
+	assert(pct >= 0.0 and pct < 0.5);
+	return trimmed_mean(v,pct,1.0f-pct); // keep the quantile range [pct, 1-pct]
 }
 
 
