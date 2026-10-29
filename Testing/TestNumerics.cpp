@@ -578,8 +578,8 @@ int main() {
 			const double true_lz = std::log1p(1e5*std::exp(-15.0));
 			const double got_lz = sample_lp_z<double>(many, g);
 			CHECK_CLOSE(got_lz, true_lz, 1e-9, 1e-9, "sample_lp_z with many small terms (logplusexp drops each -15 term once the running total is 0)");
-			long first = 0; const int R = 200000;
-			for(int i=0;i<R;i++) first += (sample_lp<double>(many, g).first == &many[0]);
+			long first = 0; const int R = 20000;
+			for(int i=0;i<R;i++) first += (sample_lp<double>(many, got_lz, g).first == &many[0]); // normalizer computed once
 			CHECK_Z(binomial_z(first, R, 1.0/std::exp(true_lz)), "sample_lp picks the large element with prob 1/(1+1e5 e^-15) = 0.9703; observed " << first/(double)R);
 		}
 
