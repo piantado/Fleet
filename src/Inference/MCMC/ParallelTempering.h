@@ -271,33 +271,41 @@ public:
 		std::lock_guard og(overall_mutex);
 		// no total lock necessary since we don't modify anything except the (atomic) temperature
 		
-		std::vector<double> sw(this->pool.size());
+		// The scheme of arXiv:1501.05823 adapts the log spacings S_i = log(T_i - T_{i-1}):
+		//     S_i += k(t) * (A_i - A_{i+1})       (A_i = acceptance rate of swaps between i-1 and i)
+		// with T_0 = 1 fixed. That paper's hottest chain is at T = infinity; here the top temperature is
+		// fixed and finite, so after updating the interior spacings we rescale ALL spacings by one common
+		// factor so the ladder still ends exactly at T_max. (A common factor is a constant shift of every
+		// S_i, so it leaves the differences that drive the equalization unchanged.)
+		// NOTE: this used to update each interior temperature as T_{i-1} + exp(S_i) with nothing tying the
+		// ladder to T_max, so repeated adaptation could push interior temperatures past T_max, inverting
+		// the ladder. (Before that, it also overwrote T_max itself.) Both endpoints now stay fixed.
 		
-		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
-			sw[i] = log(this->pool[i].temperature - this->pool[i-1].temperature);
+		const size_t n = this->pool.size();
+		if(n < 3) return; // only the endpoints, which are fixed
+		
+		std::vector<double> d(n, 0.0); // d[i] = new T_i - T_{i-1}, for i = 1..n-1
+		for(size_t i=1;i<n;i++) {
+			double sw = log(this->pool[i].temperature - this->pool[i-1].temperature);
 			
-			if( swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
-				sw[i] += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
+			if( i+1 < n and swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
+				sw += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
 			}
-			
+			d[i] = exp(sw);
 		}
 		
 		// Reset all of the swap histories (otherwise we keep adapting in a bad way)
 		// As of Jan 2023 we don't reset the histories since these are finite_histories 
-		//for(size_t i=1;i<this->pool.size();i++) { 
-		//	swap_history[i].reset();
-		//	swap_history[i] << true; swap_history[i] << false; // this is a little +1 smoothing
-		//	}
 		
-		// and then convert S to temperatures again
-		// but never adjust i=0 (T=1) OR the last one
-		// NOTE: this loop must stop at size()-1: it used to run over the last chain too,
-		// whose sw was never computed above (so sw[last]==0.0), which overwrote the top
-		// temperature with pool[last-1].temperature + exp(0) = T[last-1]+1 on every
-		// adaptation -- destroying the top of the ladder (e.g. with 2 chains, T went to 2).
-		// Per the adaptation scheme (arXiv:1501.05823), both endpoint temperatures stay fixed.
-		for(size_t i=1;i+1<this->pool.size();i++) {
-			this->pool[i].temperature = this->pool[i-1].temperature + exp(sw[i]);
+		double total = 0.0;
+		for(size_t i=1;i<n;i++) total += d[i];
+		const double T0   = this->pool[0].temperature;
+		const double span = this->pool[n-1].temperature - T0;
+		
+		double T = T0;
+		for(size_t i=1;i+1<n;i++) { // never adjust i=0 (T=1) or the last one
+			T += d[i] * span / total;
+			this->pool[i].temperature = T;
 		}
 	}
 	

@@ -3,8 +3,8 @@
 //  1. Ladder construction (geometric, endpoints exactly 1 and maxT; explicit list).
 //  2. lp_swap against an independent formula (only the LIKELIHOOD is tempered), and swap()
 //     exchanging hypotheses (and steps_since_improvement) but not temperatures.
-//  3. adapt(): reproduces the arXiv:1501.05823 update computed independently, keeps both
-//     endpoint temperatures fixed, and keeps the ladder increasing.
+//  3. adapt(): reproduces the arXiv:1501.05823 log-spacing update (rescaled to the fixed
+//     [1, T_max] span), computed independently; keeps both endpoints fixed and the ladder increasing.
 //  4. A deterministic, single-threaded emulation that drives the real pool chains, lp_swap and
 //     swap: the T=1 chain must sample the exact posterior and the hottest chain must sample the
 //     exact tempered posterior (replicate chains vs a 309-program enumeration).
@@ -90,13 +90,16 @@ int main() {
 			}
 			std::vector<double> T(n); for(size_t i=0;i<n;i++) T[i] = pt.pool[i].temperature;
 			std::vector<double> m(n); for(size_t i=1;i<n;i++) m[i] = pt.swap_history[i].mean();
-			// independent computation of one adaptation step (v=3, t0=1e6)
-			std::vector<double> newT = T;
-			for(size_t i=1;i+1<n;i++) {
-				const double kk = (1.0/3) * 1e6/(pt.pool[i].samples + 1e6);
-				const double S = std::log(T[i] - T[i-1]) + kk*(m[i] - m[i+1]);
-				newT[i] = newT[i-1] + std::exp(S);
+			// independent computation of one adaptation step (v=3, t0=1e6): the interior log spacings move by
+			// k*(m_i - m_{i+1}), the top spacing is unchanged, then all spacings are scaled to span [1, T_max]
+			std::vector<double> d(n, 0.0); double total = 0;
+			for(size_t i=1;i<n;i++) {
+				double S = std::log(T[i] - T[i-1]);
+				if(i+1 < n) S += (1.0/3) * 1e6/(pt.pool[i].samples + 1e6) * (m[i] - m[i+1]);
+				d[i] = std::exp(S); total += d[i];
 			}
+			std::vector<double> newT = T;
+			for(size_t i=1;i+1<n;i++) newT[i] = newT[i-1] + d[i]*(T[n-1]-T[0])/total;
 			pt.adapt();
 			for(size_t i=0;i<n;i++) CHECK_CLOSE((double)pt.pool[i].temperature, newT[i], 1e-12, 1e-12, "adapt T[" << i << "] of " << n);
 			CHECK(pt.pool[0].temperature == 1.0 and std::abs(pt.pool[n-1].temperature - 50.0) < 1e-12, "adapt keeps both endpoints fixed");
