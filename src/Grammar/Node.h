@@ -254,7 +254,7 @@ public:
 			std::vector<std::string> childStrings(this->children.size());
 		
 			for(size_t i=0;i<this->rule->N;i++) {
-				childStrings[i] = this->children[i].string();
+				childStrings[i] = this->children[i].string(usedot); // pass usedot down (it used to apply to the root only)
 			}
 			
 			// mark for can resample (useful in MCTS)
