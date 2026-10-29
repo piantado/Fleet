@@ -393,7 +393,7 @@ namespace Proposals {
 		
 		// set the rule and its probability -- save us the copying
 		s->rule = *newr;
-		s->lp = (*newr)->p / grammar->Z[s->rule->nt];
+		s->lp = (*newr)->logp - grammar->logZ[s->rule->nt]; // a LOG probability, as makeNode sets (this used to store p/Z)
 		
 		// here we compute fb while ignoring the normalizing constants which is why we don't use rp
 		double fb = log(sampler(*newr))-log(sampler(oldRule));
