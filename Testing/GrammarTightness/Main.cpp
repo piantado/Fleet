@@ -102,6 +102,17 @@ int main() {
 		}
 	}
 
+	// ---------------- regression: valid subcritical grammars close to rho = 1 must not throw ----------
+	// The internal self-check used to demand numerical P(inf) <= 1e-9 here, which rounding cannot
+	// deliver near criticality (it threw at rho = 1 - 1e-8).
+	for(int k=3;k<=12;k++) {
+		double d = std::pow(10.0, -k), q = (1-d)/2;
+		Binary g(q, 0, 1-q);
+		TightnessResult T;
+		CHECK(not throws([&]{ T = analyze_tightness(g); }), "rho = 1 - 1e-" << k << " threw");
+		CHECK(not T.infinite_trees_possible and T.prob_infinite == 0.0, "rho = 1 - 1e-" << k << " tight");
+	}
+
 	// ---------------- unproductive (exact) ----------------
 	{
 		Binary g(0, 1, 0);            // S -> g(S) only : no finite tree

@@ -126,6 +126,71 @@ std::vector<std::pair<Node,double>> enumerate(G& g, const Spec& spec, int nt) {
 	return out;
 }
 
+// enumerate every NON-TERMINAL SKELETON (tree of non-terminal rules with holes where terminals go) of nonterminal nt,
+// with its probability from the spec: a hole of type t has probability (sum of terminal weights of t)/Z(t),
+// and a non-terminal rule has probability w/Z times the probabilities of its children's skeletons
+template<typename G>
+std::vector<std::pair<Node,double>> enumerate_nonterminal_skeletons(G& g, const Spec& spec, int nt) {
+	std::vector<std::pair<Node,double>> out;
+	double wterm = 0; for(const auto& rs : spec.rules) if(rs.nt == nt and rs.children.empty()) wterm += rs.w;
+	if(wterm > 0) out.push_back({Node(), std::log(wterm) - std::log(spec.Z(nt))});
+	for(const auto& rs : spec.rules) {
+		if(rs.nt != nt or rs.children.empty() or rs.w == 0) continue;
+		const double lp = std::log(rs.w) - std::log(spec.Z(nt));
+		std::vector<std::pair<Node,double>> partial = { {g.makeNode(g.get_rule((nonterminal_t)nt, rs.format)), lp} };
+		for(size_t i=0;i<rs.children.size();i++) {
+			auto kids = enumerate_nonterminal_skeletons(g, spec, rs.children[i]);
+			std::vector<std::pair<Node,double>> next;
+			for(auto& [p, plp] : partial) for(auto& [k, klp] : kids) {
+				Node q = p; q.set_child(i, k);
+				next.push_back({q, plp+klp});
+			}
+			partial = std::move(next);
+		}
+		for(auto& x : partial) out.push_back(x);
+	}
+	return out;
+}
+
+// a copy of t with every terminal replaced by a null node (a terminal root becomes a null Node)
+Node strip_terminals(const Node& t) {
+	if(t.rule->is_terminal()) return Node();
+	Node out = t;
+	for(size_t i=0;i<t.nchildren();i++) out.set_child(i, strip_terminals(t.child(i)));
+	return out;
+}
+
+// exact structural identity: same rule pointers, same stored lp, same shape
+bool identical(const Node& a, const Node& b) {
+	if(a.rule != b.rule or a.lp != b.lp or a.nchildren() != b.nchildren()) return false;
+	for(size_t i=0;i<a.nchildren();i++) if(not identical(a.child(i), b.child(i))) return false;
+	return true;
+}
+
+// t agrees with partial tree p everywhere p is non-null (null nodes of p match anything)
+bool is_prefix(const Node& p, const Node& t) {
+	if(p.is_null()) return true;
+	if(p.rule != t.rule or p.lp != t.lp or p.nchildren() != t.nchildren()) return false;
+	for(size_t i=0;i<p.nchildren();i++) if(not is_prefix(p.child(i), t.child(i))) return false;
+	return true;
+}
+
+// every non-null node is a non-terminal rule; every null node sits in a slot whose type has a terminal of
+// positive weight (or is the root, when nt itself has one); and the tree has the right type
+template<typename G>
+bool well_formed_nonterminal_skeleton(const G& g, const Node& t, nonterminal_t nt) {
+	auto has_terminal = [&](nonterminal_t x) { for(auto& r : g.rules[x]) if(r.is_terminal() and r.p > 0) return true; return false; };
+	if(t.is_null()) return t.is_root() and has_terminal(nt);
+	if(t.nt() != nt) return false;
+	for(auto& n : t) {
+		if(n.is_null()) {
+			if(n.is_root() or not has_terminal(n.parent->rule->type(n.pi))) return false;
+		}
+		else if(n.rule->is_terminal() or n.nchildren() != n.rule->N) return false;
+	}
+	return true;
+}
+
 template<typename G>
 void check_bookkeeping(G& g, const Spec& spec, const std::string& gname) {
 	for(size_t nt=0; nt<G::N_NTs; nt++) {
@@ -347,6 +412,96 @@ int main() {
 		}
 		CHECK(ok, "log_probability follows the new weights");
 		CHECK(not neg, "a rule changed to weight 0 is never generated");
+	}
+
+	// ==================================================================================
+	section("generate_nonterminal_skeleton: non-terminal trees with holes where the terminals go");
+	{
+		// (a) with the same rng state, generate_nonterminal_skeleton(nt) is exactly generate(nt) with its terminals removed
+		bool same = true, wf = true;
+		for(int i=0;i<30000;i++) {
+			const nonterminal_t nt = (nonterminal_t)(i % 3);
+			DefaultRNG.seed(9000+i); Node full = finite_grammar.generate(nt);
+			DefaultRNG.seed(9000+i); Node sk   = finite_grammar.generate_nonterminal_skeleton(nt);
+			same = same and identical(sk, strip_terminals(full));
+			wf   = wf and well_formed_nonterminal_skeleton(finite_grammar, sk, nt);
+		}
+		for(int i=0;i<30000;i++) {
+			const nonterminal_t nt = (nonterminal_t)(i % 2);
+			DefaultRNG.seed(70000+i); Node full = rec_grammar.generate(nt);
+			DefaultRNG.seed(70000+i); Node sk   = rec_grammar.generate_nonterminal_skeleton(nt);
+			same = same and identical(sk, strip_terminals(full));
+			wf   = wf and well_formed_nonterminal_skeleton(rec_grammar, sk, nt);
+		}
+		CHECK(same, "generate_nonterminal_skeleton == generate with terminals removed, given the same rng state");
+		CHECK(wf, "generate_nonterminal_skeleton returns only non-terminal rules, with holes exactly in slots that take terminals");
+
+		// (b) the same holds through the DepthException/retry path: with a tiny max depth, many attempts are
+		//     rejected, and both functions must reject and retry identically
+		const size_t old_depth = rec_grammar.GRAMMAR_MAX_DEPTH;
+		rec_grammar.GRAMMAR_MAX_DEPTH = 3;
+		bool same_d = true, shallow = true;
+		for(int i=0;i<20000;i++) {
+			DefaultRNG.seed(200000+i); Node full = rec_grammar.generate();
+			DefaultRNG.seed(200000+i); Node sk   = rec_grammar.generate_nonterminal_skeleton();
+			same_d = same_d and identical(sk, strip_terminals(full));
+			shallow = shallow and full.depth() <= 2; // depth() of a leaf is 0; recursion depth 3 throws
+		}
+		rec_grammar.GRAMMAR_MAX_DEPTH = old_depth;
+		CHECK(shallow, "GRAMMAR_MAX_DEPTH=3 really restricts generate (sanity check of the retry test)");
+		CHECK(same_d, "generate_nonterminal_skeleton == stripped generate through depth-exception retries");
+		DefaultRNG.seed(seed()+2);
+
+		// (c) its distribution, against exact skeleton probabilities computed from the spec (independent of (a))
+		for(int nt=0; nt<2; nt++) {
+			auto all = enumerate_nonterminal_skeletons(finite_grammar, finite_spec, nt);
+			std::map<std::string,double> exact;
+			long double total = 0;
+			for(auto& [t, lp] : all) {
+				CHECK(exact.count(t.string()) == 0, "skeleton strings are unique: " << t.string());
+				exact[t.string()] = std::exp(lp);
+				total += expl(lp);
+				// log_probability skips holes: it is lp minus each hole's log(terminal mass / Z)
+				double hole_lp = 0;
+				if(t.is_null()) hole_lp = lp; // the whole tree is one hole
+				else for(auto& n : t) if(n.is_null()) {
+					const int ht = n.parent->rule->type(n.pi);
+					double wt = 0; for(auto& r : finite_spec.rules) if(r.nt == ht and r.children.empty()) wt += r.w;
+					hole_lp += std::log(wt) - std::log(finite_spec.Z(ht));
+				}
+				CHECK_CLOSE(finite_grammar.log_probability(t), lp - hole_lp, 1e-13, 1e-13, "log_probability of skeleton " << t.string());
+			}
+			CHECK_CLOSE((double)total, 1.0, 1e-12, 0, "skeleton probabilities sum to 1 for nt=" << nt);
+
+			const size_t N = 2000000;
+			std::map<std::string,double> obs;
+			bool unknown = false, lp_ok = true;
+			for(size_t i=0;i<N;i++) {
+				Node t = finite_grammar.generate_nonterminal_skeleton((nonterminal_t)nt);
+				const std::string s = t.string();
+				if(not exact.count(s)) { unknown = true; continue; }
+				obs[s]++;
+				if(i < 20000) for(auto& n : t) if(not n.is_null()) lp_ok = lp_ok and close(n.lp, finite_spec.lp(n.nt(), n.rule->format), 1e-14, 1e-14);
+			}
+			CHECK(not unknown, "generate_nonterminal_skeleton produced a skeleton outside the support (nt=" << nt << ")");
+			CHECK(lp_ok, "skeleton nodes carry lp = log(p/Z) of their rule");
+			std::vector<double> o, p;
+			for(auto& [s, pr] : exact) { o.push_back(obs[s]); p.push_back(pr); }
+			CHECK_PVALUE(chisq_test(o, p, "generate_nonterminal_skeleton(" + str(nt) + ") over all " + str(exact.size()) + " skeletons"),
+			             "generate_nonterminal_skeleton distribution (finite grammar, nt=" << nt << ")");
+		}
+
+		// (d) holes are ordinary gaps: complete() fills every hole (with a generated subtree of the hole's type)
+		//     and leaves the skeleton's own nodes in place
+		bool fill_ok = true;
+		for(int i=0;i<5000;i++) {
+			Node sk = rec_grammar.generate_nonterminal_skeleton();
+			if(sk.is_null()) continue;
+			Node t = sk;
+			rec_grammar.complete(t);
+			fill_ok = fill_ok and t.is_complete() and is_prefix(sk, t);
+		}
+		CHECK(fill_ok, "complete() fills every hole of a skeleton and keeps its non-terminal nodes");
 	}
 
 	// ==================================================================================

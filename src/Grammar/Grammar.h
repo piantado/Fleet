@@ -775,7 +775,82 @@ public:
 		}
 		assert(false && "*** Generate failed due to repeated depth exceptions");
 	}
-	
+
+	Node __generate_nonterminal_skeleton(const nonterminal_t ntfrom=nt<output_t>(), unsigned long depth=0) const {
+		/**
+		 * @brief Sample the non-terminal skeleton of a tree: exactly like __generate, except that wherever
+		 * 		  a terminal rule (a rule with no children) is sampled, a hole (a null Node, via NullRule) is left
+		 * 		  in its place instead. See generate_nonterminal_skeleton.
+		 * @param ntfrom
+		 * @param depth
+		 * @return A Node whose non-null nodes are all non-terminal rules.
+		 *
+		 * NOTE: the depth check and the rule sampling are done at exactly the same points as in __generate,
+		 *       so this consumes exactly the same randomness as __generate (a terminal draws nothing beyond its
+		 *       own rule) and throws a DepthException in exactly the same cases.
+		 */
+
+		if(depth >= GRAMMAR_MAX_DEPTH) {
+			#ifdef WARN_DEPTH_EXCEPTION
+				CERR "*** Grammar exceeded max depth in __generate_nonterminal_skeleton; NONTERMINAL WAS" TAB ntfrom ENDL;
+			#endif
+			throw DepthException();
+		}
+
+		Rule* r = sample_rule(ntfrom);
+
+		if(r->is_terminal()) {
+			return Node(); // a hole where the terminal goes
+		}
+
+		Node n = makeNode(r);
+
+		try {
+			for(size_t i=0;i<r->N;i++) {
+				n.set_child(i, __generate_nonterminal_skeleton(r->type(i), depth+1)); // recurse down
+			}
+		} catch(const DepthException& e) {
+			#ifdef WARN_DEPTH_EXCEPTION
+				CERR ntfrom << " ";
+			#endif
+			throw e;
+		}
+
+		return n;
+	}
+
+	/**
+	 * @brief Sample a non-terminal skeleton: a tree consisting only of non-terminal rules, with holes (null nodes) where each of the
+	 * 		  terminals go. This is the distribution of generate(ntfrom) with every terminal replaced by a hole,
+	 * 		  i.e. the marginal over all ways of filling the terminals in. (With the same rng state, it returns
+	 * 		  exactly generate(ntfrom) with its terminals removed.) Like generate, it retries on DepthExceptions
+	 * 		  (up to GENERATE_DEPTH_EXCEPTION_RETRIES times), so the result is conditioned on depth < GRAMMAR_MAX_DEPTH
+	 * 		  in the same way.
+	 *
+	 * 		  - Each non-null node gets the usual lp from makeNode (log p/Z under the full grammar).
+	 * 		  - Holes are ordinary null nodes, so is_complete() is false whenever there is a hole, the type of a
+	 * 		    hole is its parent's rule->type(i), and the holes can be filled with e.g. complete(), neighbors(),
+	 * 		    or expand_to_neighbor(). If the root itself would be a terminal, a single null Node is returned
+	 * 		    (whose type is ntfrom, which a null Node cannot record).
+	 * 		  - log_probability() of the result skips holes, so it is the probability of the non-terminal choices
+	 * 		    only. The probability of the non-terminal skeleton itself additionally includes, for each hole of type t,
+	 * 		    (sum of terminal rule weights of type t) / Z[t].
+	 * @param ntfrom
+	 * @param depth
+	 * @return
+	 */
+	Node generate_nonterminal_skeleton(const nonterminal_t ntfrom=nt<output_t>(), unsigned long depth=0) const {
+		for(size_t tries=0;tries<GENERATE_DEPTH_EXCEPTION_RETRIES;tries++) {
+			try {
+				return __generate_nonterminal_skeleton(ntfrom, depth);
+			} catch(DepthException& e) {
+				depth_exception_count[ntfrom]++;
+			}
+		}
+		assert(false && "*** generate_nonterminal_skeleton failed due to repeated depth exceptions");
+		throw DepthException(); // never fall off the end of a non-void function (UB) when NDEBUG removes the assert
+	}
+
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		/**
 		 * @brief Make a copy of node where all nodes satisfying f are regenerated from the grammar. 
