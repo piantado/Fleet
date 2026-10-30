@@ -150,7 +150,9 @@ public:
 			#endif
 		}
 
-		print("# Initialized ", this->pool.size(), " partitions and ", complete_trees.size(), " complete trees");
+		if(FleetArgs::print_header) { // (off in the unit tests, which must print one line to stdout)
+			print("# Initialized ", this->pool.size(), " partitions and ", complete_trees.size(), " complete trees");
+		}
 	}
 
 	/**
