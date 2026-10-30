@@ -7,7 +7,7 @@
  * | Function | What it does |
  * |---|---|
  * | `expected_length(g[, start][, cost])` / `analyze(...)` | Expected size of a generated tree (+inf if not finite), plus the spectral radius that decides finiteness. |
- * | `set_max_entropy_probabilities(g, L[, start][, cost])` | Sets rule probabilities to the **maximum-entropy distribution over programs** with expected size `L`. Modifies `g`. |
+ * | `set_max_entropy_probabilities(g, L[, start][, cost][, rel_tol][, ..., min_probability])` | Sets rule probabilities to the **maximum-entropy distribution over programs** with expected size `L`, optionally with every probability >= `min_probability`. Modifies `g`. |
  * | `assigns_probability_to_infinite_trees(g[, start])` / `analyze_tightness(...)` | Does the grammar put positive probability on infinite trees? Says why, and gives P(infinite). |
  *
  * ```cpp
@@ -19,6 +19,7 @@
  * double E      = expected_length(grammar);                          // E[Node::count()] from nt<output_t>()
  * double leaves = expected_length(grammar, grammar.nt<bool>(), TerminalCost{}); // E[Node::count_terminals()] from bool
  * MaxEntResult m = set_max_entropy_probabilities(grammar, 8.0);      // afterwards E[Node::count()] == 8
+ * set_max_entropy_probabilities(grammar, 8.0, UnitCost{}, 1e-9, 0.01); // same, but every rule keeps p >= 0.01
  * bool bad      = assigns_probability_to_infinite_trees(grammar);    // P(infinite tree) > 0 ?
  * ```
  *
@@ -64,8 +65,20 @@
  *   `set_max_entropy_probabilities` meets `rel_tol` or throws. Measured on a RationalRules grammar:
  *   L ≤ 1e3 works at 1e-9; 1e4–1e5 need 1e-6; 1e6 needs 1e-3.
  *
+ * ## Why max-entropy probabilities differ within a nonterminal (and can be tiny)
+ * Max entropy over whole programs makes every program of the same size equally likely; it does not make
+ * rules uniform. A rule's probability is the share of programs that start with it:
+ * p_r = e^(-λ) · Π_{children c} Z_c / Z_A, where Z_A = Σ_t e^(-λ|t|) measures how many programs type A can
+ * make within the length budget. So, relative to a terminal of the same type, a rule is multiplied by
+ * Z_c per argument: rules with more arguments, or with arguments of "poorer" types (few cheap trees), get
+ * less. For targets near the minimum length Z ≈ e^(-λ)·#terminals is small and a k-argument rule scales
+ * like e^(-λ(k+1)): exponentially small. Rules with the same argument types always get equal probability.
+ * `min_probability` is the principled way to keep every rule usable: the floor is part of the
+ * optimization (other probabilities are re-optimized around it), not a clamp applied afterwards, which
+ * would break the length target.
+ *
  * ## Tests
- * `Testing/GrammarExpectedLength`, `Testing/GrammarMaxEntropy`, `Testing/GrammarTightness` (`make test`; also
+ * `Testing/GrammarExpectedLength`, `Testing/GrammarMaxEntropy`, `Testing/GrammarMaxEntropyFloor`, `Testing/GrammarTightness` (`make test`; also
  * `make sanitize`). They check closed forms, brute-force optimization, independent fixed-point iterations,
  * Monte Carlo through `Grammar::generate()`, the Gibbs identity via `Grammar::log_probability()`,
  * optimality against random PCFGs, and all error paths.
@@ -76,6 +89,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <vector>
 #include <algorithm>
@@ -197,41 +211,57 @@ namespace GrammarExpectedLength {
 			return rho;
 		}
 
-		/// Expected tree cost from every local nonterminal.
-		///   x(a) = c(a) + Σ_b M(a,b) x(b),  i.e.  x = (I - M)^{-1} c,  with c(a) = expected cost of ONE expansion of a.
-		/// This has a finite (and nonnegative) solution iff rho(M) < 1; otherwise `finite` is false.
+		/// Expected SUM over all nodes of a tree of a per-rule value v (v[a][k] for local rule k of a):
+		///   x(a) = c(a) + Σ_b M(a,b) x(b),  i.e.  x = (I - M)^{-1} c,  with c(a) = Σ_r p_r v_r  (one expansion of a).
+		/// Finite iff rho(M) < 1; otherwise `finite` is false. v may have any sign. With v = rule costs this
+		/// is the expected tree cost; with v = rewards it is the value of a policy (used by the floored max entropy).
 		struct Expectation { bool finite; double rho; Eigen::VectorXd x; };
 
-		template<typename CostF>
-		Expectation expected_cost(const LocalGrammar& L, const CostF& cost, const double critical_tolerance) {
+		inline Expectation expected_total(const LocalGrammar& L, const std::vector<std::vector<double>>& v, const double critical_tolerance) {
 			const Eigen::Index K = L.size();
 			const Eigen::MatrixXd M = mean_matrix(L);
 			Eigen::VectorXd c = Eigen::VectorXd::Zero(K);
-			for(Eigen::Index a=0;a<K;a++) {
-				for(const LocalRule& r : L.rules[a]) {
-					const double w = static_cast<double>(cost(*r.rule));
-					if(not std::isfinite(w) or w < 0.0)
-						throw std::invalid_argument("*** Cost must be finite and >= 0 for rule " + r.rule->string());
-					c(a) += r.p * w;
-				}
-			}
+			for(Eigen::Index a=0;a<K;a++)
+				for(size_t k=0;k<L.rules[a].size();k++) c(a) += L.rules[a][k].p * v[a][k];
 
 			const double rho = spectral_radius(M);
 			if(rho >= 1.0 - critical_tolerance) return {false, rho, {}}; // (near-)critical or supercritical: infinite
 
-			// Solve (I - M) x = c with full-pivot LU plus one round of iterative refinement.
+			// Solve (I - M) x = c with full-pivot LU plus one round of iterative refinement, then verify the residual.
 			const Eigen::MatrixXd A = Eigen::MatrixXd::Identity(K,K) - M;
 			const Eigen::FullPivLU<Eigen::MatrixXd> lu(A);
 			if(not lu.isInvertible()) throw std::runtime_error("*** (I - M) is numerically singular although rho < 1.");
 			Eigen::VectorXd x = lu.solve(c);
 			x += lu.solve(c - A*x);
-
-			// Verify. The exact solution satisfies x = c + Mx >= c >= 0, and the residual must be tiny.
-			const double scale = std::max(1.0, x.lpNorm<Eigen::Infinity>());
-			if(not x.allFinite() or (c - A*x).lpNorm<Eigen::Infinity>() > 1e-9 * std::max(1e-300, c.lpNorm<Eigen::Infinity>()) or
-			   ((x - c).array() < -1e-9 * scale).any())
+			if(not x.allFinite() or (c - A*x).lpNorm<Eigen::Infinity>() > 1e-9 * std::max(1e-300, c.lpNorm<Eigen::Infinity>()))
 				throw std::runtime_error("*** Expected-length linear solve failed its checks (rho = " + std::to_string(rho) + ").");
-			return {true, rho, x.cwiseMax(c)}; // clamp rounding below the exact lower bound x >= c
+			return {true, rho, x};
+		}
+
+		/// Expected tree cost from every local nonterminal (costs must be finite and >= 0).
+		template<typename CostF>
+		Expectation expected_cost(const LocalGrammar& L, const CostF& cost, const double critical_tolerance) {
+			const Eigen::Index K = L.size();
+			std::vector<std::vector<double>> v(K);
+			Eigen::VectorXd c = Eigen::VectorXd::Zero(K); // expected cost of ONE expansion, for the check below
+			for(Eigen::Index a=0;a<K;a++) {
+				for(const LocalRule& r : L.rules[a]) {
+					const double w = static_cast<double>(cost(*r.rule));
+					if(not std::isfinite(w) or w < 0.0)
+						throw std::invalid_argument("*** Cost must be finite and >= 0 for rule " + r.rule->string());
+					v[a].push_back(w);
+					c(a) += r.p * w;
+				}
+			}
+			Expectation E = expected_total(L, v, critical_tolerance);
+			if(not E.finite) return E;
+
+			// With costs >= 0 the exact solution satisfies x = c + Mx >= c >= 0.
+			const double scale = std::max(1.0, E.x.lpNorm<Eigen::Infinity>());
+			if(((E.x - c).array() < -1e-9 * scale).any())
+				throw std::runtime_error("*** Expected-length linear solve failed its checks (rho = " + std::to_string(E.rho) + ").");
+			E.x = E.x.cwiseMax(c); // clamp rounding below the exact lower bound x >= c
+			return E;
 		}
 
 		/// Least fixed point of the polynomial system  x(a) = Σ_{r ∈ rules[a]} w[a][r] · Π_{b ∈ kids(r)} x(b),
@@ -329,6 +359,122 @@ namespace GrammarExpectedLength {
 				if(not changed) return m[0];
 			}
 			return infinity;
+		}
+
+		// ---------------------------------------------------------------------------------------
+		//  Helpers for a probability floor p_r >= eps (set_max_entropy_probabilities with min_probability > 0)
+		// ---------------------------------------------------------------------------------------
+
+		/// The p maximizing Σ_r p_r (s_r - log p_r) over {Σ_r p_r = 1, p_r >= eps}: a "floored softmax".
+		/// The objective is strictly concave, so the answer is unique. Its optimality (KKT) conditions give
+		///     p_r = max(eps, exp(s_r - μ)),   with μ chosen so the p_r sum to 1,
+		/// i.e. an ordinary softmax, except that rules whose softmax weight would fall below eps sit at eps.
+		/// Σ_r max(eps, exp(s_r - μ)) is continuous and decreasing in μ, so μ is found by bisection.
+		inline std::vector<double> floored_softmax(const std::vector<double>& s, const double eps) {
+			const size_t n = s.size();
+			if(1.0 - n*eps <= 1e-12) return std::vector<double>(n, 1.0/n); // no freedom left: uniform (= eps)
+
+			// Bracket μ: at μ = max s the largest term alone is 1; at μ = logsumexp(s) - log(1 - n·eps) the
+			// non-floor part sums to at most 1 - n·eps, so the total is at most 1.
+			const double smax = *std::max_element(s.begin(), s.end());
+			double lse = 0.0; for(double x : s) lse += std::exp(x - smax);
+			double lo = smax, hi = smax + std::log(lse) - std::log(1.0 - n*eps);
+			auto total = [&](double mu) { double t = 0.0; for(double x : s) t += std::max(eps, std::exp(x - mu)); return t; };
+			for(int it=0; it<200; it++) {
+				const double mid = lo + 0.5*(hi - lo);
+				if(mid <= lo or mid >= hi) break;
+				(total(mid) > 1.0 ? lo : hi) = mid;
+			}
+
+			// Rules at the floor get exactly eps; the others share the remaining mass in softmax proportions.
+			std::vector<double> p(n);
+			double free_mass = 1.0, free_sum = 0.0;
+			for(size_t r=0;r<n;r++) {
+				const double w = std::exp(s[r] - hi);
+				if(w <= eps) { p[r] = eps; free_mass -= eps; }
+				else         { p[r] = -w; free_sum += w; } // negative marks "free", rescaled below
+			}
+			if(not (free_sum > 0.0)) { // cannot happen when n·eps < 1; guard rounding at the boundary
+				const size_t best = std::max_element(s.begin(), s.end()) - s.begin();
+				p[best] = -1.0; free_sum = 1.0; free_mass += eps;
+			}
+			for(size_t r=0;r<n;r++) if(p[r] < 0.0) p[r] = std::max(eps, -p[r] * free_mass / free_sum);
+			return p;
+		}
+
+		/// Floored policy putting eps on every usable rule and the spare mass 1 - n·eps on rule choice[a].
+		inline LocalGrammar vertex_policy(const LocalGrammar& base, const std::vector<size_t>& choice, const double eps) {
+			LocalGrammar Q = base;
+			for(size_t a=0;a<Q.size();a++) {
+				const size_t n = Q.rules[a].size();
+				for(size_t k=0;k<n;k++) Q.rules[a][k].p = eps + (k == choice[a] ? 1.0 - n*eps : 0.0);
+			}
+			return Q;
+		}
+
+		/// Smallest (maximize = false) or largest (maximize = true) expected cost from start over all PCFGs
+		/// with p_r >= eps. The expected cost is linear in each nonterminal's probabilities, so some optimum is a
+		/// vertex policy: eps everywhere plus all spare mass on one rule per nonterminal. We find it by policy
+		/// iteration: evaluate the current choice, switch each nonterminal to its best rule given that
+		/// evaluation, repeat until nothing changes (finitely many vertex policies, each switch improves).
+		/// Returns +infinity if the length can be made infinite (max), or if no floored PCFG has finite length (min).
+		/// Also returns the minimizing choice (used as a safe starting policy, since it has finite length).
+		template<typename CostF>
+		std::pair<double, std::vector<size_t>> floored_extreme_length(const LocalGrammar& base, const CostF& cost, const double eps,
+		                                                              const bool maximize, std::vector<size_t> choice, const double critical_tolerance) {
+			const size_t K = base.size();
+			// q_r(x) = cost of rule r plus the current expected cost of its children
+			auto q = [&](const Eigen::VectorXd& x, size_t a, size_t k) {
+				double v = cost(*base.rules[a][k].rule);
+				for(size_t b : base.rules[a][k].kids) v += x(b);
+				return v;
+			};
+			auto best_choice = [&](const Eigen::VectorXd& x, std::vector<size_t> current) {
+				for(size_t a=0;a<K;a++) {
+					const double scale = 1e-12 * (1.0 + std::abs(q(x, a, current[a])));
+					for(size_t k=0;k<base.rules[a].size();k++) {
+						const double gain = maximize ? q(x,a,k) - q(x,a,current[a]) : q(x,a,current[a]) - q(x,a,k);
+						if(gain > scale) current[a] = k; // switch only on a real improvement (avoids cycling on ties)
+					}
+				}
+				return current;
+			};
+
+			if(not maximize) {
+				// Find a starting policy with finite expected length by value iteration from x = 0:
+				// x_a <- eps·Σ_r q_r(x) + (1 - n·eps)·min_r q_r(x) increases to the minimum expected costs.
+				Eigen::VectorXd x = Eigen::VectorXd::Zero(K);
+				for(int it=0; it<200000; it++) {
+					Eigen::VectorXd nx(K);
+					for(size_t a=0;a<K;a++) {
+						const size_t n = base.rules[a].size();
+						double sum = 0.0, mn = infinity;
+						for(size_t k=0;k<n;k++) { const double v = q(x,a,k); sum += v; mn = std::min(mn, v); }
+						nx(a) = eps*sum + (1.0 - n*eps)*mn;
+					}
+					const double change = (nx - x).lpNorm<Eigen::Infinity>();
+					x = nx;
+					if(not x.allFinite() or x.maxCoeff() > 1e15) return {infinity, choice}; // no floored PCFG has finite length
+					if(change <= 1e-12 * std::max(1.0, x.lpNorm<Eigen::Infinity>())) break;
+				}
+				choice.assign(K, 0); // start from the rules that are best for these (near-optimal) values
+				for(size_t a=0;a<K;a++)
+					for(size_t k=0;k<base.rules[a].size();k++) if(q(x,a,k) < q(x,a,choice[a])) choice[a] = k;
+			}
+
+			for(int it=0; it<10000; it++) {
+				Expectation E{false, NaN, {}};
+				try { E = expected_cost(vertex_policy(base, choice, eps), cost, critical_tolerance); }
+				catch(const std::runtime_error&) {} // so close to critical that its (enormous) length cannot be certified: treat as infinite
+				if(not E.finite) {
+					if(maximize) return {infinity, choice}; // a floored PCFG with infinite expected length exists
+					throw std::runtime_error("*** min_probability is so large that the grammar is (nearly) forced to have infinite expected length.");
+				}
+				const std::vector<size_t> next = best_choice(E.x, choice);
+				if(next == choice) return {E.x(0), choice};
+				choice = next;
+			}
+			throw std::runtime_error("*** Internal error: policy iteration for the floored length range did not terminate.");
 		}
 
 	} // namespace detail
@@ -431,6 +577,31 @@ namespace GrammarExpectedLength {
 	//  point), and rho < 1 for the induced PCFG. A fixed point with rho < 1 is necessarily the LEAST
 	//  fixed point (the system is monotone and convex), so it is the right Z.
 	//
+	//  OPTIONAL FLOOR (min_probability = eps > 0): maximize H subject to E[cost] = L AND p_r >= eps for
+	//  every usable rule. The Gibbs closed form no longer applies, but the same structure does. For fixed
+	//  λ, maximize the Lagrangian H - λ·E[cost]. It is a sum over nodes, so it decomposes like a dynamic
+	//  program: with J_a = the best value of a tree rooted at a,
+	//
+	//      J_a = max over floored p of  Σ_r p_r (s_r - log p_r),    s_r = -λ·w_r + Σ_{b ∈ kids(r)} J_b,
+	//
+	//  and the inner maximization is a floored softmax, p_r = max(eps, exp(s_r - μ_a)). (With eps = 0 it
+	//  is the ordinary softmax, J = log Z, and this is exactly the Gibbs solution above.) We solve it by
+	//  policy iteration: evaluate the current PCFG's value J exactly (a linear solve), replace each
+	//  nonterminal's probabilities by the floored softmax for that J, repeat. Steps are damped when
+	//  needed so the PCFG keeps finite expected length; each accepted step increases J.
+	//
+	//  Why the result is the true optimum: (1) a PCFG with finite expected length that equals the floored
+	//  softmax of its own value J maximizes H - λ·E among ALL floored PCFGs of finite length (summing
+	//  each node's local optimality over the tree); (2) if such a maximizer has E = L, every other
+	//  floored PCFG with E = L has H - λL <= H* - λL, i.e. lower entropy. No convexity is needed.
+	//  E(λ) is nonincreasing (compare the two optimality inequalities for two λ's), so bisection works.
+	//
+	//  Costs of a floor: equal-size trees are no longer equally likely once a floor binds, and the
+	//  achievable expected lengths shrink to an interval (min_length, max_length) that we compute
+	//  exactly (floored_extreme_length). A floor can even force infinite length (e.g. S -> f(S,S)|x
+	//  with eps = 0.5); that is refused. Rules not reachable from start, and rules with p == 0, are not
+	//  floored.
+	//
 	// =========================================================================================
 
 	struct MaxEntResult {
@@ -438,11 +609,13 @@ namespace GrammarExpectedLength {
 		double              target_length   = NaN;
 		double              achieved_length = NaN;  ///< E[cost] under the new probabilities
 		double              lambda          = NaN;  ///< the Lagrange multiplier λ
-		double              min_length      = NaN;  ///< cost of the cheapest tree from start
-		double              max_length      = NaN;  ///< cost of the most expensive tree (+inf if recursive)
+		double              min_length      = NaN;  ///< smallest achievable expected cost (without a floor: the cheapest tree)
+		double              max_length      = NaN;  ///< largest achievable expected cost (without a floor: the most expensive tree; +inf if recursive)
 		double              entropy         = NaN;  ///< entropy of the tree distribution, in nats
-		double              log_partition   = NaN;  ///< log Z_start = log Σ_t exp(-λ·cost(t))
+		double              log_partition   = NaN;  ///< H - λ·E[cost]; without a binding floor this is log Z_start = log Σ_t exp(-λ·cost(t))
 		double              spectral_radius = NaN;  ///< rho of the new mean matrix (< 1)
+		double              min_probability = 0.0;  ///< the floor that was requested
+		size_t              rules_at_floor  = 0;    ///< how many rules ended up exactly at the floor (0 if no floor)
 		std::vector<bool>   modified;               ///< modified[i]: the rules of nonterminal i were set
 	};
 
@@ -457,20 +630,29 @@ namespace GrammarExpectedLength {
 	 *
 	 * @param cost     strictly positive per-rule cost (default 1 per node).
 	 * @param rel_tol  required |E - L| <= rel_tol·L; throws if unattainable (see the conditioning note above).
-	 * @throws std::invalid_argument if L is outside (min_length, max_length) or the cost is not > 0;
-	 *         std::runtime_error if a reachable nonterminal cannot derive a finite tree, or rel_tol cannot be met.
+	 * @param min_probability  floor eps for every usable rule reachable from start (default 0 = no floor).
+	 *                 Requires eps·(number of usable rules) <= 1 for each such nonterminal.
+	 * @throws std::invalid_argument if L is outside (min_length, max_length), the cost is not > 0, or the
+	 *         floor is invalid; std::runtime_error if a reachable nonterminal cannot derive a finite tree,
+	 *         the floor (nearly) forces infinite length, or rel_tol cannot be met.
 	 */
 	template<typename G, RuleCost CostF = UnitCost>
 	MaxEntResult set_max_entropy_probabilities(G& grammar, const double target_length, const nonterminal_t start,
 	                                           CostF cost = CostF{}, const double rel_tol = 1e-9,
-	                                           const double critical_tolerance = 1e-10) {
+	                                           const double critical_tolerance = 1e-10, const double min_probability = 0.0) {
 		using detail::LocalGrammar;
-		if(not std::isfinite(target_length) or target_length <= 0.0)                              throw std::invalid_argument("*** target_length must be finite and > 0");
+		const double eps = min_probability;
+		if(not std::isfinite(target_length) or target_length <= 0.0)      throw std::invalid_argument("*** target_length must be finite and > 0");
 		if(not (rel_tol > 0.0 and rel_tol < 1.0))                         throw std::invalid_argument("*** rel_tol must be in (0,1)");
 		if(not (critical_tolerance >= 0.0 and critical_tolerance < 1.0))  throw std::invalid_argument("*** critical_tolerance must be in [0,1)");
+		if(not (std::isfinite(eps) and eps >= 0.0))                        throw std::invalid_argument("*** min_probability must be finite and >= 0");
 
 		const LocalGrammar base = detail::make_local(grammar, start);
 		const size_t K = base.size();
+		for(size_t a=0;a<K;a++)
+			if(eps * base.rules[a].size() > 1.0 + 1e-12)
+				throw std::invalid_argument("*** min_probability " + std::to_string(eps) + " times the " + std::to_string(base.rules[a].size()) +
+				                            " usable rules of nonterminal " + std::to_string(base.nt[a]) + " exceeds 1.");
 
 		// --- Step 1: costs must be > 0, and every reachable nonterminal must derive some finite tree ----
 		for(size_t a=0;a<K;a++) {
@@ -485,12 +667,22 @@ namespace GrammarExpectedLength {
 			if(not std::isfinite(m[a]))
 				throw std::runtime_error("*** Nonterminal " + std::to_string(base.nt[a]) + " is reachable from start but cannot generate any finite tree.");
 
-		// --- Step 2: the target must lie strictly between the cheapest and the most expensive tree ----
-		const double min_cost = m[0], max_cost = detail::max_tree_cost(base, cost);
+		// --- Step 2: the target must lie strictly inside the range of achievable expected lengths ------
+		// Without a floor that range is (cheapest tree, most expensive tree). With a floor it is narrower,
+		// (smallest, largest) expected length over floored PCFGs, computed exactly.
+		double min_cost = m[0], max_cost = detail::max_tree_cost(base, cost);
+		std::vector<size_t> min_choice; // floored PCFG with the smallest length: a safe starting point below
+		if(eps > 0.0) {
+			std::tie(min_cost, min_choice) = detail::floored_extreme_length(base, cost, eps, false, {}, critical_tolerance);
+			if(not std::isfinite(min_cost))
+				throw std::invalid_argument("*** min_probability " + std::to_string(eps) + " forces infinite expected length.");
+			max_cost = detail::floored_extreme_length(base, cost, eps, true, min_choice, critical_tolerance).first;
+		}
+		const std::string floor_note = eps > 0.0 ? " with min_probability " + std::to_string(eps) : "";
 		if(not (target_length > min_cost * (1.0 + 1e-12)))
-			throw std::invalid_argument("*** target_length " + std::to_string(target_length) + " must exceed the minimum tree cost " + std::to_string(min_cost));
+			throw std::invalid_argument("*** target_length " + std::to_string(target_length) + " must exceed the smallest achievable expected length " + std::to_string(min_cost) + floor_note);
 		if(not (target_length < max_cost * (1.0 - 1e-12)))
-			throw std::invalid_argument("*** target_length " + std::to_string(target_length) + " must be below the maximum tree cost " + std::to_string(max_cost) + " (grammar is not recursive from start)");
+			throw std::invalid_argument("*** target_length " + std::to_string(target_length) + " must be below the largest achievable expected length " + std::to_string(max_cost) + floor_note);
 
 		// --- Step 3: rescale to avoid underflow --------------------------------------------------------
 		// Z_a is about exp(-λ·m_a), which underflows for large λ. Write Z_a = exp(-λ·m_a)·Ẑ_a. The system for
@@ -506,8 +698,21 @@ namespace GrammarExpectedLength {
 		}
 
 		// --- Step 4: for a given λ, the max-entropy PCFG and its expected length ---------------------
-		struct Solution { LocalGrammar Q; double E, rho, Zhat_start; };
-		auto solve = [&](const double lambda) -> std::optional<Solution> {
+		// J = H - λ·E[cost] of the solution (= log Z_start without a floor).
+		struct Solution { LocalGrammar Q; double E, rho, J; };
+
+		// Expected length of a candidate PCFG, or nothing if it is infinite OR cannot be certified. The latter
+		// happens for candidates extremely close to critical (rho ~ 1 - 1e-12), where (I - M) is too
+		// ill-conditioned for the solve to pass its accuracy check. Such a candidate has an astronomically
+		// large expected length, so for the search it simply means "λ too small" -- not an error.
+		auto certified_length = [&](const LocalGrammar& Q) -> std::optional<detail::Expectation> {
+			try {
+				detail::Expectation E = detail::expected_cost(Q, cost, critical_tolerance);
+				if(E.finite) return E;
+			} catch(const std::runtime_error&) {}
+			return std::nullopt;
+		};
+		auto solve_gibbs = [&](const double lambda) -> std::optional<Solution> {
 			std::vector<std::vector<double>> u(K); // rescaled rule weights
 			for(size_t a=0;a<K;a++)
 				for(double e : excess[a]) u[a].push_back(std::exp(-lambda * e));
@@ -535,10 +740,72 @@ namespace GrammarExpectedLength {
 				}
 			}
 
-			const detail::Expectation E = detail::expected_cost(Q, cost, critical_tolerance);
-			if(not E.finite) return std::nullopt; // rho >= 1: not the least fixed point, or critical
-			return Solution{std::move(Q), E.x(0), E.rho, Zhat.x(0)};
+			const auto E = certified_length(Q);
+			if(not E) return std::nullopt; // rho >= 1 (not the least fixed point, or critical), or not certifiable
+			return Solution{std::move(Q), E->x(0), E->rho, -lambda * m[0] + std::log(Zhat.x(0))}; // undo the rescaling of Step 3
 		};
+
+		// With a floor: policy iteration (see the section comment). Starts from the previous solution when it
+		// still has finite length (bisection evaluates nearby λ's), otherwise from the shortest floored PCFG.
+		std::optional<LocalGrammar> warm;
+		auto solve_floored = [&](const double lambda) -> std::optional<Solution> {
+			// value of a policy: expected sum over nodes of the reward -λ·w_r - log p_r
+			auto value = [&](const LocalGrammar& Q) -> std::optional<Eigen::VectorXd> {
+				std::vector<std::vector<double>> v(K);
+				for(size_t a=0;a<K;a++) for(const auto& r : Q.rules[a]) v[a].push_back(-lambda * cost(*r.rule) - std::log(r.p));
+				try { // as in certified_length: an uncertifiable, nearly critical policy counts as "too long"
+					const detail::Expectation E = detail::expected_total(Q, v, critical_tolerance);
+					if(E.finite) return E.x;
+				} catch(const std::runtime_error&) {}
+				return std::nullopt;
+			};
+			// scores s_r = -λ·w_r + Σ J_kids of nonterminal a's rules
+			auto scores = [&](const Eigen::VectorXd& J, size_t a) {
+				std::vector<double> sc;
+				for(const auto& r : base.rules[a]) { double v = -lambda * cost(*r.rule); for(size_t b : r.kids) v += J(b); sc.push_back(v); }
+				return sc;
+			};
+
+			LocalGrammar Q = (warm and value(*warm)) ? *warm : detail::vertex_policy(base, min_choice, eps);
+			std::optional<Eigen::VectorXd> J = value(Q);
+			if(not J) return std::nullopt;
+
+			bool converged = false;
+			for(int it=0; it<500 and not converged; it++) {
+				// greedy improvement: the floored softmax of every nonterminal, given the current values J
+				// Stop when the probabilities themselves stop changing. (Not when the improvement in the
+				// objective is small: near the optimum that improvement is QUADRATIC in the error of the
+				// probabilities, so a 1e-11 improvement still leaves errors ~1e-6 in p and in E.)
+				LocalGrammar Gr = base;
+				double change = 0.0;
+				for(size_t a=0;a<K;a++) {
+					const std::vector<double> p = detail::floored_softmax(scores(*J, a), eps);
+					for(size_t k=0;k<p.size();k++) {
+						Gr.rules[a][k].p = p[k];
+						change = std::max(change, std::abs(p[k] - Q.rules[a][k].p));
+					}
+				}
+				if(change <= 1e-14) { converged = true; break; }
+
+				// damped step: mix toward the greedy policy until the mixture still has finite length
+				bool accepted = false;
+				for(double t = 1.0; t >= 1e-8 and not accepted; t *= 0.5) {
+					LocalGrammar Qt = base;
+					for(size_t a=0;a<K;a++)
+						for(size_t k=0;k<Qt.rules[a].size();k++) Qt.rules[a][k].p = (1.0 - t)*Q.rules[a][k].p + t*Gr.rules[a][k].p;
+					if(auto Jt = value(Qt)) { Q = std::move(Qt); J = std::move(Jt); accepted = true; }
+				}
+				if(not accepted or J->lpNorm<Eigen::Infinity>() > 1e12) return std::nullopt; // values unbounded: λ too small
+			}
+			if(not converged) return std::nullopt;
+
+			const auto E = certified_length(Q);
+			if(not E) return std::nullopt;
+			warm = Q;
+			return Solution{std::move(Q), E->x(0), E->rho, (*J)(0)};
+		};
+
+		auto solve = [&](const double lambda) { return eps > 0.0 ? solve_floored(lambda) : solve_gibbs(lambda); };
 
 		// --- Step 5: find λ with E(λ) = target_length by bisection --------------------------------------------------
 		// too_long(λ) is true for small λ and false for large λ, switching exactly where E(λ) = target_length.
@@ -577,10 +844,13 @@ namespace GrammarExpectedLength {
 		out.lambda          = lambda;
 		out.min_length      = min_cost;
 		out.max_length      = max_cost;
-		out.log_partition   = -lambda * min_cost + std::log(best->Zhat_start); // undo the rescaling of Step 3
-		out.entropy         = lambda * best->E + out.log_partition;             // H = λ·E[cost] + log Z for a Gibbs distribution
+		out.log_partition   = best->J;
+		out.entropy         = lambda * best->E + best->J;   // J = H - λ·E[cost]  (= log Z without a floor)
 		out.spectral_radius = best->rho;
+		out.min_probability = eps;
 		out.modified.assign(G::N_NTs, false);
+		if(eps > 0.0)
+			for(size_t a=0;a<K;a++) for(const auto& r : best->Q.rules[a]) if(r.p <= eps * (1.0 + 1e-9)) out.rules_at_floor++;
 
 		for(size_t a=0;a<K;a++) {
 			const size_t i = best->Q.nt[a];
@@ -600,8 +870,9 @@ namespace GrammarExpectedLength {
 
 	/// Same, from the grammar's start symbol (its output_t).
 	template<typename G, RuleCost CostF = UnitCost>
-	MaxEntResult set_max_entropy_probabilities(G& grammar, const double target_length, CostF cost = CostF{}, const double rel_tol = 1e-9) {
-		return set_max_entropy_probabilities(grammar, target_length, G::template nt<typename G::output_t>(), cost, rel_tol);
+	MaxEntResult set_max_entropy_probabilities(G& grammar, const double target_length, CostF cost = CostF{}, const double rel_tol = 1e-9,
+	                                           const double min_probability = 0.0) {
+		return set_max_entropy_probabilities(grammar, target_length, G::template nt<typename G::output_t>(), cost, rel_tol, 1e-10, min_probability);
 	}
 
 
