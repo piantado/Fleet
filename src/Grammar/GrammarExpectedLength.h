@@ -526,7 +526,13 @@ namespace GrammarExpectedLength {
 					total += p;
 				}
 				if(not (std::abs(total - 1.0) <= 1e-10)) return std::nullopt; // not a fixed point
-				for(auto& r : Q.rules[a]) r.p /= total;                           // remove rounding
+				for(auto& r : Q.rules[a]) {
+					r.p /= total;                                                 // remove rounding
+					// For large λ a probability can underflow to exactly 0. Stored as 0, the rule would count
+					// as disabled (p == 0) in every later call, so results would depend on call history.
+					// Keep it at the smallest normal double instead; its effect on E is below 1e-300.
+					r.p = std::max(r.p, std::numeric_limits<double>::min());
+				}
 			}
 
 			const detail::Expectation E = detail::expected_cost(Q, cost, critical_tolerance);
@@ -616,10 +622,14 @@ namespace GrammarExpectedLength {
 	//  (a) is decided combinatorially. (b) compares rho with 1, so |rho - 1| <= critical_tolerance is
 	//  treated as critical (tight) and reported as near_critical: check it when the distinction matters.
 	//
-	//  We also compute q numerically (least fixed point of q_a = Σ_r p_r Π q_kids), but only as a
-	//  diagnostic. Near criticality the numbers are inherently imprecise: 1 - q is resolvable only to
-	//  ~1e-8 for one critical component, and ~1e-4 for two chained critical components. So reported
-	//  probabilities follow the exact decision: exactly 1 (tight) or 0 (unproductive) where it applies.
+	//  We also compute q numerically (least fixed point of q_a = Σ_r p_r Π q_kids). Near criticality
+	//  the numbers are inherently imprecise: 1 - q is resolvable only to ~1e-8 for one critical
+	//  component, and ~1e-4 for two chained critical components. So reported probabilities follow the
+	//  exact decision: exactly 1 (tight) or 0 (unproductive) where it applies. Where they do not --
+	//  a reachable supercritical component -- prob_infinite is the numerical value, which has the same
+	//  ABSOLUTE accuracy limit: for rho = 1 + d the true P(infinite) is O(d), so for d below ~1e-7 the
+	//  value is only an order-of-magnitude estimate (measured: true 2.0e-9 reported as 8.7e-9). The
+	//  decision infinite_trees_possible itself is exact up to critical_tolerance.
 	//
 	// =========================================================================================
 
@@ -630,7 +640,7 @@ namespace GrammarExpectedLength {
 		bool                supercritical_reachable = false; ///< reason (b)
 		bool                near_critical           = false; ///< some reachable recursive component has |rho - 1| <= tolerance
 		double              max_component_rho       = 0.0;   ///< largest component rho (0 if nothing is recursive)
-		double              prob_infinite           = NaN;   ///< 1 - q_start: exactly 0 if tight; numerical otherwise
+		double              prob_infinite           = NaN;   ///< 1 - q_start: exactly 0 if tight; numerical otherwise (absolute error up to ~1e-8 near rho = 1)
 		double              prob_infinite_numerical = NaN;   ///< raw numerical 1 - q_start, for diagnostics
 		std::vector<bool>   reachable;                       ///< reachable[i] from start
 		std::vector<bool>   productive;                      ///< reachable i that can derive a finite tree
@@ -699,8 +709,13 @@ namespace GrammarExpectedLength {
 		for(size_t a=0;a<K;a++) for(const auto& r : L.rules[a]) p[a].push_back(r.p);
 		const Eigen::VectorXd q = detail::least_fixed_point(L, p, 20000).x.cwiseMax(0.0).cwiseMin(1.0);
 
-		// Where the problem is well conditioned (nothing near critical), the numbers must confirm the decision.
-		if(not out.near_critical)
+		// Where the problem is well conditioned, the numbers must confirm the decision. Near a critical
+		// component they cannot: rounding limits 1 - q to ~sqrt(eps) ~ 1e-8 there whatever the method
+		// (a valid grammar with rho = 1 - 1e-8 would fail a 1e-9 check). So check only when every
+		// recursive component is at least 1e-4 away from rho = 1, where the error is ~1e-13.
+		double gap = infinity; // distance of the closest recursive component from criticality
+		for(size_t a=0;a<K;a++) if(reach[a][a]) gap = std::min(gap, std::abs(comp_rho[a] - 1.0));
+		if(gap >= 1e-4)
 			for(size_t a=0;a<K;a++)
 				if(tight[a] and not (1.0 - q(a) <= 1e-9))
 					throw std::runtime_error("*** analyze_tightness internal inconsistency: nonterminal " + std::to_string(L.nt[a]) +

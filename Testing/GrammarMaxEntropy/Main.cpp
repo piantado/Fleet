@@ -235,6 +235,20 @@ int main() {
 		gibbs_and_mc(g, g.nt<bool>(), res, UnitCost{}, 100000, "finite language");
 	}
 
+	// ---------------- regression: underflow must not disable rules ----------------
+	// A target near the minimum makes a costly rule's probability underflow. It used to be stored as
+	// exactly 0, which every later call treats as "disabled", so the next result depended on history.
+	{
+		auto cost = [](const Rule& r){ return r.format == "g(%s)" ? 100.0 : 1.0; };
+		Binary g(1,1,1), fresh(1,1,1);
+		set_max_entropy_probabilities(g, 1.0 + 1e-10, cost);
+		CHECK(g.get_rule("g(%s)")->p > 0.0, "underflowed rule stays enabled");
+		set_max_entropy_probabilities(g, 5.0, cost);
+		set_max_entropy_probabilities(fresh, 5.0, cost);
+		CHECK(close(g.get_rule("g(%s)")->p, fresh.get_rule("g(%s)")->p, 1e-9, 0) and close(g.get_rule("f(%s,%s)")->p, fresh.get_rule("f(%s,%s)")->p, 1e-9),
+		      "result independent of call history: " << g.get_rule("g(%s)")->p << " vs " << fresh.get_rule("g(%s)")->p);
+	}
+
 	// ---------------- (6) edge cases ----------------
 	{
 		Empty4 g;
