@@ -195,6 +195,16 @@ class H(fl.DeterministicHypothesis, grammar=g):
     likelihood = fl.likelihoods.exact()
 
 
+class H4(fl.DeterministicHypothesis, grammar=g):
+    """A likelihood whose int arithmetic overflows int64 for most outputs: the compiled code
+    makes those cases undefined (-inf), and so must the reference it is tested against."""
+    @fl.likelihood
+    def lik(self, di) -> float:
+        y = self.call(di.input)
+        big = y * 4611686018427387904       # 2^62
+        return -float(abs(big - di.output) % 7)
+
+
 @fl.struct
 class Q:
     v: float
