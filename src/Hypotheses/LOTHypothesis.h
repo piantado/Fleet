@@ -62,7 +62,7 @@ public:
 	using ProposalType = std::optional<std::pair<this_t,double>>;
 	
 	// this splits the prior,likelihood,posterior,and value
-	static const char SerializationDelimiter = '\t';
+	static const char SerializationDelimiter = Serialization::HypothesisDelimiter;
 	
 	// store the the total number of instructions on the last call
 	// (summed up for stochastic, else just one for deterministic)
@@ -338,13 +338,17 @@ public:
 	} 	
 	
 	/**
-	 * @brief Convert this into a string which can be written to a file. 
+	 * @brief Convert this into a string which can be written to a file:
+	 *        prior \t likelihood \t posterior \t value.parseable()
+	 *        NOTE: This doesn't preserve everything: not can_propose, born, or born_chain_idx, and the
+	 *        scores are stored as they are (deserialize does not recompute them, so they are only right
+	 *        for the data/grammar they were computed with -- see TopN::compute_posterior to rescore).
+	 *        Subclasses with extra state (e.g. ConstantContainer) must override BOTH this and deserialize.
 	 * @return 
 	 */	
 	virtual std::string serialize() const override { 
-		// NOTE: This doesn't preseve everything (it doesn't save can_propose, for example)
 		// NOTE: exact round-trip of the doubles relies on cppstr's str(double), which formats
-		// the shortest representation that parses back bit-identically
+		// the shortest representation that parses back bit-identically (see parse_exact)
 		return str(this->prior)      + SerializationDelimiter + 
 		       str(this->likelihood) + SerializationDelimiter +
 			   str(this->posterior)  + SerializationDelimiter +
@@ -352,19 +356,36 @@ public:
 	}
 	
 	/**
-	 * @brief Convert this from a string which was in a file. 
+	 * @brief Convert this from a string which was in a file. Throws DeserializationError on bad input.
+	 *        We split only at the first three delimiters, so rule formats may contain tabs.
 	 * @param s
 	 * @return 
 	 */	
 	static this_t deserialize(const std::string& s) { 
-		auto [pr, li, po, v] = split<4>(s, SerializationDelimiter);
-		
-		auto h = this_t(grammar->from_parseable(v));
-	
+		const auto f = split_first(s, SerializationDelimiter, 3, "LOTHypothesis");
+
+		Node v = grammar->from_parseable(f[3]);
+
+		// A partial tree (with null gaps, e.g. from MCTS) is serialized fine, but the Node constructor
+		// compiles, which asserts on gaps -- so set those without compiling (as expand_to_neighbor does)
+		this_t h = [&]() -> this_t {
+			if(v.is_complete()) {
+				return this_t(std::move(v));
+			}
+			else if constexpr (std::is_default_constructible_v<this_t>) {
+				this_t p;
+				p.set_value(std::move(v), false);
+				return p;
+			}
+			else {
+				throw DeserializationError("*** Cannot deserialize a partial hypothesis into a type without a default constructor: " + s);
+			}
+		}();
+
 		// restore the bayes stats
-		h.prior = str_to<double>(pr); 
-		h.likelihood = str_to<double>(li); 
-		h.posterior = str_to<double>(po);
+		h.prior      = parse_exact<double>(f[0], "prior"); 
+		h.likelihood = parse_exact<double>(f[1], "likelihood"); 
+		h.posterior  = parse_exact<double>(f[2], "posterior");
 		
 		return h; 
 	}

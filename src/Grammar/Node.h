@@ -25,8 +25,8 @@ class Node : public BaseNode<Node> {
 public:
 
 	// These are used in parseable to delimit nodes nonterminals and multiple nodes in a tree
-	const static char NTDelimiter = ':'; // delimit nt:format 
-	const static char RuleDelimiter = ';'; // delimit a sequence of nt:format;nt:format; etc
+	const static char NTDelimiter = Serialization::NTDelimiter;     // delimit nt:format (see Serialization.h)
+	const static char RuleDelimiter = Serialization::RuleDelimiter; // delimit a sequence of nt:format;nt:format; etc
 
 public:
 	const Rule*  rule; // which rule did I use?
