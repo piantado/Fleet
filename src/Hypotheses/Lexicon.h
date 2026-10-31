@@ -1,11 +1,13 @@
 #pragma once
 
 #include <map>
+#include <atomic>
 #include <limits.h>
 
 #include "Hypotheses/Interfaces/Bayesable.h"
 #include "Hypotheses/Interfaces/MCMCable.h"
 #include "Hypotheses/Interfaces/Searchable.h"
+#include "Hypotheses/Interfaces/Serializable.h"
 
 /**
  * @class Lexicon
@@ -41,7 +43,7 @@ public:
 	using ProposalType = std::optional<std::pair<this_t,double>>;
 	
 	// Store a lexicon of type INNER elements
-	const static char FactorDelimiter = '|';
+	const static char FactorDelimiter = Serialization::LexiconDelimiter;
 
 	static double p_factor_propose;
 
@@ -365,25 +367,39 @@ public:
 	 
 	virtual std::string serialize() const override {
 		/**
-		 * @brief Convert to a parseable format (using a delimiter for each factor)
+		 * @brief Convert to a parseable format (using a delimiter for each factor):
+		 *        prior|likelihood|posterior|key|factor|key|factor...
+		 *        There is no escaping, so a key whose str() contains the delimiter, or a factor whose
+		 *        serialization contains it (e.g. a Lexicon of Lexicons, or a rule format with '|'), 
+		 *        cannot be deserialized; we warn (once) when that happens.
 		 * @return 
 		 */
 		
 		std::string out = str(this->prior)      + Lexicon::FactorDelimiter + 
 						  str(this->likelihood) + Lexicon::FactorDelimiter +
 						  str(this->posterior)  + Lexicon::FactorDelimiter;
+		bool bad = false;
 		for(auto& [k,f] : factors) {
-			out += str(k)        + Lexicon::FactorDelimiter + 
-				   f.serialize() + Lexicon::FactorDelimiter;
+			const std::string ks = str(k);
+			const std::string fs = f.serialize();
+			bad = bad or ::contains(ks, Lexicon::FactorDelimiter) or ::contains(fs, Lexicon::FactorDelimiter);
+			out += ks + Lexicon::FactorDelimiter + 
+				   fs + Lexicon::FactorDelimiter;
 		}
 		out.erase(out.size()-1); // remove last delmiter
+		
+		if(bad) {
+			static std::atomic<bool> warned{false};
+			if(not warned.exchange(true)) {
+				CERR "# *** Warning: Lexicon::serialize produced a string that cannot be deserialized, because a key or factor contains '" << Lexicon::FactorDelimiter << "': " << QQ(out) ENDL;
+			}
+		}
 		return out;
 	}
 	
 	static this_t deserialize(const std::string s) {
 		/**
-		 * @brief Convert a string to a lexicon of this type
-		 * @param g
+		 * @brief Convert a string to a lexicon of this type. Throws DeserializationError on bad input.
 		 * @param s
 		 * @return 
 		 */
@@ -391,14 +407,21 @@ public:
 		this_t h;
 		auto q = split(s, Lexicon::FactorDelimiter);
 		
-		h.prior      = str_to<double>(q.front()); q.pop_front();
-		h.likelihood = str_to<double>(q.front()); q.pop_front();
-		h.posterior  = str_to<double>(q.front()); q.pop_front();
+		if(q.size() < 3 or (q.size()-3) % 2 != 0) {
+			throw DeserializationError("*** Malformed Lexicon (expected prior|likelihood|posterior followed by key|factor pairs): \"" + s + "\"");
+		}
+		
+		h.prior      = parse_exact<double>(q.front(), "prior");      q.pop_front();
+		h.likelihood = parse_exact<double>(q.front(), "likelihood"); q.pop_front();
+		h.posterior  = parse_exact<double>(q.front(), "posterior");  q.pop_front();
 
 		while(not q.empty()){
-			key_t k = str_to<key_t>(q.front());  q.pop_front();
+			const key_t k = parse_exact<key_t>(q.front(), "Lexicon key");  q.pop_front();
 			auto v = INNER::deserialize(q.front()); q.pop_front();
-			h.factors[k] = v; 
+			if(h.factors.contains(k)) {
+				throw DeserializationError("*** Malformed Lexicon: duplicate key " + str(k) + " in \"" + s + "\"");
+			}
+			h.factors.emplace(k, std::move(v)); 
 		}
 		return h;
 	}
