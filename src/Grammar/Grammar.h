@@ -774,6 +774,7 @@ public:
 			}
 		}
 		assert(false && "*** Generate failed due to repeated depth exceptions");
+		throw DepthException(); // never fall off the end of a non-void function (UB) when NDEBUG removes the assert
 	}
 
 	Node __generate_nonterminal_skeleton(const nonterminal_t ntfrom=nt<output_t>(), unsigned long depth=0) const {

@@ -505,6 +505,24 @@ int main() {
 	}
 
 	// ==================================================================================
+	section("generate / generate_nonterminal_skeleton when every attempt hits the depth limit");
+	{
+		// with GRAMMAR_MAX_DEPTH=0 every attempt throws a DepthException, so all retries fail. That must assert
+		// (debug builds) or throw a DepthException (NDEBUG builds) -- never return garbage by falling off the end.
+		const size_t old_depth = rec_grammar.GRAMMAR_MAX_DEPTH;
+		rec_grammar.GRAMMAR_MAX_DEPTH = 0;
+		#ifdef NDEBUG
+			auto throws_depth = [](auto f) { try { f(); } catch(const DepthException&) { return true; } catch(...) { return false; } return false; };
+			CHECK(throws_depth([]{ (void)rec_grammar.generate(); }), "generate throws DepthException after all retries fail (NDEBUG)");
+			CHECK(throws_depth([]{ (void)rec_grammar.generate_nonterminal_skeleton(); }), "generate_nonterminal_skeleton throws DepthException after all retries fail (NDEBUG)");
+		#else
+			CHECK(dies([]{ (void)rec_grammar.generate(); }), "generate asserts after all retries fail");
+			CHECK(dies([]{ (void)rec_grammar.generate_nonterminal_skeleton(); }), "generate_nonterminal_skeleton asserts after all retries fail");
+		#endif
+		rec_grammar.GRAMMAR_MAX_DEPTH = old_depth;
+	}
+
+	// ==================================================================================
 	section("partial trees: neighbors, neighbor_prior, expand_to_neighbor, complete");
 	{
 		for(int rep=0; rep<200; rep++) {
