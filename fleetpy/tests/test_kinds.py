@@ -310,7 +310,7 @@ def test_recursion_kind_checks():
 
     class S2(fl.StochasticHypothesis, grammar=g2):
         likelihood = fl.likelihoods.stochastic_exact()
-    with pytest.raises(TypeError, match="fl.Lexicon"):
+    with pytest.raises(TypeError, match="needs Lexicon"):
         fl.build(S2)
     g3 = _grammar(B.LexiconRecurse(key=str))
 

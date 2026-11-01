@@ -89,7 +89,7 @@ class Hypothesis:
 
     def logprob(self, x, y) -> float:
         """Stochastic only: log P(output = y | x), normalized: the value fleetpy's
-        likelihoods (and self.logprob in an @fl.likelihood) use."""
+        likelihoods (and self.logprob in an @likelihood) use."""
         m = self._model
         if not m.spec.stochastic:
             raise TypeError("logprob() is for stochastic hypotheses")
@@ -188,7 +188,7 @@ class Model:
             raise TypeError("algo must be fleetpy.MCMCChain(), ChainPool(n) or ParallelTempering(n, T)")
         if not isinstance(control, Control):
             raise TypeError("control must be a fleetpy.Control")
-        if algo.algo == 0 and control.threads != 1:
+        if algo.cpp_class == "MCMCChain" and control.threads != 1:
             raise ValueError("MCMCChain runs on one thread (Fleet asserts this); use ChainPool for threads > 1")
         if self.n_callbacks and control.threads != 1:
             raise ValueError("this model has Python-callback (tier 3) primitives, which require threads=1")
@@ -202,7 +202,7 @@ class Model:
         # Bit-for-bit reproducible only with a seed, one thread, a step budget (not a time
         # budget), and no swapper thread (ParallelTempering swaps on a wall-clock timer).
         reproducible = (control.seed != 0 and control.threads == 1 and control.time_ms == 0
-                        and not (algo.algo == 2 and algo.chains > 1))
+                        and not (algo.cpp_class == "ParallelTempering" and algo.chains > 1))
         stats = RunStats(samples, pcalls, secs, interrupted, list(acc), control.seed, control.threads,
                          reproducible, breakout, repr(control))
         return RunResult([Hypothesis(h, self) for h in top_h], stats)

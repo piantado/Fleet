@@ -14,16 +14,15 @@ every build. Inline C++ (`cpp=...`) remains available as an escape hatch, for ex
 call existing C++ code, but none of the examples use it.
 
 ```python
-import fleetpy as fl
-from fleetpy import builtins as B
+from fleetpy import *
 
-@fl.struct
+@struct
 class Obj:
-    shape: fl.i8
-    color: fl.i8
-    size: fl.i8
+    shape: i8
+    color: i8
+    size: i8
 
-g = fl.Grammar(input=Obj, output=bool)
+g = Grammar(input=Obj, output=bool)
 
 @g.primitive                               # prints as blue(%s)
 def blue(x: Obj) -> bool:
@@ -33,15 +32,15 @@ def blue(x: Obj) -> bool:
 def bigger(a: Obj, b: Obj) -> bool:
     return a.size > b.size
 
-g.add_builtin(B.And, B.Or, B.Not, B.X)    # Fleet's own builtins
+g.add_builtin(And, Or, Not, X)             # Fleet's own builtins (also as B.And, ...)
 
-class H(fl.DeterministicHypothesis, grammar=g):
-    likelihood = fl.likelihoods.noisy_exact()
+class H(DeterministicHypothesis, grammar=g):
+    likelihood = likelihoods.noisy_exact()
 
-model = fl.build(H)
-data = [fl.Datum(Obj(1, 0, 0), True, 0.75), fl.Datum(Obj(2, 0, 0), False, 0.75)]
-res = model.run(data, fl.ParallelTempering(chains=8, max_temp=10.0),
-                control=fl.Control(time="30s", threads=8, seed=1), top=25)
+model = build(H)
+data = [Datum(Obj(1, 0, 0), True, 0.75), Datum(Obj(2, 0, 0), False, 0.75)]
+res = model.run(data, ParallelTempering(chains=8, max_temp=10.0),
+                control=Control(time="30s", threads=8, seed=1), top=25)
 for h in res.top:
     print(h.posterior, h)
 model.parse("and(blue(x),bigger(x,x))").call(Obj(0, 0, 2))
@@ -56,7 +55,9 @@ python3 examples/rational_rules.py   # first build of a model takes ~10-20 s; la
 ```
 
 To use fleetpy from your own scripts, put this directory on the path
-(`export PYTHONPATH=/path/to/Fleet/fleetpy`) and `import fleetpy as fl`. It finds Fleet
+(`export PYTHONPATH=/path/to/Fleet/fleetpy`) and `from fleetpy import *` (its `__all__` is
+exactly the model-writing vocabulary: types, `Grammar`, Fleet's builtins by name, the
+hypothesis classes, `build`, `Datum`, `Control` and the samplers), or `import fleetpy as fl`. It finds Fleet
 itself through the tree it lives in (or `FLEET_ROOT`).
 
 ## Examples
@@ -70,7 +71,7 @@ directly (`python3 examples/number.py`).
 | --- | --- | --- |
 | `rational_rules.py` | `Models/RationalRules` | structs, short-circuit builtins |
 | `number.py` | `Models/Number-Simple` | `Recurse`; a Python prior with a recursion penalty; a Python whole-dataset likelihood; sets as bit masks (`&`, `\|`, `~`, `bit_count`) in a distinct `Set` type; two same-format `if` rules |
-| `formal_language.py` | `Models/FormalLanguageTheory-Simple` | stochastic hypothesis, `flip()`, `Recurse` + `MemRecurse`, string slicing and `fl.char`, constant terminals, a custom proposal, the string-edit likelihood, VM limits |
+| `formal_language.py` | `Models/FormalLanguageTheory-Simple` | stochastic hypothesis, `flip()`, `Recurse` + `MemRecurse`, string slicing and `char`, constant terminals, a custom proposal, the string-edit likelihood, VM limits |
 | `lexicon_arith.py` | (hand-written Fleet lexicon in `tests/native/lex_driver.cpp`) | `Lexicon`, `LexiconRecurse`, `LexiconMemRecurse` |
 
 The native references in `tests/native/` include Fleet's own `Main.cpp` files verbatim:
@@ -82,19 +83,19 @@ which has no guard, by renaming its `main` with the preprocessor.
 
 | Class | Generates | `call(x)` returns |
 | --- | --- | --- |
-| `fl.DeterministicHypothesis` | `DeterministicLOTHypothesis` | the output (raises `fl.Undefined` on error) |
-| `fl.StochasticHypothesis` | `StochasticLOTHypothesis` | `{output: log mass}`, Fleet's unnormalized `DiscreteDistribution` |
-| `fl.Lexicon` | `Lexicon<H, key, FPInner, in, out>` | as its factors (deterministic or `stochastic=True`) |
+| `DeterministicHypothesis` | `DeterministicLOTHypothesis` | the output (raises `Undefined` on error) |
+| `StochasticHypothesis` | `StochasticLOTHypothesis` | `{output: log mass}`, Fleet's unnormalized `DiscreteDistribution` |
+| `Lexicon` | `Lexicon<H, key, FPInner, in, out>` | as its factors (deterministic or `stochastic=True`) |
 
 Stochastic hypotheses also have `distribution(x, normalize=True)` and `logprob(x, y)`.
 Their output distribution is missing whatever mass was pruned or errored, which is governed
-by `vm = fl.VMLimits(max_steps=, max_outputs=, min_lp=, max_recurse=, max_run_program=)`
+by `vm = VMLimits(max_steps=, max_outputs=, min_lp=, max_recurse=, max_run_program=)`
 (Fleet's `VirtualMachineControl`; defaults are Fleet's). These limits are part of the model
 and part of the build hash.
 
 ```python
-class Lex(fl.Lexicon, grammar=g, keys=[0, 1], main=1):    # stochastic=False, require_all_called=False
-    likelihood = fl.likelihoods.noisy_exact()
+class Lex(Lexicon, grammar=g, keys=[0, 1], main=1):    # stochastic=False, require_all_called=False
+    likelihood = likelihoods.noisy_exact()
 
 h = model.parse({0: "add(x,x)", 1: "inc(F(0,x))"})        # a lexicon parses from {key: program}
 h.factors                                                 # {0: "λx.add(x,x)", 1: "λx.inc(F(0,x))"}
@@ -110,7 +111,7 @@ every call, as `Models/FormalLanguageTheory-Complex` does.
 
 ## Builtins
 
-`fl.builtins` exposes Fleet's builtins with Fleet's usual formats:
+Fleet's builtins are importable by name (`And`, `If(int)`, ...) and under `B.` (`B.And`), with Fleet's usual formats:
 
 * logic and control: `X`, `And`, `Or`, `Not`, `Implies`, `Iff`, `If(T)`
 * stochastic (need a stochastic hypothesis): `Flip` (`flip()`), `FlipP`, `SafeFlipP`, `Sample(T)`
@@ -123,15 +124,15 @@ Misuse is a build error, not a crash. That covers `Flip` in a deterministic hypo
 NotImplementedError), `Lexicon*Recurse` outside one, `Safe*` on an input type without
 `size()`, and a likelihood written for the other kind.
 
-Constants: `g.add_terminal("'0'", "0", fl.char, p=1.5)` (Fleet's `add_terminal`). A format
+Constants: `g.add_terminal("'0'", "0", char, p=1.5)` (Fleet's `add_terminal`). A format
 may be reused for rules of *different* return types (Fleet's Number model has two
 `if(%s,%s,%s)`); the parser picks by type.
 
 ## Proposals
 
-`proposal = fl.proposals.regenerate()` (Fleet's default),
-`fl.proposals.regenerate_insert_delete(regenerate=0.75)` (the exact draw sequence of
-FormalLanguageTheory-Simple), or `fl.proposals.cpp(body)`, where the body assigns
+`proposal = proposals.regenerate()` (Fleet's default),
+`proposals.regenerate_insert_delete(regenerate=0.75)` (the exact draw sequence of
+FormalLanguageTheory-Simple), or `proposals.cpp(body)`, where the body assigns
 `std::optional<std::pair<Node,double>> p` from `value` and `&grammar`. For a Lexicon, the
 proposal applies to each factor.
 
@@ -159,7 +160,7 @@ The format string defaults to `name(%s,%s)` (or `name` for no arguments). Pass `
 override. Formats must be unique grammar-wide. `Model.parse` needs every format to be
 canonical (`name` / `name(%s,...)`); `serialize()`/`deserialize()` work for any format.
 
-Raise `fl.Undefined` in any tier to make the program undefined on that input (Fleet's
+Raise `Undefined` in any tier to make the program undefined on that input (Fleet's
 `VMSRuntimeError`).
 
 ### Tier-2 semantics (what "transpiled Python" means exactly)
@@ -182,10 +183,10 @@ and C++ differ, the compiled code follows Python, or the input becomes *undefine
   Without this, one unbounded loop inside a primitive would hang the sampler.
 * Supported beyond arithmetic and comparisons: `if`/`elif`/`else`, conditional expressions,
   `for i in range(...)`, `str` and `list` indexing and slicing (`s[1:]`, `xs[-2:]`; no step),
-  `+` on strings, lists and `fl.char`, `len`, `str(c)`, `abs`, `min`, `max`, `int`, `float`,
+  `+` on strings, lists and `char`, `len`, `str(c)`, `abs`, `min`, `max`, `int`, `float`,
   bitwise `& | ^ ~ << >>` and `x.bit_count()` / `x.bit_length()` (Python semantics on
   negative ints; a negative shift count is undefined), `math.*`, struct construction and
-  fields, calls to other Python primitives, and `raise fl.Undefined`.
+  fields, calls to other Python primitives, and `raise Undefined`.
 * Module-level constants (numbers, bools, strings, and lists or tuples of them) are frozen
   into the C++ at build time. Changing one changes the generated source and so triggers a
   rebuild.
@@ -206,8 +207,8 @@ also counts the inputs where int64 semantics differ from unbounded Python
 The default is Fleet's PCFG prior. To change it, write a Python method:
 
 ```python
-class H(fl.DeterministicHypothesis, grammar=g):
-    @fl.prior
+class H(DeterministicHypothesis, grammar=g):
+    @prior
     def prior(self) -> float:
         penalty = -25.0 if self.recursion_count() > 0 else math.log1p(-math.exp(-25.0))
         return self.grammar_prior() + penalty
@@ -220,7 +221,7 @@ differential-tested against its Python source on prior samples at build time.
 ## Existing C++ types
 
 ```python
-Set = fl.opaque("std::bitset<16>", "<bitset>", py=int,
+Set = opaque("std::bitset<16>", "<bitset>", py=int,
                 from_py="std::bitset<16>((unsigned long long)v)",   # Python int -> C++
                 to_py="(int64_t)v.to_ullong()",                     # C++ -> Python int
                 check=lambda v: 0 <= v < 2**16)
@@ -233,13 +234,13 @@ opaque type can be used inside the grammar but can't cross the boundary.
 
 ## Likelihoods
 
-Deterministic: `fl.likelihoods.noisy_exact()` (RationalRules), `exact()`, `gaussian(sd)`.
+Deterministic: `likelihoods.noisy_exact()` (RationalRules), `exact()`, `gaussian(sd)`.
 Stochastic: `stochastic_exact(normalize=True)` (log P(y | x)) and
 `string_edit(add_p, del_p, alphabet)` (FormalLanguageTheory's `p_delete_append`
 likelihood, marginalized over the output distribution). Or a Python method:
 
-* `@fl.likelihood def f(self, di) -> float` is per datum.
-* `@fl.likelihood(total=True) def f(self, data) -> float` covers the whole dataset (it replaces
+* `@likelihood def f(self, di) -> float` is per datum.
+* `@likelihood(total=True) def f(self, data) -> float` covers the whole dataset (it replaces
   Fleet's `compute_likelihood`; use `len(data)` and `data[i]`), as Number-Simple needs.
 * Inside, use `self.call(x)` (deterministic; an undefined program makes the score −∞),
   `self.call(x, default)` (returns `default` instead, like Fleet's `call(x, err)`), or
@@ -248,8 +249,8 @@ likelihood, marginalized over the output distribution). Or a Python method:
 `cpp(body)` and `cpp_total(body)` are the inline-C++ equivalents.
 
 ```python
-class H(fl.DeterministicHypothesis, grammar=g):
-    @fl.likelihood
+class H(DeterministicHypothesis, grammar=g):
+    @likelihood
     def lik(self, di) -> float:
         y = self.call(di.input)          # undefined program -> this datum scores -inf
         return -(y - di.output) ** 2 / 2.0
@@ -261,7 +262,7 @@ the likelihood declares `nonpositive=True` (the library likelihoods know their o
 
 ## Running
 
-`model.run(data, algo, control=fl.Control(...), top=N)`, where `algo` is
+`model.run(data, algo, control=Control(...), top=N)`, where `algo` is
 `MCMCChain()`, `ChainPool(n)` or `ParallelTempering(n, max_temp)`. The run holds no GIL,
 keeps Fleet's busy-spin sample consumer, and returns a `TopN` plus stats. Ctrl-C stops
 the run and returns partial results (`stats.interrupted`). `stats.reproducible` is true
@@ -323,7 +324,7 @@ declaration ──specify──▶ ModelSpec ──codegen──▶ C++ ──bu
 | Module | Owns |
 | --- | --- |
 | `ftypes.py` | the types. One class per type holds *everything* about its values: C++ spelling, conversion across the boundary, C++ literals, range checks (`fits`), random test values (`sample`). |
-| `rules.py` | grammar rules (`Primitive`, `Terminal`, `Builtin`), all with the same face: `fmt`, `p`, `ret`, `args`, `cpp_registration()`. Fleet's builtins are one table, `BUILTINS`. |
+| `rules.py` | grammar rules (`Primitive`, `Terminal`, `Builtin`), all with the same face: `fmt`, `p`, `ret`, `args`, `cpp_registration()`. Fleet's builtins are one table, `BUILTINS`; a builtin written in a model is a `BuiltinUse` until a grammar binds its signature. |
 | `grammar.py` | a collection of rules, its static checks, and nonterminal order. |
 | `hypothesis.py` | the declaration classes and `specify()`, which checks a model as a whole and resolves it into a `ModelSpec`. |
 | `transpile.py` | Python → C++: an AST visitor with one method per node kind and tables for operators, builtin functions and `math`. |
@@ -346,7 +347,7 @@ Extending:
 * **An operator, builtin function or `math` function in transpiled code**: a table entry
   in `transpile.py`. If Python and C++ disagree on it, also a helper in `fleetpy_pyops.h`
   and its mirror in `check/reference.py`; the differential tests then compare the two.
-* **A likelihood**: a function returning `fl.likelihoods.Likelihood(body, nonpositive, name, needs)`.
+* **A likelihood**: a function returning `likelihoods.Likelihood(body, nonpositive=..., name=..., needs=...)` (a `Code` plus the facts fleetpy needs to use it).
 * **A hypothesis kind**: a declaration class, its case in `specify`, and its class in
   `codegen.hypothesis_classes` implementing the runtime interface above.
 

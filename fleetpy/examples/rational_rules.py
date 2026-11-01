@@ -13,18 +13,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # run from anywhere in the repo
 
-import fleetpy as fl  # noqa: E402
-from fleetpy import builtins as B  # noqa: E402
+from fleetpy import *  # noqa: E402,F403
 
 
-@fl.struct
+@struct
 class Obj:
-    shape: fl.i8
-    color: fl.i8
-    size: fl.i8
+    shape: i8
+    color: i8
+    size: i8
 
 
-g = fl.Grammar(input=Obj, output=bool, types=[Obj, bool])
+g = Grammar(input=Obj, output=bool, types=[Obj, bool])
 
 # Same rules and probabilities as the C++ model; the bodies are plain Python,
 # compiled to C++ (and differential-tested against this source on every build).
@@ -67,21 +66,21 @@ def size3(x: Obj) -> bool:
 g.add_builtin(B.And, B.Or, B.Not, B.X)
 
 
-class MyHypothesis(fl.DeterministicHypothesis, grammar=g):
-    likelihood = fl.likelihoods.noisy_exact()
+class MyHypothesis(DeterministicHypothesis, grammar=g):
+    likelihood = likelihoods.noisy_exact()
 
 
 # The data from Models/RationalRules/Main.cpp
 DATA = [
-    fl.Datum(Obj(1, 0, 0), True, 0.75),   # triangle-blue-1
-    fl.Datum(Obj(2, 0, 0), False, 0.75),  # circle-blue-1
-    fl.Datum(Obj(2, 1, 0), False, 0.75),  # circle-yellow-1
+    Datum(Obj(1, 0, 0), True, 0.75),   # triangle-blue-1
+    Datum(Obj(2, 0, 0), False, 0.75),  # circle-blue-1
+    Datum(Obj(2, 1, 0), False, 0.75),  # circle-yellow-1
 ]
 
 if __name__ == "__main__":
-    model = fl.build(MyHypothesis)
-    res = model.run(DATA, fl.ParallelTempering(chains=4, max_temp=10.0),
-                    control=fl.Control(time="2s", threads=2, seed=1), top=10)
+    model = build(MyHypothesis)
+    res = model.run(DATA, ParallelTempering(chains=4, max_temp=10.0),
+                    control=Control(time="2s", threads=2, seed=1), top=10)
     for h in res.top:
         print(f"{h.posterior:.4f}\t{h.prior:.4f}\t{h.likelihood:.4f}\t{h}")
     print(res.stats)

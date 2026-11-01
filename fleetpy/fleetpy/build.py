@@ -230,6 +230,9 @@ def build_module(source: str, spec_json: str, mode: str = "release"):
 
     Returns (module, info dict). Cached: an identical build is a dictionary lookup.
     """
+    if mode == "checked" and "libasan" not in os.environ.get("LD_PRELOAD", ""):
+        raise RuntimeError("a 'checked' (ASan/UBSan) module must be loaded in a process started with the ASan "
+                           "runtime preloaded; use fleetpy.check.run_checked(...), which starts one for you")
     cf, inc, notes = flags(mode)
     root = fleet_root()
     nb = nanobind_dir()
@@ -260,29 +263,19 @@ def build_module(source: str, spec_json: str, mode: str = "release"):
             tmp = d / (so.name + f".tmp{os.getpid()}")
             cmd = [_cxx(), str(d / "model.cpp"), str(nbo), "-shared", "-o", str(tmp)] + cf + inc + [
                 "-lm", "-pthread"]
-            if mode == "checked":
-                cmd.append("-fsanitize=address,undefined")
             out = _run(cmd)
             (d / "build.log").write_text(shlex.join(cmd) + "\n\n" + out)
             os.replace(tmp, so)  # atomic: a crashed build never leaves a half-written .so
-    if mode == "checked" and "libasan" not in os.environ.get("LD_PRELOAD", ""):
-        raise RuntimeError(
-            "a 'checked' (ASan/UBSan) module must be loaded in a process started with the ASan "
-            "runtime preloaded; use fleetpy.check.run_checked(...) which starts one for you. "
-            f"(module built at {so})")
     return _import(modname, so), info
 
 
-_loaded: dict = {}
-
-
 def _import(modname: str, so: Path):
-    if modname in _loaded:
-        return _loaded[modname]
+    """Load the extension once per process (its name is its content hash)."""
+    if modname in sys.modules:
+        return sys.modules[modname]
     loader = importlib.machinery.ExtensionFileLoader(modname, str(so))
     spec = importlib.util.spec_from_file_location(modname, str(so), loader=loader)
     mod = importlib.util.module_from_spec(spec)
     loader.exec_module(mod)
     sys.modules[modname] = mod
-    _loaded[modname] = mod
     return mod

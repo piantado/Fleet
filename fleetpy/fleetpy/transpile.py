@@ -37,8 +37,7 @@ import math
 import textwrap
 
 from . import ftypes as T
-from .hypothesis import Code
-from .likelihoods import Likelihood
+from .likelihoods import Code, Likelihood
 
 
 class TranspileError(SyntaxError):
@@ -283,7 +282,7 @@ class Transpiler:
                 self.err(n, "in / is are not supported")
             sym = COMPARISONS[type(op)]
             ta, tb = a.type, b.type
-            if {ta.key, tb.key} == {"char", "str"}:   # a fl.char is a one-character str in Python
+            if {ta.key, tb.key} == {"char", "str"}:   # a char is a one-character str in Python
                 ca, cb = f"fp::str({a.code})", f"fp::str({b.code})"
             elif is_num(ta) and is_num(tb):
                 if is_int(ta) != is_int(tb):
@@ -506,7 +505,7 @@ class Transpiler:
 
     def f_str(self, n, args):
         if len(args) != 1 or args[0].type not in (STR, CHAR):
-            self.err(n, "str() is only supported on str and fl.char")
+            self.err(n, "str() is only supported on str and char")
         return Expr(f"fp::str({args[0].code})", STR)
 
     def f_len(self, n, args):
@@ -777,7 +776,7 @@ def primitive(r, grammar) -> Code:
 
 
 def prior(fn, grammar) -> Code:
-    """The body of compute_prior for an @fl.prior method; undefined -> -inf."""
+    """The body of compute_prior for an @prior method; undefined -> -inf."""
     t = Transpiler(fn, kind="prior", grammar=grammar, params={}, ret=F64)
     if [a.arg for a in t.fdef.args.args] != ["self"]:
         raise TranspileError("a prior must be `def name(self) -> float`")
@@ -785,7 +784,7 @@ def prior(fn, grammar) -> Code:
 
 
 def likelihood(pl, grammar, *, stochastic: bool) -> Likelihood:
-    """A Likelihood from an @fl.likelihood method; undefined (anywhere) -> -inf."""
+    """A Likelihood from an @likelihood method; undefined (anywhere) -> -inf."""
     arg = "data" if pl.total else "di"
     params = {arg: DataType(grammar) if pl.total else DatumType(grammar)}
     t = Transpiler(pl.fn, kind="likelihood", grammar=grammar, params=params, ret=F64, stochastic=stochastic)
@@ -798,6 +797,6 @@ def likelihood(pl, grammar, *, stochastic: bool) -> Likelihood:
                                    f"\tauto [fp_ok, fp_out] = this->fp_call(fp_x);\n"
                                    f"\tif(not fp_ok) fp::undefined();\n"
                                    f"\treturn fp_out;\n}};\n")
-    return Likelihood(callx + _undefined_is_minus_infinity(body), pl.nonpositive,
-                      "transpiled:" + pl.fn.__qualname__, "dist" if stochastic else "value",
-                      scope="total" if pl.total else "datum", transpiled=True, pyfn=pl.fn, types=t.types())
+    return Likelihood(callx + _undefined_is_minus_infinity(body), transpiled=True, pyfn=pl.fn, types=t.types(),
+                      nonpositive=pl.nonpositive, name="transpiled:" + pl.fn.__qualname__,
+                      needs="dist" if stochastic else "value", scope="total" if pl.total else "datum")

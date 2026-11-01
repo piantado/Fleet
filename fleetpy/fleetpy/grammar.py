@@ -7,7 +7,7 @@ Declaring rules only records them; ``fleetpy.build`` turns the grammar into C++.
 from __future__ import annotations
 
 from . import ftypes as T
-from .rules import Builtin, BuiltinFactory, Primitive, Terminal, is_canonical_format
+from .rules import Builtin, BuiltinFactory, BuiltinUse, Primitive, Terminal, is_canonical_format
 
 
 class Grammar:
@@ -32,14 +32,14 @@ class Grammar:
 
     def add_terminal(self, fmt: str, value, type=None, *, p: float = 1.0):
         """A constant rule (``Grammar::add_terminal``). The type is inferred for bool, int,
-        float and str values; pass ``type=`` otherwise (e.g. fl.char, fl.i8)."""
+        float and str values; pass ``type=`` otherwise (e.g. char, i8)."""
         self.rules.append(Terminal(fmt, value, T.infer(value) if type is None else type, p))
 
     def add_builtin(self, *builtins):
         for b in builtins:
             if isinstance(b, BuiltinFactory):
                 b = b.default()
-            if not isinstance(b, Builtin):
+            if not isinstance(b, BuiltinUse):
                 raise TypeError(f"add_builtin expects fleetpy builtins, got {b!r}")
             self.rules.append(b.bind(self))
 
