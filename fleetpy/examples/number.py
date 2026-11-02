@@ -133,6 +133,6 @@ def knower_level(h) -> str:
 if __name__ == "__main__":
     model = fl.build(MyHypothesis)
     res = model.run([], fl.ParallelTempering(chains=4, max_temp=5.0),
-                    control=fl.Control(time="20s", threads=2, seed=1), top=5)
+                    control=fl.Control(time="1s", threads=2, seed=1), top=5)
     for h in res.top:
         print(f"{h.posterior:.3f}\t{knower_level(h)}\t{h}")
