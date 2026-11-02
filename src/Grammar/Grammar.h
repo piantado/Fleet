@@ -1,6 +1,7 @@
 #pragma once
 
 #include <tuple>
+#include <optional>
 #include <array>
 #include <exception>
 
@@ -296,6 +297,30 @@ public:
 	}
 	
 	/**
+	 * @brief Print a warning if a rule with format fmt (of nonterminal nt, with arguments child_types)
+	 *        would not survive serialize/deserialize (see Serialization.h). Such rules are allowed, since
+	 *        a grammar may never be serialized. (Rules that share a format but differ in argument types
+	 *        are fine: from_parseable tells them apart by the types of their children.)
+	 */
+	void warn_if_unserializable(const nonterminal_t nt, const std::string& fmt, const std::vector<nonterminal_t>& child_types) const {
+		auto warn = [&](const std::string& why) {
+			CERR "# *** Warning: rule format " << QQ(fmt) << " " << why ENDL;
+		};
+		if(fmt == NullRule->format)
+			warn("is the NullRule's format, so deserialize will read this rule back as a null gap.");
+		if(contains(fmt, Serialization::RuleDelimiter))
+			warn("contains '" + std::string(1,Serialization::RuleDelimiter) + "', so hypotheses using it cannot be deserialized.");
+		if(contains(fmt, Serialization::TopNDelimiter))
+			warn("contains a newline, so hypotheses using it cannot be deserialized from a TopN or a save()/load() file.");
+		if(contains(fmt, Serialization::LexiconDelimiter))
+			warn("contains '" + std::string(1,Serialization::LexiconDelimiter) + "', so a Lexicon with a factor using it cannot be deserialized.");
+		for(const auto& r : rules[nt]) {
+			if(r.format == fmt and r.child_types == child_types) 
+				warn("is the format of another rule of the same nonterminal with the same argument types, so hypotheses using it cannot be deserialized.");
+		}
+	}
+	
+	/**
 	 * @brief 
 	 * @param fmt
 	 * @param f
@@ -308,6 +333,7 @@ public:
 		
 		nonterminal_t Tnt = this->nt<T>();
 		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o, a);
+		warn_if_unserializable(Tnt, fmt, r.child_types);
 		Z[Tnt] += r.p; // keep track of the total probability
 		logZ[Tnt] = log(Z[Tnt]); // keep the cached log normalizer in sync
 		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
@@ -557,44 +583,49 @@ public:
 	
 	[[nodiscard]] virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**
-		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type. 
-		 * 			If s is the empty string, however, it must match exactly. 
+		 * @brief Return a rule of nonterminal nt based on s. An exact match of s to a rule's format wins
+		 * 		  (and must be unique); otherwise s must be a prefix of exactly one rule's format. If s is
+		 * 		  the empty string, it must match exactly.
+		 * 		  
+		 * 		  NOTE: this used to accept the first prefix match and throw at a second one *before* looking at
+		 * 		  the remaining rules, so an exact match that sorted after two longer formats it is a prefix of
+		 * 		  (e.g. "x" after "xa" and "xb", since rules are sorted by probability) could never be found --
+		 * 		  which made deserialize fail on hypotheses that serialize had just written.
 		 * @param s
 		 * @return 
 		 */
 		
-		// we're going to allow matches to prefixes, but we have to keep track
-		// if we have matched a prefix so we don't mutliple count (e.g if one rule was "str" and one was "string"),
-		// we'd want to match "string" as "string" and not "str"
-		
-		bool was_partial_match = true; 
-		
-		Rule* ret = nullptr;
-		for(auto& r: rules[nt]) {
-			
-			if(s == r.format) {
-				if(ret != nullptr and not was_partial_match) { // if we previously found a full match
-					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
-					throw YouShouldNotBeHereError();
-				}
-				else {
-					was_partial_match = false;  // not a partial match
-					ret = const_cast<Rule*>(&r);
-				}
-			} // else we look at partial matches
-			else if( was_partial_match and ((s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format))) {
-				if(ret != nullptr) {
-					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
-					throw YouShouldNotBeHereError();
-				}
-				else {
-					ret = const_cast<Rule*>(&r);
-				}
-			} 
+		if(nt >= N_NTs) {
+			CERR "*** Nonterminal " << nt << " is out of range (the grammar has " << N_NTs << ")" ENDL;
+			throw YouShouldNotBeHereError();
 		}
 		
-		if(ret != nullptr) { 
-			return ret; 
+		Rule* exact = nullptr;
+		Rule* prefix = nullptr;
+		size_t nprefix = 0;
+		for(auto& r: rules[nt]) {
+			if(s == r.format) {
+				if(exact != nullptr) { 
+					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
+					throw YouShouldNotBeHereError();
+				}
+				exact = const_cast<Rule*>(&r);
+			}
+			else if(s != "" and is_prefix(s, r.format)) {
+				prefix = const_cast<Rule*>(&r);
+				nprefix++;
+			}
+		}
+		
+		if(exact != nullptr) return exact;
+		
+		if(nprefix > 1) {
+			CERR "*** Multiple rules found matching " << s ENDL;
+			throw YouShouldNotBeHereError();
+		}
+		
+		if(prefix != nullptr) { 
+			return prefix; 
 		}
 		else {			
 			CERR "*** No rule found to match " TAB QQ(s) ENDL;
@@ -1026,47 +1057,129 @@ public:
 		/**
 		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string).
 		 * 		  Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a'
+		 *        The nodes used are removed from the front of q.
 		 *        NOTE: This is not a Serializable interface because the Node needs to know which grammar
+		 *        Throws DeserializationError on malformed input (it used to assert).
 		 * @param q
 		 * @return 
 		 */
+		const std::vector<std::string> toks(q.begin(), q.end());
+		size_t pos = 0;
+		Node v = parse_tokens(toks, pos);
+		q.erase(q.begin(), q.begin() + (long)pos);
+		return v;
+	}
+	
+private:
+	Node parse_tokens(const std::vector<std::string>& toks, size_t& pos) const {
+		/**
+		 * @brief Parse the tree whose root is toks[pos] (see from_parseable), advancing pos past it.
+		 *        If several rules of the nonterminal have exactly this format (overloads that differ only
+		 *        in their argument types), each is tried, and the one whose children have the right
+		 *        types is used; it is an error if not exactly one fits (e.g. two rules with the same
+		 *        format AND argument types, or overloads told apart only by children that are null gaps).
+		 */
+		if(pos >= toks.size()) {
+			throw DeserializationError("*** from_parseable ran out of nodes: some rule is missing children");
+		}
 		
-		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
+		const std::string& tok = toks[pos];
+		pos++;
 		
-		auto [nts, pfx] = divide(q.front(), Node::NTDelimiter);
-		q.pop_front();
+		const auto k = tok.find(Node::NTDelimiter);
+		if(k == std::string::npos) {
+			throw DeserializationError("*** from_parseable: missing \"" + std::string(1,Node::NTDelimiter) + "\" in node \"" + tok + "\"");
+		}
+		const std::string nts = tok.substr(0,k);
+		const std::string pfx = tok.substr(k+1);
 		
 		// null rules:
 		if(pfx == NullRule->format) 
 			return makeNode(NullRule);
 
-		// otherwise find the matching rule
-		Rule* r = this->get_rule(stoi(nts), pfx);
+		const auto nt = parse_exact<nonterminal_t>(nts, "nonterminal");
+		if(nt >= N_NTs) {
+			throw DeserializationError("*** from_parseable: nonterminal " + nts + " is out of range in node \"" + tok + "\"");
+		}
 
+		std::vector<Rule*> exact;
+		for(auto& r : rules[nt]) {
+			if(r.format == pfx) exact.push_back(const_cast<Rule*>(&r));
+		}
+		
+		if(exact.size() <= 1) { 
+			Rule* r = nullptr;
+			if(exact.size() == 1) {
+				r = exact[0];
+			}
+			else { // no exact match, so look for a unique prefix match (for hand-written strings)
+				try { 
+					r = this->get_rule(nt, pfx);
+				} catch(YouShouldNotBeHereError&) {
+					throw DeserializationError("*** from_parseable: no unique rule of nonterminal " + nts + " matches \"" + pfx + "\"");
+				}
+			}
+			return parse_children(r, toks, pos);
+		}
+		
+		// overloaded format: exactly one of the candidates must fit the children
+		std::optional<Node> found;
+		size_t found_pos = pos;
+		size_t nfound = 0;
+		std::string why;
+		for(Rule* r : exact) {
+			size_t p = pos;
+			try {
+				Node v = parse_children(r, toks, p);
+				nfound++;
+				if(nfound == 1) { found.emplace(std::move(v)); found_pos = p; }
+			} catch(DeserializationError& e) {
+				why += std::string("\n    ") + e.what();
+			}
+		}
+		if(nfound == 0) {
+			throw DeserializationError("*** from_parseable: none of the " + str(exact.size()) + " rules with format \"" + pfx + "\" fit their arguments:" + why);
+		}
+		if(nfound > 1) {
+			throw DeserializationError("*** from_parseable: " + str(nfound) + " rules with format \"" + pfx + "\" fit their arguments, so the tree is ambiguous");
+		}
+		pos = found_pos;
+		return std::move(*found);
+	}
+	
+	Node parse_children(Rule* r, const std::vector<std::string>& toks, size_t& pos) const {
 		Node v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {	
 		
-			v.set_child(i, from_parseable(q));
+			Node c = parse_tokens(toks, pos);
 
 			// (null gaps are untyped: the NullRule's nt is always 0, whatever type the gap is)
-			if(not v.child(i).is_null() and r->type(i) != v.child(i).rule->nt) {
-				CERR "*** Grammar expected type " << r->type(i) << " but got type " << v.child(i).rule->nt << " at " << r->format << " argument " << i ENDL;
-				assert(false && "Bad names in from_parseable."); // just check that we didn't miss this up
+			if(not c.is_null() and r->type(i) != c.rule->nt) {
+				throw DeserializationError("*** from_parseable: rule " + r->format + " expected type " + str(r->type(i)) + 
+				                           " for argument " + str(i) + " but got type " + str(c.rule->nt) + " (" + c.rule->format + ")");
 			}
 			
+			v.set_child(i, std::move(c));
 		}
 		return v;
 	}
+	
+public:
 
 	Node from_parseable(std::string s) const {
 		/**
-		 * @brief Expand from names where s is delimited by ':'
+		 * @brief Expand from names where s is delimited by ':'. The whole string must be used:
+		 *        leftover nodes (e.g. too many children) are an error rather than silently dropped.
 		 * @param s
 		 * @return 
 		 */
 		
 		std::deque<std::string> stk = split(s, Node::RuleDelimiter);    
-        return from_parseable(stk);
+		Node v = from_parseable(stk);
+		if(not stk.empty()) {
+			throw DeserializationError("*** from_parseable: " + str(stk.size()) + " unused node(s) after a complete tree in \"" + s + "\"");
+		}
+        return v;
 	}
 	
 	Node from_parseable(const char* c) const {

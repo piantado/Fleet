@@ -12,10 +12,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # run from anywhere in the repo
 
-import fleetpy as fl  # noqa: E402
-from fleetpy import builtins as B  # noqa: E402
+from fleetpy import *  # noqa: E402,F403
 
-g = fl.Grammar(input=int, output=int, types=[int, bool])
+g = Grammar(input=int, output=int, types=[int, bool])
 
 
 g.add_terminal("zero", 0, p=2.0)
@@ -47,15 +46,15 @@ g.add_builtin(B.X(p=3.0),
               B.LexiconMemRecurse(key=int, fmt="Fm(%s,%s)"))
 
 
-class Lex(fl.Lexicon, grammar=g, keys=[0, 1], main=1):
-    likelihood = fl.likelihoods.noisy_exact()
+class Lex(Lexicon, grammar=g, keys=[0, 1], main=1):
+    likelihood = likelihoods.noisy_exact()
 
 
-DATA = [fl.Datum(x, 2 * x + 1, 0.9) for x in range(5)]
+DATA = [Datum(x, 2 * x + 1, 0.9) for x in range(5)]
 
 if __name__ == "__main__":
-    model = fl.build(Lex)
-    res = model.run(DATA, fl.ChainPool(4), control=fl.Control(time="10s", threads=2, seed=1), top=5)
+    model = build(Lex)
+    res = model.run(DATA, ChainPool(4), control=Control(time="10s", threads=2, seed=1), top=5)
     for h in res.top:
         print(f"{h.posterior:.3f}\t{h}")
     best = res.top[0]

@@ -14,8 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # run from anywhere in the repo
 
-import fleetpy as fl                      # noqa: E402
-from fleetpy import Undefined, builtins as B   # noqa: E402
+from fleetpy import *  # noqa: E402,F403
 
 U = -999                                  # "undefined" word
 FULL = 0xFFFF                             # all 16 bits: complement is within these
@@ -26,10 +25,10 @@ RECURSION_PENALTY = -25.0
 NP = [0.000000000, 0.683564771, 0.141145140, 0.056400989, 0.031767168, 0.028248050, 0.015693361,
       0.014361803, 0.008179570, 0.009986684, 0.010652463]
 
-Set = fl.newtype("Set", fl.i32)
-Word = fl.i32                             # C++ int, as `using word = int` in the C++ model
+Set = newtype("Set", i32)
+Word = i32                             # C++ int, as `using word = int` in the C++ model
 
-g = fl.Grammar(input=Set, output=Word, types=[bool, Word, Set])
+g = Grammar(input=Set, output=Word, types=[bool, Word, Set])
 
 g.add_terminal("undef", U, Word)
 for _i, _name in enumerate(["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"], 1):
@@ -95,9 +94,9 @@ g.add_builtin(B.And(p=1 / 3), B.Or(p=1 / 3), B.Not(p=1 / 3),
               B.Recurse(fmt="recurse(%s)"))
 
 
-class MyHypothesis(fl.DeterministicHypothesis, grammar=g):
+class MyHypothesis(DeterministicHypothesis, grammar=g):
 
-    @fl.prior
+    @prior
     def prior(self) -> float:
         if self.recursion_count() > 0:
             return self.grammar_prior() + RECURSION_PENALTY
@@ -105,7 +104,7 @@ class MyHypothesis(fl.DeterministicHypothesis, grammar=g):
 
     # As in the original paper: average over set sizes 1..9, weighted by how often each size
     # occurs; an undefined answer counts as no prediction.
-    @fl.likelihood(total=True)
+    @likelihood(total=True)
     def lik(self, data) -> float:
         ll = 0.0
         for x in range(1, 10):

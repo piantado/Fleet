@@ -136,6 +136,26 @@ def test_differential_reports(tier2, tier2f):
     assert tier2f.info["differential"]["likelihood"]["cases"] > 0
 
 
+def test_likelihood_reference_is_int64():
+    """The reference for a Python likelihood applies int64 semantics, like the compiled code
+    (unbounded Python ints would disagree whenever y * 2^62 overflows)."""
+    m = fl.build(M.H4)
+    rep = m.info["differential"]["likelihood"]
+    assert rep["cases"] > 0 and rep["mismatches"] == 0
+    h = m.parse("x")
+    assert h.compute_posterior([fl.Datum(0, 0)])[1] == 0.0
+    assert h.compute_posterior([fl.Datum(2, 0)])[1] == -math.inf      # 2 * 2^62 overflows
+
+
+def test_build_leaves_the_grammar_alone():
+    """A Lexicon's key terminals go into the built model's grammar, not the user's."""
+    import lexicon_arith as LA
+    n = len(LA.g.rules)
+    m = fl.build(LA.Lex)
+    assert len(LA.g.rules) == n and len(m.grammar.rules) == n + 2
+    assert [r.fmt for r in m.grammar.rules[n:]] == ["0", "1"]
+
+
 def test_python_semantics_spot_checks(tier2):
     def h(prog, x):
         return tier2.parse(prog).call(x, default="undef")
@@ -372,6 +392,18 @@ def test_eject_builds_and_runs(tmp_path, rr):
 def test_checked_build_is_clean():
     p = C.run_checked(HERE / "checked_smoke.py", timeout=1800)
     assert "checked-ok" in p.stdout
+
+
+def test_tutorial_runs():
+    """TUTORIAL.md's code, end to end; also a hypothesis class named like one of Fleet's own
+    types (Rule), which must not collide inside the generated module."""
+    import tutorial as TU
+    m = fl.build(TU.Rule)
+    assert m.parse("even(x)").call(6) is True
+    res = m.run(TU.data, fl.ParallelTempering(chains=4, max_temp=5.0), control=fl.Control(steps=20_000, seed=1), top=1)
+    assert res.top[0].string() == "λx.even(x)"
+    assert fl.build(TU.Rev).parse("if(empty(x),Ø,cat(F(tail(x)),head(x)))").call("hello") == "olleh"
+    assert fl.build(TU.Lex).parse({0: "add(x,x)", 1: "inc(F(0,x))"}).call(5) == 11
 
 
 def test_two_models_same_names_different_layouts():

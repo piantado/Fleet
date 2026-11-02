@@ -1,0 +1,88 @@
+PART A: FiniteGrammar (309 programs, exact posterior). Mean TV(chain histogram, exact) after E likelihood evaluations, 30 chains each
+method             1000       3000      10000      30000     100000
+regen            0.1317     0.0910     0.0455     0.0265     0.0137
+mix+cache        0.0961     0.0567     0.0326     0.0223     0.0114
+mix+tries+c      0.0934     0.0597     0.0319     0.0205     0.0106
+mix e8t4+c       0.1007     0.0623     0.0355     0.0214     0.0120
+mixloc e8t4+c     0.1285     0.0787     0.0400     0.0264     0.0137
+mixloc e32t4+c     0.1392     0.0808     0.0447     0.0254     0.0135
+local+cache      0.1405     0.0795     0.0449     0.0243     0.0148
+mixlocal+c       0.1399     0.0795     0.0431     0.0236     0.0145
+
+PART B: arithmetic targets, data x=-4..5. Evaluations until an exact fit (median over 30 seeds, budget 200000 evals); success rate; median seconds
+target                                   method        med evals  med steps  success  med sec   exact/tries/fallbk  ev/move
+add(mul(x,x),one)                        regen               302        337     100%    0.001    0.00/ 0.00/ 0.00     0.0
+add(mul(x,x),one)                        mix+cache          1178         70     100%    0.005    0.75/ 0.00/ 0.25    42.7
+add(mul(x,x),one)                        mix+tries+c        1330        106     100%    0.007    0.80/ 0.11/ 0.08    30.5
+add(mul(x,x),one)                        mix e8t4+c          418        189     100%    0.003    0.56/ 0.30/ 0.14     1.9
+add(mul(x,x),one)                        mixloc e8t4+c        370        243     100%    0.002    0.76/ 0.20/ 0.05     1.3
+add(mul(x,x),one)                        mixloc e32t4+c        336        198     100%    0.002    0.82/ 0.12/ 0.06     1.7
+add(mul(x,x),one)                        local+cache        2263         78      97%    0.010    0.77/ 0.00/ 0.23    43.4
+add(mul(x,x),one)                        mixlocal+c         2148        144     100%    0.009    0.88/ 0.00/ 0.12    31.5
+mul(add(x,one),sub(x,two))               regen               566        678     100%    0.003    0.00/ 0.00/ 0.00     0.0
+mul(add(x,one),sub(x,two))               mix+cache          2865        103     100%    0.011    0.47/ 0.00/ 0.53    66.5
+mul(add(x,one),sub(x,two))               mix+tries+c        1943        106     100%    0.008    0.59/ 0.28/ 0.13    69.8
+mul(add(x,one),sub(x,two))               mix e8t4+c          930        416     100%    0.008    0.22/ 0.47/ 0.32     3.7
+mul(add(x,one),sub(x,two))               mixloc e8t4+c        762        494     100%    0.006    0.65/ 0.29/ 0.07     1.8
+mul(add(x,one),sub(x,two))               mixloc e32t4+c       1045        544     100%    0.007    0.73/ 0.20/ 0.07     2.3
+mul(add(x,one),sub(x,two))               local+cache        6272        160     100%    0.029    0.77/ 0.00/ 0.23    34.5
+mul(add(x,one),sub(x,two))               mixlocal+c         8717        392     100%    0.047    0.79/ 0.00/ 0.21    44.2
+sub(mul(x,x),add(x,two))                 regen               624        738     100%    0.004    0.00/ 0.00/ 0.00     0.0
+sub(mul(x,x),add(x,two))                 mix+cache          3620        118     100%    0.014    0.51/ 0.00/ 0.49    79.3
+sub(mul(x,x),add(x,two))                 mix+tries+c        3330        152     100%    0.016    0.49/ 0.26/ 0.25    62.5
+sub(mul(x,x),add(x,two))                 mix e8t4+c          932        442     100%    0.006    0.21/ 0.48/ 0.32     3.5
+sub(mul(x,x),add(x,two))                 mixloc e8t4+c        739        438     100%    0.008    0.58/ 0.33/ 0.09     1.9
+sub(mul(x,x),add(x,two))                 mixloc e32t4+c       1117        546     100%    0.008    0.69/ 0.22/ 0.09     2.6
+sub(mul(x,x),add(x,two))                 local+cache        4029        115     100%    0.016    0.83/ 0.00/ 0.17    38.9
+sub(mul(x,x),add(x,two))                 mixlocal+c         6737        344     100%    0.030    0.79/ 0.00/ 0.21    42.1
+sub(mul(x,mul(x,x)),mul(two,x))          regen              3001       3724     100%    0.013    0.00/ 0.00/ 0.00     0.0
+sub(mul(x,mul(x,x)),mul(two,x))          mix+cache          6012        284     100%    0.022    0.77/ 0.00/ 0.23    46.4
+sub(mul(x,mul(x,x)),mul(two,x))          mix+tries+c        3897        136     100%    0.021    0.77/ 0.12/ 0.10    46.5
+sub(mul(x,mul(x,x)),mul(two,x))          mix e8t4+c         2162       1022     100%    0.017    0.48/ 0.30/ 0.21     1.8
+sub(mul(x,mul(x,x)),mul(two,x))          mixloc e8t4+c       1976       1488     100%    0.013    0.64/ 0.28/ 0.08     1.5
+sub(mul(x,mul(x,x)),mul(two,x))          mixloc e32t4+c       1966       1214     100%    0.009    0.72/ 0.21/ 0.08     2.1
+sub(mul(x,mul(x,x)),mul(two,x))          local+cache        6551        238     100%    0.030    0.81/ 0.00/ 0.19    30.7
+sub(mul(x,mul(x,x)),mul(two,x))          mixlocal+c         5384        440      97%    0.022    0.78/ 0.00/ 0.21    34.4
+mul(add(x,two),sub(mul(x,x),one))        regen             12892      15684     100%    0.052    0.00/ 0.00/ 0.00     0.0
+mul(add(x,two),sub(mul(x,x),one))        mix+cache        188090      28372      57%    0.761    0.57/ 0.00/ 0.43    27.2
+mul(add(x,two),sub(mul(x,x),one))        mix+tries+c      162212      11211      83%    0.899    0.71/ 0.16/ 0.12    30.5
+mul(add(x,two),sub(mul(x,x),one))        mix e8t4+c        23666      14669     100%    0.228    0.42/ 0.45/ 0.13     1.7
+mul(add(x,two),sub(mul(x,x),one))        mixloc e8t4+c      20056      14595      97%    0.128    0.68/ 0.23/ 0.08     1.3
+mul(add(x,two),sub(mul(x,x),one))        mixloc e32t4+c      14793       8902     100%    0.100    0.79/ 0.15/ 0.06     1.6
+mul(add(x,two),sub(mul(x,x),one))        local+cache      115389       4022      67%    0.578    0.87/ 0.00/ 0.13    31.2
+mul(add(x,two),sub(mul(x,x),one))        mixlocal+c       137108       9279      70%    0.685    0.86/ 0.00/ 0.14    33.3
+PART A: FiniteGrammar (309 programs, exact posterior). Mean TV(chain histogram, exact) after E likelihood evaluations, 30 chains each
+method             1000       3000      10000      30000     100000
+regen            0.1131     0.0749     0.0499     0.0284     0.0144
+mix defaults+c     0.1047     0.0671     0.0339     0.0205     0.0112
+mixloc defaults+c     0.1442     0.0854     0.0470     0.0257     0.0131
+
+PART B: arithmetic targets, data x=-4..5. Evaluations until an exact fit (median over 30 seeds, budget 200000 evals); success rate; median seconds
+target                                   method        med evals  med steps  success  med sec   exact/tries/fallbk  ev/move
+add(mul(x,x),one)                        regen               345        406     100%    0.001    0.00/ 0.00/ 0.00     0.0
+add(mul(x,x),one)                        mix defaults+c        494        202     100%    0.007    0.70/ 0.27/ 0.03     2.5
+add(mul(x,x),one)                        mixloc defaults+c        421        227     100%    0.006    0.80/ 0.18/ 0.02     2.0
+mul(add(x,one),sub(x,two))               regen               492        584     100%    0.002    0.00/ 0.00/ 0.00     0.0
+mul(add(x,one),sub(x,two))               mix defaults+c        977        292     100%    0.026    0.29/ 0.60/ 0.11     4.5
+mul(add(x,one),sub(x,two))               mixloc defaults+c       1002        465     100%    0.015    0.61/ 0.31/ 0.05     2.5
+sub(mul(x,x),add(x,two))                 regen               684        800     100%    0.003    0.00/ 0.00/ 0.00     0.0
+sub(mul(x,x),add(x,two))                 mix defaults+c       1482        468     100%    0.032    0.23/ 0.67/ 0.09     4.9
+sub(mul(x,x),add(x,two))                 mixloc defaults+c        944        447     100%    0.031    0.70/ 0.28/ 0.02     2.6
+sub(mul(x,mul(x,x)),mul(two,x))          regen              1540       1924     100%    0.005    0.00/ 0.00/ 0.00     0.0
+sub(mul(x,mul(x,x)),mul(two,x))          mix defaults+c       2147        902     100%    0.057    0.66/ 0.32/ 0.02     2.3
+sub(mul(x,mul(x,x)),mul(two,x))          mixloc defaults+c       1548        895     100%    0.023    0.76/ 0.22/ 0.02     2.1
+mul(add(x,two),sub(mul(x,x),one))        regen             10078      12406     100%    0.047    0.00/ 0.00/ 0.00     0.0
+mul(add(x,two),sub(mul(x,x),one))        mix defaults+c      20384       9568     100%    0.389    0.48/ 0.38/ 0.13     2.3
+mul(add(x,two),sub(mul(x,x),one))        mixloc defaults+c      19838      11322     100%    0.257    0.79/ 0.20/ 0.02     1.7
+
+# Throughput (fixed 20k steps x 8 seeds, 10-node target), v2:
+method                  steps      seconds        us/step     evals/step
+regen                  160000        0.517           3.23           0.84
+rebag                  160000       34.592         216.20          54.61
+mix+cache              160000        6.351          39.69           8.61
+mix+tries+c            160000       16.400         102.50          10.20
+mix e8t4+c             160000        2.684          16.77           1.79
+mixloc e8t4+c          160000        2.001          12.51           1.60
+mixloc e32t4+c         160000        2.562          16.02           1.75
+local+cache            160000       29.926         187.04          26.79
+mixlocal+c             160000       19.666         122.91          16.19

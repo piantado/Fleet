@@ -209,6 +209,22 @@ public:
 		hash_combine(h, ConstantContainer::hash());
 		return h;
 	}
+
+	/// *****************************************************************************
+	/// Serialization must include the constants (LOTHypothesis's version drops them):
+	///    c1@c2@... \t <LOTHypothesis serialization>
+	/// *****************************************************************************
+
+	virtual std::string serialize() const override {
+		return serialize_constants() + Serialization::HypothesisDelimiter + Super::serialize();
+	}
+
+	static MyHypothesis deserialize(const std::string& s) {
+		const auto f = split_first(s, Serialization::HypothesisDelimiter, 1, "MyHypothesis");
+		MyHypothesis h = Super::deserialize(f[1]);
+		h.deserialize_constants(f[0]);
+		return h;
+	}
 	
 	/// *****************************************************************************
 	/// Implement MCMC moves as changes to constants
