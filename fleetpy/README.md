@@ -48,6 +48,8 @@ model.parse("and(blue(x),bigger(x,x))").call(Obj(0, 0, 2))
 
 ## Quick start
 
+New here? Read [TUTORIAL.md](TUTORIAL.md) first; it builds one model from scratch.
+
 ```bash
 pip install nanobind pytest          # nanobind builds the Python modules; pytest runs the tests
 cd Fleet/fleetpy

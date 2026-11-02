@@ -137,7 +137,7 @@ def prior(fn):
 
 # ---- the declaration classes ----------------------------------------------------------------
 
-_RESERVED_CLASS_NAMES = ("FPInner", "MyGrammar")
+_RESERVED_CLASS_NAMES = ("FPInner", "MyGrammar", "fp_bind")
 
 
 class _Declaration:
