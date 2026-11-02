@@ -4,7 +4,7 @@ Compiling generated code and caching the result.
 Flags come from the Fleet tree's own Fleet.mk (FLEET_FLAGS, FLEET_INCLUDE) so that fleetpy
 compiles exactly what a hand-written model would. The cache key covers everything that can
 change the binary: generated source, compiler identity, flags, the Fleet commit plus any
-uncommitted changes under src/, nanobind's version, and fleetpy's own version.
+uncommitted changes under src/, nanobind's version, fleetpy's own C++ headers and version.
 """
 
 from __future__ import annotations
@@ -23,7 +23,9 @@ import threading
 import warnings
 from pathlib import Path
 
-FLEETPY_VERSION = "0.1.0"
+from .codegen import CPP_DIR   # fleetpy's own C++ headers
+
+FLEETPY_VERSION = "0.2.0"
 
 _config = {
     "fleet_root": None,
@@ -157,7 +159,7 @@ def flags(mode: str) -> tuple[list[str], list[str], list[str]]:
     ff = [newstd if f == std[0] else f for f in ff]
     # -fvar-tracking-assignments is only meaningful with -g; harmless otherwise. Keep Fleet's flags.
     nb = nanobind_dir()
-    inc = inc + [f"-I{nb / 'include'}", f"-I{nb / 'ext' / 'robin_map' / 'include'}",
+    inc = inc + [f"-I{CPP_DIR}", f"-I{nb / 'include'}", f"-I{nb / 'ext' / 'robin_map' / 'include'}",
                  f"-I{sysconfig.get_paths()['include']}"]
     for e in _config["extra_includes"]:
         inc.append(f"-I{e}")
@@ -236,6 +238,7 @@ def build_module(source: str, spec_json: str, mode: str = "release"):
         "compiler": _compiler_id(_cxx()), "fleet": _git_state(root),
         "nanobind": _nanobind_version(nb), "fleetpy": FLEETPY_VERSION,
         "python": sysconfig.get_config_var("EXT_SUFFIX"),
+        "headers": {p.name: p.read_text() for p in sorted(CPP_DIR.glob("*.h"))},
     }
     key = hashlib.sha256(repr(sorted(keyparts.items())).encode()).hexdigest()
     modname = f"fp_{key[:20]}"

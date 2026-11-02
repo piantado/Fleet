@@ -196,8 +196,8 @@ and C++ differ, the compiled code follows Python, or the input becomes *undefine
   Fleet's own code and tier-1 snippets keep Fleet's flags.
 
 **Every build differential-tests each tier-2 primitive** (600 generated inputs including
-edge values) against the user's own Python source, executed by CPython with the int64
-rules applied. Any disagreement fails the build. The report (`model.info["differential"]`)
+edge values), and any Python prior or likelihood, against the user's own Python source,
+executed by CPython with the int64 rules applied (`check/reference.py`). Any disagreement fails the build. The report (`model.info["differential"]`)
 also counts the inputs where int64 semantics differ from unbounded Python
 (`int64_limited`), so you can see how often that matters.
 
@@ -308,6 +308,47 @@ examples hit this (they remain bit-identical), but other models might.
 The streaming `samples()` iterator, aggregators beyond TopN, `cpp_total` likelihoods for a
 Lexicon, and adding or removing Lexicon factors during MCMC (Fleet's Lexicon proposals don't
 either).
+
+## How fleetpy works, and how to extend it
+
+fleetpy is a pipeline of four stages. Each stage reads only the output of the stage before it:
+
+```
+declaration ──specify──▶ ModelSpec ──codegen──▶ C++ ──build──▶ Model
+(types, Grammar,          plain data; every       model-specific     compiled, cached,
+ hypothesis class)        Python body already     code + generic     differential-tested
+                          compiled to C++         headers in cpp/
+```
+
+| Module | Owns |
+| --- | --- |
+| `ftypes.py` | the types. One class per type holds *everything* about its values: C++ spelling, conversion across the boundary, C++ literals, range checks (`fits`), random test values (`sample`). |
+| `rules.py` | grammar rules (`Primitive`, `Terminal`, `Builtin`), all with the same face: `fmt`, `p`, `ret`, `args`, `cpp_registration()`. Fleet's builtins are one table, `BUILTINS`. |
+| `grammar.py` | a collection of rules, its static checks, and nonterminal order. |
+| `hypothesis.py` | the declaration classes and `specify()`, which checks a model as a whole and resolves it into a `ModelSpec`. |
+| `transpile.py` | Python → C++: an AST visitor with one method per node kind and tables for operators, builtin functions and `math`. |
+| `codegen.py` | `ModelSpec` → the model-specific C++ (types, primitives, grammar, hypothesis class). |
+| `cpp/fleetpy_pyops.h` | Python semantics in C++ (checked int64 arithmetic, floor division, code-point strings, ...). |
+| `cpp/fleetpy_runtime.h` | everything generic, written once as templates over the hypothesis class: `run`, `trace`, and the Python bindings. |
+| `build.py`, `model.py`, `parsing.py`, `inference.py` | compiling and caching, the compiled model's Python face, programs as text, samplers and `Control`. |
+| `check/` | `reference.py` (the Python statement of the transpiler's semantics), `differential.py`, `structure.py`, `posterior.py`, `sanitizers.py`. |
+
+A generated hypothesis class implements a small interface (`fp_call` or `fp_dist`/`fp_logprob`,
+`fp_sample`, three `static constexpr bool` traits); `fp_rt::bind<H>` does the rest. A
+generated module is therefore just the model plus one line of bindings per struct and primitive.
+
+Extending:
+
+* **A type**: one `FType` subclass in `ftypes.py` (and a `resolve` case if it has a Python
+  annotation).
+* **A Fleet builtin**: one row in `rules.BUILTINS` (its signature is symbolic: `in`, `out`,
+  `T`, `K`, `set[T]`).
+* **An operator, builtin function or `math` function in transpiled code**: a table entry
+  in `transpile.py`. If Python and C++ disagree on it, also a helper in `fleetpy_pyops.h`
+  and its mirror in `check/reference.py`; the differential tests then compare the two.
+* **A likelihood**: a function returning `fl.likelihoods.Likelihood(body, nonpositive, name, needs)`.
+* **A hypothesis kind**: a declaration class, its case in `specify`, and its class in
+  `codegen.hypothesis_classes` implementing the runtime interface above.
 
 ## Tests
 
