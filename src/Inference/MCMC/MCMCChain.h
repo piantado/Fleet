@@ -201,8 +201,24 @@ public:
 				DEBUG("# Current", current.posterior, current.prior, current.likelihood, current.string());
 				#endif 
 				
-				// propose, but restart if we're -infinity
-				auto p = current.propose();
+				// Load the (atomic) temperature ONCE per step: it is used by data-aware proposals
+				// (propose_tempered) and by the acceptance ratio below, and these must agree.
+				const double step_temperature = temperature;
+				
+				// propose, but restart if we're -infinity.
+				// Hypotheses whose proposal needs the data and the chain's temperature (e.g. multiple-try
+				// moves such as Proposals::rebag, RebagProposal.h) define propose_tempered(data, T).
+				auto p = [&]() {
+					if constexpr (requires(const HYP& h) { h.propose_tempered(data, step_temperature); })
+						return current.propose_tempered(data, step_temperature);
+					else {
+						// a propose_tempered that is not callable as above (e.g. not const) would otherwise be
+						// silently ignored, and the chain would run with a different kernel than intended
+						static_assert(not requires { &HYP::propose_tempered; },
+						              "*** HYP::propose_tempered exists but is not callable as `const`, with (const data_t&, double)");
+						return current.propose();
+					}
+				}();
 				if(not p) {
 					// The proposal failed (this kernel cannot propose from the current state). This must count as a
 					// REJECTED step -- stay here and yield -- not as a silent retry: retrying makes the kernels of a
@@ -264,7 +280,7 @@ public:
 					// once: previously these were read/computed again for the acceptance ratio below,
 					// and the ParallelTempering adapter could even change the temperature in between,
 					// making the MH decision use inconsistent temperatures within one step.
-					const double temp = temperature;
+					const double temp = step_temperature; // the same value the proposal saw
 					const double current_at = current.at_temperature(temp);
 									
 					// NOTE: The above is NOT right because the prior is not at temperature, so
