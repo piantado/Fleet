@@ -20,7 +20,10 @@ public:
 	// we have a variable that is set to true each time we call push_program
 	// this is useful for tracking recursion etc., if we want to make sure
 	// that a lexicon calls every factor or something
-	bool was_called; 
+	// NOTE: this must be initialized: otherwise every freshly constructed hypothesis holds an
+	// indeterminate bool that copies and moves then read, which is undefined behavior (UBSan:
+	// "load of value 16, which is not a valid value for type 'bool'" on a moved Lexicon)
+	bool was_called = false;
 
 	// This is a bit of hack -- we need a line here for each kind of key we might want to a lexicon. 
 	// For reasons I don't fully understand, the linker will not find this if templated. 
