@@ -6,6 +6,8 @@
 #include "Miscellaneous.h"
 #include "Rule.h"
 #include "Constant.h"	
+#include "Serialization.h"
+#include "Strings.h"
 
 struct TooManyConstantsException : public VMSRuntimeError {};
 
@@ -34,10 +36,37 @@ public:
 	virtual void randomize_constants() = 0; 
 	
 	// used by some classes to convert constants to parseable and back
-	const static char ParseableDelimiter = '@'; // delimit format
+	const static char ParseableDelimiter = Serialization::ConstantDelimiter; // delimit constants (serialize_constants)
 	
 	ConstantContainer() : constants{}, constant_idx(0) {
 		
+	}
+	
+	/**
+	 * @brief The constants as a string c1@c2@...  (empty if there are none). Each is written
+	 *        with cppstr's shortest round-trip format, so deserialize_constants restores them exactly.
+	 *        A class that combines this with a hypothesis must override serialize AND deserialize to
+	 *        include it -- see Models/SymbolicRegression/MyHypothesis.h.
+	 */
+	std::string serialize_constants() const {
+		std::string out;
+		for(size_t i=0;i<constants.size();i++) {
+			if(i > 0) out += Serialization::ConstantDelimiter;
+			out += str(constants[i].get_value());
+		}
+		return out;
+	}
+	
+	/**
+	 * @brief Inverse of serialize_constants (replaces the current constants). 
+	 *        Throws DeserializationError on bad input.
+	 */
+	void deserialize_constants(const std::string& s) {
+		constants.clear();
+		if(s.empty()) return;
+		for(const auto& c : split(s, Serialization::ConstantDelimiter)) {
+			constants.emplace_back(parse_exact<constant_t>(c, "constant"));
+		}
 	}
 	
 	virtual void reset_constant_index() {

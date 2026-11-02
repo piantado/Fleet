@@ -3,6 +3,8 @@
 
 #include <set>
 #include <map>
+#include <sstream>
+#include <stdexcept>
 #include "IO.h"
 #include "Numerics.h"
 #include "OrderedLock.h"
@@ -25,9 +27,9 @@ template<class T>
 class TopN : public Serializable<TopN<T>> {	
 	using Hypothesis_t = T;
 	
-	OrderedLock lock;
+	mutable OrderedLock lock; // mutable so that const readers (e.g. serialize) can lock
 	
-	const static char SerializationDelimiter = '\n';
+	const static char SerializationDelimiter = Serialization::TopNDelimiter;
 	
 public:
 	const static size_t MAX_N = SIZE_MAX; // largest N we can have -- useful if we need to store union of everything
@@ -95,7 +97,7 @@ public:
 		 * @brief As I add things, should I print the best I've seen so far? 
 		 * @param b
 		 */
-		if(N == 0) { CERR "# *** Warning since N=0, TopN will not print the best even though you set_print_best(true)!" ENDL; }
+		if(b and N == 0) { CERR "# *** Warning since N=0, TopN will not print the best even though you set_print_best(true)!" ENDL; }
 		print_best = b;
 	}
 
@@ -314,29 +316,86 @@ public:
 		return o;
 	}
 	
+	/**
+	 * @brief Serialize as N, then one element per line (in increasing order). Locks, so this is safe
+	 *        to call while other threads are adding. NOTE: print_best is not stored.
+	 */
 	virtual std::string serialize() const override { 
-		std::string out = str(N);
+		std::lock_guard guard(lock);
+		std::string out = str(N.load());
 		for(auto& h : s) {
 			out += SerializationDelimiter + h.serialize();
 		}
 		return out;
 	}
 	
+	/**
+	 * @brief Inverse of serialize. Throws DeserializationError on bad input, including when an element
+	 *        cannot be added back (more elements than N, duplicates, or a -inf/NaN posterior), so that
+	 *        what comes back is exactly what was stored. The result's print_best is set from
+	 *        FleetArgs::top_print_best (as for a new TopN), but nothing is printed while loading.
+	 */
 	static TopN<T> deserialize(const std::string& s) { 
 		
-		TopN<T> out;
 		auto q = split(s, SerializationDelimiter);
-		out.set_size(str_to<size_t>(q.front())); q.pop_front();
-		
-		for(auto& x : q) {
-			out << T::deserialize(x);
+		if(q.empty()) {
+			throw DeserializationError("*** Cannot deserialize a TopN from an empty string");
 		}
+		const size_t n = parse_exact<size_t>(q.front(), "TopN size"); q.pop_front();
+		if(q.size() > n) {
+			throw DeserializationError("*** Malformed TopN: " + str(q.size()) + " elements but N=" + str(n));
+		}
+		
+		TopN<T> out(n);
+		out.print_best = false; // otherwise every element (added in increasing order) is printed as a new best
+		for(auto& x : q) {
+			if(not out.add(T::deserialize(x))) {
+				throw DeserializationError("*** Malformed TopN: element could not be added (a duplicate, or a -inf/NaN posterior): \"" + x + "\"");
+			}
+		}
+		out.print_best = FleetArgs::top_print_best; // what a new TopN would have (set directly: set_print_best may warn)
 		
 		return out; 
 	}
 	
 	
 };
+
+/**
+ * @brief Save a TopN to a file (its serialization: N on the first line, then one element per line).
+ *        The generic save() writes one object per line, which cannot work for a TopN because its
+ *        serialization spans several lines. Read it back with load_topn.
+ */
+template<typename HYP>
+void save(std::string filename, const TopN<HYP>& top) {
+	const std::string s = top.serialize();
+	std::ofstream out(filename);
+	if(not out) { throw std::runtime_error("*** save: could not open " + filename + " for writing"); }
+	out << s << "\n";
+	out.close();
+	if(out.fail()) { throw std::runtime_error("*** save: error while writing " + filename); }
+}
+template<typename HYP>
+void save(std::string filename, TopN<HYP>& top) { // needed so a non-const TopN does not pick the generic save
+	save(filename, static_cast<const TopN<HYP>&>(top));
+}
+
+/**
+ * @brief Load a TopN written by save(filename, top). Throws on a missing file or bad contents.
+ */
+template<typename HYP>
+TopN<HYP> load_topn(std::string filename) {
+	std::ifstream fs(filename);
+	if(not fs) { throw std::runtime_error("*** load_topn: could not open " + filename); }
+	std::stringstream ss; ss << fs.rdbuf();
+	std::string s = ss.str();
+	if(s.size() > 0 and s.back() == '\n') s.pop_back(); // the trailing newline save() writes
+	try {
+		return TopN<HYP>::deserialize(s);
+	} catch(DeserializationError& e) {
+		throw DeserializationError("*** load_topn(" + filename + "): " + e.what());
+	}
+}
 
 // Handy to define this so we can put TopN into a set
 template<typename HYP>
