@@ -394,6 +394,18 @@ def test_checked_build_is_clean():
     assert "checked-ok" in p.stdout
 
 
+def test_tutorial_runs():
+    """TUTORIAL.md's code, end to end; also a hypothesis class named like one of Fleet's own
+    types (Rule), which must not collide inside the generated module."""
+    import tutorial as TU
+    m = fl.build(TU.Rule)
+    assert m.parse("even(x)").call(6) is True
+    res = m.run(TU.data, fl.ParallelTempering(chains=4, max_temp=5.0), control=fl.Control(steps=20_000, seed=1), top=1)
+    assert res.top[0].string() == "λx.even(x)"
+    assert fl.build(TU.Rev).parse("if(empty(x),Ø,cat(F(tail(x)),head(x)))").call("hello") == "olleh"
+    assert fl.build(TU.Lex).parse({0: "add(x,x)", 1: "inc(F(0,x))"}).call(5) == 11
+
+
 def test_two_models_same_names_different_layouts():
     """Each compiled model has its own C++ namespace, so same-named types cannot be confused."""
     import types as _t

@@ -3,11 +3,11 @@ Declaring a model, and resolving the declaration into a ``ModelSpec``.
 
 A model is declared as a class:
 
-    class H(fl.DeterministicHypothesis, grammar=g):
-        likelihood = fl.likelihoods.noisy_exact()   # or an @fl.likelihood method
-        proposal = fl.proposals.regenerate()        # optional
-        vm = fl.VMLimits(max_recurse=10)            # optional
-        @fl.prior                                   # optional
+    class H(DeterministicHypothesis, grammar=g):
+        likelihood = likelihoods.noisy_exact()   # or an @likelihood method
+        proposal = proposals.regenerate()        # optional
+        vm = VMLimits(max_recurse=10)            # optional
+        @prior                                   # optional
         def prior(self) -> float: ...
 
 The class is only a declaration. ``specify(H)`` checks it as a whole and resolves it into a
@@ -23,7 +23,7 @@ import typing
 
 from . import ftypes as T
 from .grammar import Grammar
-from .likelihoods import Likelihood
+from .likelihoods import Code, Likelihood
 from .rules import Builtin, Terminal
 
 DETERMINISTIC, STOCHASTIC, LEXICON = "deterministic", "stochastic", "lexicon"
@@ -98,7 +98,7 @@ class proposals:
 
 @dataclasses.dataclass(frozen=True)
 class PythonLikelihood:
-    """Set by @fl.likelihood; compiled when the model is built."""
+    """Set by @likelihood; compiled when the model is built."""
     fn: typing.Callable
     nonpositive: bool
     total: bool
@@ -137,12 +137,13 @@ def prior(fn):
 
 # ---- the declaration classes ----------------------------------------------------------------
 
-_RESERVED_CLASS_NAMES = ("FPInner", "MyGrammar")
+_RESERVED_CLASS_NAMES = ("FPInner", "MyGrammar", "fp_bind")
 
 
 class _Declaration:
     kind = None
     stochastic = False
+    lexicon = None          # a LexiconSpec, for Lexicon declarations
     _python_prior = None
 
     def __init_subclass__(cls, grammar: Grammar = None, **kw):
@@ -151,7 +152,7 @@ class _Declaration:
             return
         if not isinstance(grammar, Grammar):
             raise TypeError(f"{cls.__name__}: pass the grammar, e.g. "
-                            f"class {cls.__name__}(fl.DeterministicHypothesis, grammar=g)")
+                            f"class {cls.__name__}(DeterministicHypothesis, grammar=g)")
         T.check_identifier(cls.__name__, "hypothesis class name")
         if cls.__name__ in _RESERVED_CLASS_NAMES:
             raise TypeError(f"{cls.__name__} is reserved for generated code")
@@ -160,25 +161,25 @@ class _Declaration:
         py_lik = [v for v in cls.__dict__.values() if isinstance(v, PythonLikelihood)]
         py_prior = [v for v in cls.__dict__.values() if isinstance(v, PythonPrior)]
         if len(py_lik) > 1 or len(py_prior) > 1:
-            raise TypeError(f"{cls.__name__}: more than one @fl.likelihood or @fl.prior method")
+            raise TypeError(f"{cls.__name__}: more than one @likelihood or @prior method")
         if py_lik and isinstance(cls.__dict__.get("likelihood"), Likelihood):
-            raise TypeError(f"{cls.__name__}: both `likelihood = ...` and an @fl.likelihood method")
+            raise TypeError(f"{cls.__name__}: both `likelihood = ...` and an @likelihood method")
         if py_prior and cls.__dict__.get("prior_cpp") is not None:
-            raise TypeError(f"{cls.__name__}: both prior_cpp and an @fl.prior method")
+            raise TypeError(f"{cls.__name__}: both prior_cpp and an @prior method")
         if py_lik:
             cls.likelihood = py_lik[0]
         if py_prior:
             cls._python_prior = py_prior[0]
         if not isinstance(getattr(cls, "likelihood", None), (Likelihood, PythonLikelihood)):
             raise TypeError(f"{cls.__name__}: set `likelihood = ...` to a fleetpy likelihood "
-                            f"(fl.likelihoods.noisy_exact(), fl.likelihoods.cpp(...), or @fl.likelihood)")
+                            f"(likelihoods.noisy_exact(), likelihoods.cpp(...), or @likelihood)")
         pc = getattr(cls, "prior_cpp", None)
         if pc is not None and (not isinstance(pc, str) or "return" not in pc):
             raise TypeError("prior_cpp must be a C++ body with a return statement")
         if getattr(cls, "proposal", None) is not None and not isinstance(cls.proposal, Proposal):
-            raise TypeError("proposal must be a fleetpy proposal, e.g. fl.proposals.regenerate_insert_delete()")
+            raise TypeError("proposal must be a fleetpy proposal, e.g. proposals.regenerate_insert_delete()")
         if getattr(cls, "vm", None) is not None and not isinstance(cls.vm, VMLimits):
-            raise TypeError("vm must be fl.VMLimits(...)")
+            raise TypeError("vm must be VMLimits(...)")
 
 
 class DeterministicHypothesis(_Declaration):
@@ -197,10 +198,22 @@ class StochasticHypothesis(_Declaration):
     stochastic = True
 
 
+@dataclasses.dataclass(frozen=True)
+class LexiconSpec:
+    keys: list
+    main: object
+    key_type: T.FType
+    require_all_called: bool
+
+    def spec(self):
+        return {"keys": self.keys, "main": self.main, "key_type": self.key_type.key,
+                "require_all_called": self.require_all_called}
+
+
 class Lexicon(_Declaration):
     """Generates Fleet's ``Lexicon<H, key_t, FPInner, in, out>`` with one factor per key.
 
-        class L(fl.Lexicon, grammar=g, keys=[0, 1], main=1, stochastic=False):
+        class L(Lexicon, grammar=g, keys=[0, 1], main=1, stochastic=False):
             likelihood = ...
 
     ``main`` is the factor a call runs; factors call each other through the grammar's
@@ -238,30 +251,12 @@ class Lexicon(_Declaration):
             cls.key_type.to_cpp(k)
         if main is None or main not in keys:
             raise ValueError(f"main= must be one of the keys {keys}")
-        cls.keys = sorted(keys)   # Fleet keeps factors in a std::map: sorted by key
-        cls.main = main
+        # Fleet keeps factors in a std::map: sorted by key
+        cls.lexicon = LexiconSpec(sorted(keys), main, cls.key_type, bool(require_all_called))
         cls.stochastic = bool(stochastic)
-        cls.require_all_called = bool(require_all_called)
 
 
 # ---- the resolved model ---------------------------------------------------------------------
-
-@dataclasses.dataclass(frozen=True)
-class Code:
-    """C++ produced from Python (or written by the user), with the types it uses."""
-    body: str
-    transpiled: bool = False
-    pyfn: typing.Callable = None
-    types: tuple = ()
-
-
-@dataclasses.dataclass(frozen=True)
-class LexiconSpec:
-    keys: list
-    main: object
-    key_type: T.FType
-    require_all_called: bool
-
 
 @dataclasses.dataclass(frozen=True)
 class ModelSpec:
@@ -292,9 +287,7 @@ class ModelSpec:
             "grammar": self.grammar.spec(), "likelihood": self.likelihood.spec(),
             "prior": self.prior.body if self.prior else None,
             "proposal": self.proposal.spec() if self.proposal else None, "vm": self.vm.spec(),
-            "lexicon": None if self.lexicon is None else {
-                "keys": self.lexicon.keys, "main": self.lexicon.main,
-                "key_type": self.lexicon.key_type.key, "require_all_called": self.lexicon.require_all_called},
+            "lexicon": None if self.lexicon is None else self.lexicon.spec(),
         }, sort_keys=True)
 
 
@@ -306,10 +299,9 @@ def specify(H) -> ModelSpec:
     """Check a model declaration as a whole and resolve it into a ModelSpec."""
     from . import transpile
     if not is_declaration(H):
-        raise TypeError("build() expects a model class: a subclass of fl.DeterministicHypothesis, "
-                        "fl.StochasticHypothesis or fl.Lexicon")
-    g = H.grammar
-    lexicon = LexiconSpec(H.keys, H.main, H.key_type, H.require_all_called) if H.kind == LEXICON else None
+        raise TypeError("build() expects a model class: a subclass of DeterministicHypothesis, "
+                        "StochasticHypothesis or Lexicon")
+    g, lexicon = H.grammar, H.lexicon
     _check_builtins(H, g, lexicon)    # before the grammar check: these errors explain more
     if lexicon is not None:
         g = _lexicon_grammar(g, lexicon)
@@ -320,10 +312,10 @@ def specify(H) -> ModelSpec:
         lik = transpile.likelihood(lik, g, stochastic=H.stochastic)
     if lik.needs == "dist" and not H.stochastic:
         raise TypeError(f"{lik.name} scores an output distribution; it needs a stochastic hypothesis "
-                        f"(fl.StochasticHypothesis or fl.Lexicon(..., stochastic=True))")
+                        f"(StochasticHypothesis or Lexicon(..., stochastic=True))")
     if lik.needs == "value" and H.stochastic:
         raise TypeError(f"{lik.name} scores a single output; a stochastic hypothesis outputs a "
-                        f"distribution (use fl.likelihoods.stochastic_exact(), string_edit(...), or cpp)")
+                        f"distribution (use likelihoods.stochastic_exact(), string_edit(...), or cpp)")
     if lik.scope == "total" and lexicon is not None:
         raise ValueError("whole-dataset likelihoods are not supported for a Lexicon yet")
 
@@ -348,7 +340,7 @@ def _check_builtins(H, g, lexicon):
             raise TypeError(f"{s.name} forks the virtual machine and needs a stochastic hypothesis "
                             f"(a DeterministicLOTHypothesis has no VirtualMachinePool)")
         if s.recursion == "lexicon" and lexicon is None:
-            raise TypeError(f"{s.name} dispatches to lexicon factors; it needs fl.Lexicon")
+            raise TypeError(f"{s.name} dispatches to lexicon factors; it needs Lexicon")
         if s.recursion == "self" and lexicon is not None:
             raise TypeError(f"{s.name} inside a Lexicon would call Lexicon::push_program without a key, "
                             f"which Fleet does not implement; use the Lexicon* recursions")

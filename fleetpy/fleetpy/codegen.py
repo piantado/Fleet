@@ -318,7 +318,7 @@ def model_source(spec: ModelSpec, *, python: bool) -> str:
     o.append("\n// ---- hypothesis ----\n")
     o.append(hypothesis_classes(spec))
     if python:
-        o.append("} // namespace FLEETPY_NAMESPACE\nusing namespace FLEETPY_NAMESPACE;\n")
+        o.append("} // namespace FLEETPY_NAMESPACE\n")
     return "".join(o)
 
 
@@ -335,7 +335,10 @@ def module_source(spec: ModelSpec) -> str:
     """A nanobind module: the model plus its bindings. Its name and namespace are the
     placeholders FLEETPY_MODULE_NAME / FLEETPY_NAMESPACE (filled in from the build hash)."""
     g = spec.grammar
-    o = [model_source(spec, python=True), "\nNB_MODULE(FLEETPY_MODULE_NAME, m) {\n", vm_settings(spec)]
+    # The bindings live inside the model's namespace, where the user's names shadow Fleet's
+    # globals by ordinary scope rules (a struct called Rule or Node is fine).
+    o = [model_source(spec, python=True), "\nnamespace FLEETPY_NAMESPACE {\nstatic void fp_bind(nb::module_& m) {\n",
+         vm_settings(spec)]
     for t in T.definitions(*spec.types()):
         if isinstance(t, T.NewType):
             o.append(f'\tnb::class_<{t.name}>(m, "{t.name}")\n\t\t.def(nb::init<{t.base.cpp}>())\n'
@@ -357,7 +360,8 @@ def module_source(spec: ModelSpec) -> str:
                      f'\t\ttry {{ return std::make_pair(true, fp_user::{r.name}({args})); }}\n'
                      f'\t\tcatch (VMSRuntimeError&) {{ return std::make_pair(false, {r.ret.cpp}{{}}); }}\n'
                      f'\t}});\n')
-    o.append(f'\tm.attr("fp_n_python_callbacks") = {sum(r.tier == 3 for r in prims)};\n}}\n')
+    o.append(f'\tm.attr("fp_n_python_callbacks") = {sum(r.tier == 3 for r in prims)};\n}}\n'
+             f'}} // namespace FLEETPY_NAMESPACE\n\nNB_MODULE(FLEETPY_MODULE_NAME, m) {{ FLEETPY_NAMESPACE::fp_bind(m); }}\n')
     return "".join(o)
 
 

@@ -10,7 +10,7 @@ Grammar rules. Every rule, whatever its kind, has the same face:
 Three kinds of rule exist: a ``Primitive`` (a user function: C++, transpiled Python, or a
 Python callback), a ``Terminal`` (a constant), and a ``Builtin`` (one of Fleet's VM-level
 builtins, never re-implemented here). Fleet's builtins are described by one table,
-``BUILTINS``; ``fl.builtins`` exposes it.
+``BUILTINS``; ``builtins`` exposes it.
 """
 
 from __future__ import annotations
@@ -206,27 +206,35 @@ def lexicon_key_type(t) -> T.FType:
     if t == T.i64:        # Python int keys map to C++ int
         t = T.i32
     if t not in (T.i16, T.i32, T.string):
-        raise TypeError("lexicon keys must be fl.i16, int/fl.i32 or str (Fleet's ProgramLoader "
+        raise TypeError("lexicon keys must be i16, int/i32 or str (Fleet's ProgramLoader "
                         "dispatches only on short, int and std::string)")
     return t
 
 
-class Builtin(Rule):
-    """A use of a Fleet builtin. Its signature is resolved when it is added to a grammar."""
-
-    def __init__(self, spec: BuiltinSpec, fmt=None, p=1.0, param: T.FType = None, grammar=None):
-        self.builtin, self.param = spec, param
-        what = f"builtin {spec.name}"
-        self.fmt = _check_fmt(spec.fmt if fmt is None else fmt, len(spec.args), what)
-        self.p = _check_p(p, what)
-        self.ret = self.args = None
-        if grammar is not None:
-            sym = {"in": grammar.input, "out": grammar.output, "bool": T.boolean, "f64": T.f64,
-                   "T": param, "set[T]": T.SetOf(param) if param is not None else None, "K": param}
-            self.ret, self.args = sym[spec.ret], tuple(sym[a] for a in spec.args)
+@dataclasses.dataclass(frozen=True)
+class BuiltinUse:
+    """A builtin as written in a model (``B.And``, ``B.If(int, p=2.0)``): not yet a rule,
+    because its signature depends on the grammar it is added to."""
+    spec: BuiltinSpec
+    fmt: str
+    p: float
+    param: T.FType = None     # the type argument (If, Sample) or lexicon key type
 
     def bind(self, grammar) -> "Builtin":
-        return Builtin(self.builtin, self.fmt, self.p, self.param, grammar)
+        return Builtin(self, grammar)
+
+    def __repr__(self):
+        return f"<builtin {self.spec.name} {self.fmt} p={self.p}>"
+
+
+class Builtin(Rule):
+    """A Fleet builtin as a rule of one grammar."""
+
+    def __init__(self, use: BuiltinUse, grammar):
+        self.builtin, self.param, self.fmt, self.p = use.spec, use.param, use.fmt, use.p
+        sym = {"in": grammar.input, "out": grammar.output, "bool": T.boolean, "f64": T.f64,
+               "T": use.param, "set[T]": T.SetOf(use.param) if use.param is not None else None, "K": use.param}
+        self.ret, self.args = sym[use.spec.ret], tuple(sym[a] for a in use.spec.args)
 
     def cpp_template(self, G):
         ps = [G] + ([self.param.cpp] if self.param is not None else [])
@@ -250,7 +258,7 @@ class BuiltinFactory:
     def __init__(self, spec: BuiltinSpec):
         self.spec = spec
 
-    def __call__(self, *targs, p=1.0, fmt=None, key=None) -> Builtin:
+    def __call__(self, *targs, p=1.0, fmt=None, key=None) -> BuiltinUse:
         s, param = self.spec, None
         if s.param == "type":
             if len(targs) != 1:
@@ -264,9 +272,10 @@ class BuiltinFactory:
             param = lexicon_key_type(key)
         elif key is not None:
             raise TypeError(f"{s.name} takes no key")
-        return Builtin(s, fmt, p, param)
+        what = f"builtin {s.name}"
+        return BuiltinUse(s, _check_fmt(s.fmt if fmt is None else fmt, len(s.args), what), _check_p(p, what), param)
 
-    def default(self) -> Builtin:
+    def default(self) -> BuiltinUse:
         if self.spec.param is not None:
             example = "key=int" if self.spec.param == "key" else "int"
             raise TypeError(f"B.{self.spec.name} needs its {self.spec.param}: B.{self.spec.name}({example})")
@@ -277,11 +286,13 @@ class BuiltinFactory:
 
 
 class builtins:
-    """Fleet's builtins, with Fleet's usual formats ("x", "and(%s,%s)", "flip()", ...)."""
+    """Fleet's builtins, with Fleet's usual formats ("x", "and(%s,%s)", "flip()", ...).
+    Each is also importable by name: ``from fleetpy import And, Or, X``."""
 
 
 for _s in BUILTINS:
     setattr(builtins, _s.name, BuiltinFactory(_s))
+    globals()[_s.name] = getattr(builtins, _s.name)
 
 
 def _source(fn):

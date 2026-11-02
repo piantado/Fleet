@@ -52,30 +52,32 @@ class Control:
 
 @dataclasses.dataclass(frozen=True)
 class Sampler:
-    """One of Fleet's samplers. ``algo`` is the runtime's code for it."""
+    """One of Fleet's samplers: its C++ class, the runtime's code for it, and its arguments
+    beyond the start hypothesis and the data."""
+    cpp_class: str
     algo: int
     chains: int = 1
     max_temp: float = 1.0
 
     def cpp(self, h0: str, data: str) -> str:
         """The C++ that constructs this sampler as ``samp`` (for ejected models)."""
-        return [f"MCMCChain samp({h0}, {data});",
-                f"ChainPool samp({h0}, {data}, {self.chains});",
-                f"ParallelTempering samp({h0}, {data}, {self.chains}, {self.max_temp!r});"][self.algo]
+        extra = {"MCMCChain": "", "ChainPool": f", {self.chains}",
+                 "ParallelTempering": f", {self.chains}, {self.max_temp!r}"}[self.cpp_class]
+        return f"{self.cpp_class} samp({h0}, {data}{extra});"
 
 
 def MCMCChain() -> Sampler:
     """A single chain (Fleet asserts it runs with threads=1)."""
-    return Sampler(0)
+    return Sampler("MCMCChain", 0)
 
 
 def ChainPool(chains: int) -> Sampler:
     if not (isinstance(chains, int) and chains >= 1):
         raise ValueError("chains must be an int >= 1")
-    return Sampler(1, chains)
+    return Sampler("ChainPool", 1, chains)
 
 
 def ParallelTempering(chains: int, max_temp: float) -> Sampler:
     if not (isinstance(chains, int) and chains >= 1) or not max_temp >= 1.0:
         raise ValueError("ParallelTempering needs chains >= 1 and max_temp >= 1")
-    return Sampler(2, chains, float(max_temp))
+    return Sampler("ParallelTempering", 2, chains, float(max_temp))

@@ -335,7 +335,7 @@ class SetOf(FType):
 # ---- user-defined types: these generate C++ definitions ----------------------------------
 
 class StructType(FType):
-    """A C++ struct generated from an ``@fl.struct`` dataclass."""
+    """A C++ struct generated from an ``@struct`` dataclass."""
     category = "struct"
 
     def __init__(self, pycls, fields):
@@ -504,7 +504,7 @@ def opaque(cpp_name: str, header: str, *, py=None, from_py=None, to_py=None, che
 def struct(cls):
     """Decorator: turn an annotated class into a frozen dataclass with a C++ twin."""
     if not getattr(cls, "__annotations__", None):
-        raise TypeError(f"@fl.struct class {cls.__name__} has no annotated fields")
+        raise TypeError(f"@struct class {cls.__name__} has no annotated fields")
     dc = dataclasses.dataclass(frozen=True, order=True)(cls)
     hints = typing.get_type_hints(cls, include_extras=True)
     fields = [(check_identifier(f.name, f"field of {cls.__name__}"), resolve(hints[f.name]))

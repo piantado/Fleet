@@ -28,18 +28,26 @@ import typing
 
 
 @dataclasses.dataclass(frozen=True)
-class Likelihood:
+class Code:
+    """A C++ body produced from Python (or written by the user), with what fleetpy needs to
+    emit and test it: whether it was transpiled (then ``pyfn`` is its source), and the
+    fleetpy types used inside it (their C++ definitions are emitted)."""
     body: str
-    nonpositive: bool
+    transpiled: bool = False
+    pyfn: typing.Callable = None
+    types: tuple = ()
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class Likelihood(Code):
+    """The code of a likelihood plus the facts fleetpy needs to use it correctly."""
+    nonpositive: bool             # every per-datum term <= 0 (enables Fleet's breakout)
     name: str
     needs: str = None             # what the body calls: "value" (fp_call), "dist" (fp_dist), or None
     scope: str = "datum"          # "datum" | "total"
     check_datum: typing.Callable = None   # fn(datum, output_type) raising on invalid data
     params: dict = dataclasses.field(default_factory=dict)
     constants: tuple = ()         # ((C++ type, name, value), ...) emitted at namespace scope
-    transpiled: bool = False      # compiled from Python (then pyfn is its source function)
-    pyfn: typing.Callable = None
-    types: tuple = ()             # FTypes used inside the body (their definitions are emitted)
 
     def __post_init__(self):
         if self.needs not in (None, "value", "dist"):
@@ -85,14 +93,15 @@ def noisy_exact(on_error: str = "mismatch") -> Likelihood:
     else:
         raise ValueError("on_error must be 'mismatch' or 'default'")
     # (1-r)/2 + r*[eq] <= 1 for r in [0,1], so every term is <= 0.
-    return Likelihood(body, True, "noisy_exact", "value", check_datum=_check_reliability,
-                      params={"on_error": on_error})
+    return Likelihood(body, nonpositive=True, name="noisy_exact", needs="value",
+                      check_datum=_check_reliability, params={"on_error": on_error})
 
 
 def exact() -> Likelihood:
     """0 if the output matches exactly, -inf otherwise (and -inf on error)."""
     return Likelihood("auto [fp_ok, fp_out] = fp_call(di.input);\n"
-                      "return (fp_ok and fp_out == di.output) ? 0.0 : -infinity;", True, "exact", "value")
+                      "return (fp_ok and fp_out == di.output) ? 0.0 : -infinity;",
+                      nonpositive=True, name="exact", needs="value")
 
 
 def gaussian(sd: float) -> Likelihood:
@@ -112,7 +121,7 @@ def gaussian(sd: float) -> Likelihood:
     def check(d, out_t):
         if out_t.key != "f64":
             raise TypeError("gaussian likelihood needs a float output type")
-    return Likelihood(body, sd >= 1.0 / math.sqrt(2.0 * math.pi), "gaussian", "value",
+    return Likelihood(body, nonpositive=sd >= 1.0 / math.sqrt(2.0 * math.pi), name="gaussian", needs="value",
                       check_datum=check, params={"sd": sd})
 
 
@@ -120,7 +129,7 @@ def cpp(body: str, nonpositive: bool = False) -> Likelihood:
     """A custom C++ body for compute_single_likelihood."""
     if not isinstance(body, str) or "return" not in body:
         raise ValueError("a cpp likelihood body must contain a return statement")
-    return Likelihood(body, nonpositive, "cpp", _needs(body))
+    return Likelihood(body, nonpositive=nonpositive, name="cpp", needs=_needs(body))
 
 
 def cpp_total(body: str) -> Likelihood:
@@ -129,7 +138,7 @@ def cpp_total(body: str) -> Likelihood:
     datums (as in Models/Number-Simple). Fleet's breakout is not applied."""
     if not isinstance(body, str) or "return" not in body:
         raise ValueError("a cpp_total likelihood body must contain a return statement")
-    return Likelihood(body, False, "cpp_total", _needs(body), scope="total")
+    return Likelihood(body, nonpositive=False, name="cpp_total", needs=_needs(body), scope="total")
 
 
 # ---- stochastic ----------------------------------------------------------------------------
@@ -146,7 +155,7 @@ def stochastic_exact(normalize: bool = True) -> Likelihood:
             f"if(fp_d.size() == 0) return -infinity;\n"
             f"if(not fp_d.contains(di.output)) return -infinity;\n"
             f"return fp_d.get(di.output, -infinity) - {z};")
-    return Likelihood(body, True, "stochastic_exact", "dist", params={"normalize": normalize})
+    return Likelihood(body, nonpositive=True, name="stochastic_exact", needs="dist", params={"normalize": normalize})
 
 
 def string_edit(add_p: float, del_p: float, alphabet: str, normalize: bool = True) -> Likelihood:
@@ -182,5 +191,5 @@ def string_edit(add_p: float, del_p: float, alphabet: str, normalize: bool = Tru
     # must name objects at namespace scope.
     constants = (("const float", "fp_add_p", repr(float(add_p)) + "f"),
                  ("const float", "fp_del_p", repr(float(del_p)) + "f"))
-    return Likelihood(body, True, "string_edit", "dist", check_datum=check, constants=constants,
+    return Likelihood(body, nonpositive=True, name="string_edit", needs="dist", check_datum=check, constants=constants,
                       params={"add_p": add_p, "del_p": del_p, "alphabet": alphabet, "normalize": normalize})
