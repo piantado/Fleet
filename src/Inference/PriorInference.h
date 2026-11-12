@@ -34,7 +34,7 @@ public:
 				h.complete();
 			}
 			else {
-				h = MyHypothesis::sample();
+				h = HYP::sample(); // (this used to name MyHypothesis, so the header needed a class of that name)
 			}
 			h.compute_posterior(data);
 			co_yield h;

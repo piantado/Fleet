@@ -27,9 +27,22 @@ public:
 	//	return std::make_pair(z-t, w-(z-t));
 	//}
 
+	/**
+	 * @brief floor(sqrt(z)), exactly. NOTE: std::sqrt works on a double, which cannot represent every 
+	 * 		  integer above 2^53, so floor(std::sqrt(z)) is off by one for some large z (e.g. it gives m 
+	 * 		  for z = m*m-1 with m = 2^27+1), and the decoders below then return garbage. So we start from 
+	 * 		  the floating point estimate and correct it with integer arithmetic. 
+	 */
+	static enumerationidx_t isqrt(const enumerationidx_t z) {
+		enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt((long double)z));
+		while(m > 0 and m > z/m)   --m; // m*m > z, without overflow
+		while(m+1 <= z/(m+1))      ++m; // (m+1)*(m+1) <= z, without overflow
+		return m;
+	}
+
 	static std::pair<enumerationidx_t, enumerationidx_t> rosenberg_strong_decode(const enumerationidx_t z) {
 		// https:arxiv.org/pdf/1706.04129.pdf
-		enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
+		enumerationidx_t m = isqrt(z);
 		if(z-m*m < m) {
 			return std::make_pair(z-m*m,m);
 		}
@@ -60,7 +73,7 @@ public:
 	// Stack-like operations on z
 	static enumerationidx_t rosenberg_strong_pop(enumerationidx_t &z) {
 		// https:arxiv.org/pdf/1706.04129.pdf
-		enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
+		enumerationidx_t m = isqrt(z);
 		if(z-m*m < m) {
 			auto ret = z-m*m;
 			z = m;

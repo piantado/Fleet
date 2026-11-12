@@ -194,19 +194,24 @@ namespace Proposals {
 
 		Node ret = from; // copy
 
-		if(from.sum<double>(my_can_resample) == 0.0) 
+		const double z = ret.sum<double>(my_can_resample);
+		if(z == 0.0) 
 			return {};
 		
-		auto [s, slp] = sample<Node,Node>(ret, my_can_resample);
+		// NOTE: s is a Node* (this used to treat it as a pair, s.first, and so never compiled)
+		auto [s, slp] = sample<Node,Node>(ret, z, my_can_resample); // slp = -log(z)
 		
 		double oldgp = grammar->log_probability(*s); // reverse probability generating 
 		
-		s->assign(grammar->generate(s.first->nt())); 
+		s->assign(grammar->generate(s->nt())); 
 		
-		double fb = slp + grammar->log_probability(*s.first) 
-				  - (log(my_can_resample(*s.first)) - log(ret.sum(my_can_resample)) + oldgp);
+		// The reverse move must choose s again, among the nodes of the NEW tree that are shallow enough. 
+		// If the new subtree at s is deeper than D, my_can_resample(*s) is 0: the reverse move is
+		// impossible, the backward probability is 0, fb is +infinity, and MCMC rejects the proposal.
+		double fb = slp + grammar->log_probability(*s) 
+				  - (log(my_can_resample(*s)) - log(ret.sum<double>(my_can_resample)) + oldgp);
 
-		return std::make_pair(ret, fb);
+		return std::make_pair(std::move(ret), fb);
 	}
 
 	

@@ -33,7 +33,10 @@ struct StreamingSum {
 		return this->operator<<(v); 
 	}
 	
-	operator double() const { return double(total+low); }
+	// NOTE: total - low. low is Kahan's compensation: what was added to total in EXCESS of what should 
+	// have been (it is subtracted from the next term). This used to return total + low, which doubles
+	// the pending error instead of removing it. 
+	operator double() const { return (double)total - (double)low; } // (in double, so that a float sum keeps the correction)
 };
 
 

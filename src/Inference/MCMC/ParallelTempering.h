@@ -201,6 +201,11 @@ public:
 
 //		print("Starting swapper thread");
 
+		// NOTE: terminate is set at the end of every run. It must be cleared here, or else on a second
+		// run() the swapper and adapter threads exit immediately and the chains silently run with no
+		// swaps and no adaptation. 
+		terminate = false; 
+
 		// Start a swapper and adapter thread
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
 		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this);
@@ -289,7 +294,16 @@ public:
 			double sw = log(this->pool[i].temperature - this->pool[i-1].temperature);
 			
 			if( i+1 < n and swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
-				sw += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
+				unsigned long nsamples;
+				{
+					// samples is a plain counter that the chain's thread increments while holding its
+					// current_mutex, so it must be read under that lock (it used to be read without it,
+					// a data race). As with show_statistics, this means adapt() must not be called from
+					// the thread that consumes run()'s samples while the chains are running. 
+					std::lock_guard guard(this->pool[i].current_mutex);
+					nsamples = this->pool[i].samples;
+				}
+				sw += k(nsamples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
 			}
 			d[i] = exp(sw);
 		}

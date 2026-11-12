@@ -39,7 +39,7 @@ public:
 			auto n = ge.toNode(nxt, grammar->start());
 			//print(n.string());
 			
-			MyHypothesis h(n); 
+			HYP h(n); // (this used to name MyHypothesis, so the header needed a class of that name)
 			h.compute_posterior(data);
 
 			co_yield h;

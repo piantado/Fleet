@@ -57,7 +57,7 @@ public:
 	 */	
 	bool operator==(const defaultdatum_t& y) const {
 		
-		return input==y.input and output==y.output and count == count and
+		return input==y.input and output==y.output and count == y.count and // NOTE: was count == count
 			   (reliability==y.reliability or (isnan(reliability) and isnan(y.reliability)));
 	}	
 }; 

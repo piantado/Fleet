@@ -57,15 +57,15 @@ public:
 		
 	TopN(size_t n=FleetArgs::ntop) : N(n) { set_print_best(FleetArgs::top_print_best); }
 	
-	TopN(const TopN<T>& x) {
-		clear();
-		set_size(x.N);
-		set_print_best(x.print_best); // must be set before we add!
-		add(x);
+	TopN(const TopN<T>& x) : print_best(x.print_best), N(x.N.load()) {
+		// NOTE: we copy the set itself. This used to add() x's elements one at a time, in increasing
+		// order, so with print_best set every element was a "new best" and a copy printed all of them.
+		// (x's elements already satisfy everything add() checks.)
+		std::lock_guard guard(x.lock);
+		s = x.s;
 	}
-	TopN(TopN<T>&& x) {
-		set_size(x.N);
-		set_print_best(x.print_best);
+	TopN(TopN<T>&& x) : print_best(x.print_best), N(x.N.load()) {
+		std::lock_guard guard(x.lock);
 		s = std::move(x.s);
 	}
 	
@@ -73,15 +73,33 @@ public:
 		if (this == &x)
 			return;
 
-		clear();
-		set_print_best(x.print_best);				
-		set_size(x.N);
-		add(x);
+		// copy the set itself, printing nothing (see the copy constructor)
+		std::set<T> tmp;
+		{
+			std::lock_guard guard(x.lock);
+			tmp = x.s;
+		}
+		
+		std::lock_guard guard(lock);
+		s = std::move(tmp);
+		print_best = x.print_best;
+		N = x.N.load();
 	}
 	void operator=(TopN<T>&& x) {
-		set_print_best(x.print_best);
-		set_size(x.N);
-		s = std::move(x.s);
+		if (this == &x)
+			return;
+		
+		std::set<T> tmp;
+		{
+			std::lock_guard guard(x.lock);
+			tmp = std::move(x.s);
+			x.s.clear(); // a moved-from set is valid but unspecified
+		}
+		
+		std::lock_guard guard(lock);
+		s = std::move(tmp);
+		print_best = x.print_best;
+		N = x.N.load();
 	}
 
 	void set_size(size_t n) {
@@ -201,7 +219,16 @@ public:
 		 * @param x
 		 */
 	
-		for(auto& h: x.s){
+		// NOTE: best first. In increasing order (as this used to be) every element that beats our 
+		// current best is a new best in turn, so with print_best a merge printed a whole run of them;
+		// in decreasing order only x's best can be (and it is the only one that is the new best). 
+		// The resulting set is the same either way. 
+		std::vector<T> v;
+		{
+			std::lock_guard guard(x.lock); // x may be being added to by other threads
+			v.assign(x.s.rbegin(), x.s.rend());
+		}
+		for(auto& h: v){
 			add(h);
 		}
 	}
@@ -211,8 +238,8 @@ public:
 		 * @param x
 		 */
 	
-		for(auto& h: x){
-			add(h);
+		for(auto it=x.rbegin(); it != x.rend(); ++it){ // best first (see add(const TopN&))
+			add(*it);
 		}
 	}
 	void operator<<(const TopN<T>& x) {

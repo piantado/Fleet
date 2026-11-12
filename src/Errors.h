@@ -10,9 +10,9 @@ public:
 	NotImplementedError() : std::logic_error("*** Function not yet implemented.") { }
 	NotImplementedError(std::string s) : std::logic_error(s) { }
 
-    virtual char const* what() const noexcept override { 
-		return "*** Function not yet implemented."; 
-	}
+	// NOTE: what() is inherited from std::logic_error and returns the message given above. It used to be 
+	// overridden here to return a fixed string, which threw away every specific message (e.g.
+	// "*** You must define compute_single_likelihood"). 
 };
 
 class YouShouldNotBeHereError : public std::logic_error {
@@ -22,9 +22,6 @@ public:
 	
 	YouShouldNotBeHereError(std::string s) : std::logic_error(s) { }
 	
-
-    virtual char const* what() const noexcept override { 
-		return "*** It was a mistake to call this."; 
-	}
+	// (what() is std::logic_error's, which returns the message -- see NotImplementedError)
 };
 

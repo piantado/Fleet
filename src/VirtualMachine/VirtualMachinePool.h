@@ -85,6 +85,7 @@ public:
 		
 		total_vms_steps = 0;
 		worst_lp = infinity;
+		total_instruction_count = 0;
 	}
 	
 	/**
@@ -180,7 +181,7 @@ public:
 			
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
 				out.addmass(std::move(y), vms->lp); // y is dead after this; don't copy the output
-				total_instruction_count += vms->runtime_counter.total;
+				// (its instructions are counted below, once, with every other state that is finished -- this used to add them here too)
 			}
 			
 			// not else if because we need to delete complete ones too
@@ -224,7 +225,7 @@ public:
 				
 			if(vms->status == vmstatus_t::COMPLETE) {
 				out.push_back(*vms);
-				total_instruction_count += vms->runtime_counter.total; 
+				// (its instructions are counted below, once, with every other state that is finished -- this used to add them here too)
 			}
 			
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) { 

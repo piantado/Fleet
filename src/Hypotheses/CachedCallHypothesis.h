@@ -40,9 +40,16 @@ public:
 		// NOTE THIS DOES NOT WORK IF WE HAVE RECURSION 
 		// at the level of a lexicon!
 		
-		if(cached_data != &data) {
+		// NOTE: the cache is keyed on the ADDRESS of data (and, as a cheap extra check, its size). It cannot
+		// tell that a vector was modified in place, or that a new vector of the same size now lives at the
+		// same address -- call clear_cache() whenever the data may have changed. 
+		if(cached_data != &data or cache.size() != data.size()) {
 			// PRINTN("CACHE MISS", this, cached_data, string());
 			cache.resize(data.size());
+			
+			// we are recomputing everything, so an error from the previous data no longer applies
+			// (this used to stay set until clear_cache() was called)
+			got_error = false; 
 			
 			// store who is cached
 			cached_data = &data;

@@ -159,6 +159,11 @@ public:
 	 * @brief Set the data, recomputing the complete trees' posteriors too
 	 *        (this hides ChainPool::set_data, which is not virtual)
 	 */
+	virtual void prepare_run() override {
+		complete_claimed = false; // each run() yields the complete trees again (once)
+		ChainPool<HYP>::prepare_run();
+	}
+
 	void set_data(typename HYP::data_t d, bool recompute=true) {
 		if(recompute) {
 			for(auto& h : complete_trees) h.compute_posterior(d);

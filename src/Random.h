@@ -289,15 +289,24 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	// here z is the normalizer, z = sum_x f(x) 
 	assert(z > 0 && "*** Cannot call sample with zero normalizer -- is s empty?");
 	double r = z * uniform();
+	const t* last = nullptr; double lastfx = 0.0; // the last element with positive probability (see below)
 	for(auto& x : s) {
 		
 		auto fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
-		if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element 
-			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+		if(fx > 0.0) { // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element 
+			if(r <= 0.0) 
+				return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+			last = &x; lastfx = fx;
+		}
 	}
+	
+	// Round-off: z was added up by sample_z, and when uniform() is within a few ulps of 1 the 
+	// subtractions above can leave r a hair above zero after the last element. That draw belongs to 
+	// the last element with positive probability (this used to throw). 
+	if(last != nullptr) return std::make_pair(const_cast<t*>(last), log(lastfx)-log(z));
 	
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
@@ -334,12 +343,19 @@ std::pair<t*,double> sample_lp(const T& s, double z, const std::function<double(
 	assert(z > -infinity && "*** Cannot call sample with zero (-infinity) normalizer -- is s empty?");
 	double r = z  + log(uniform());
 	double tot = -infinity;
+	const t* last = nullptr; double lastfx = -infinity; // the last element with positive probability
 	for(auto& x : s) {		
 		auto fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		tot = logplusexp_full(tot, fx); // must match sample_lp_z (see there)
 		if(tot > r) return std::make_pair(const_cast<t*>(&x), fx-z); // NOTE: fx and z are already logs -- log(fx)-log(z) here was NaN for negative log probabilities
+		if(fx > -infinity) { last = &x; lastfx = fx; }
 	}
+	
+	// When uniform() is so close to 1 that z + log(uniform()) rounds to z itself (probability about
+	// |z| * 1e-16), tot ends exactly equal to r and the strict test above never fires. That draw
+	// belongs to the last element with positive probability (this used to throw). 
+	if(last != nullptr) return std::make_pair(const_cast<t*>(last), lastfx-z);
 	
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
@@ -379,14 +395,21 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 	
 	double r = z * uniform();
 	
+	bool haslast = false; size_t last = 0; double lastfx = 0.0; // the last index with positive probability
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
-		if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element 
-			return std::make_pair(i, log(fx)-log(z));
+		if(fx > 0.0) { // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element 
+			if(r <= 0.0) 
+				return std::make_pair(i, log(fx)-log(z));
+			haslast = true; last = i; lastfx = fx;
+		}
 	}
+	
+	// round-off at the top end of uniform(): see sample() above
+	if(haslast) return std::make_pair(last, log(lastfx)-log(z));
 	
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
@@ -491,14 +514,21 @@ template<typename t, typename T>
 std::pair<t*,double> sample(const T& s, double z, double(*f)(const t&)) {
 	assert(z > 0 && "*** Cannot call sample with zero normalizer -- is s empty?");
 	double r = z * uniform();
+	const t* last = nullptr; double lastfx = 0.0; // the last element with positive probability
 	for(auto& x : s) {
 		auto fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
-		if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element
-			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+		if(fx > 0.0) { // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability element
+			if(r <= 0.0)
+				return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+			last = &x; lastfx = fx;
+		}
 	}
+
+	// round-off at the top end of uniform(): see the std::function version above
+	if(last != nullptr) return std::make_pair(const_cast<t*>(last), log(lastfx)-log(z));
 
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");
 }

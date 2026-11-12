@@ -55,6 +55,13 @@ public:
 	size_t nthreads() {	return __nthreads; }
 	
 	/**
+	 * @brief Called once at the start of every run(), on the calling thread, before any worker thread
+	 *        is started. Subclasses override this to reset per-run state (e.g. ChainPool's record of
+	 *        which chains are running), so that the same object can be run more than once.
+	 */
+	virtual void prepare_run() { }
+	
+	/**
 	 * @brief We have to wrap run_thread in something that manages the sync with main. This really just
 	 *        synchronizes the output of run_thread with run below. NOTE this makes a copy of x into
 	 *        the local next_x, so that when the thread keeps running, it doesn't mess anything up. We
@@ -87,6 +94,7 @@ public:
 		__nthreads = ctl.nthreads; // save this for children
 		assert(__nrunning==0);
 		to_yield = std::make_unique<ConcurrentQueueRing<X>>(ctl.nthreads); // no threads are running yet
+		prepare_run(); // let subclasses reset their per-run state (no threads are running yet)
 		
 		// Make a new control to run on each thread and then pass this to 
 		// each subthread. This way multiple threads all share the same control
@@ -143,6 +151,8 @@ public:
 		// because it's hard to debug otherwise
 
 		std::cerr << "*** Warning running unthreaded_run (intended for debugging)" << std::endl;
+		__nthreads = 1; 
+		prepare_run();
 		ctl.start();
 		for(auto& x : run_thread(ctl, args...)) {
 			// NOTE: this used to pop from to_yield, which nothing fills in the unthreaded

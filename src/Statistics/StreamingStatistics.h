@@ -24,12 +24,17 @@ public:
 	double mean;
 	double M2;
 	
-	double N;
+	double N; // how many times add() was called, INCLUDING nan/inf values
+	
+	// How many of those were finite. This (not N) is the sample size for mean and M2: N also counts
+	// nan/inf values, and using it in Welford's update made the mean and variance wrong as soon as
+	// one of those had been added (e.g. {-inf, -inf, 10, 10} had mean 5 and sd 5.77).
+	double Nfinite; 
 	
 	MedianFAME<double>  streaming_median;
 	
 	StreamingStatistics(size_t rs=100) : 
-		min(infinity), max(-infinity), mean(0.0), M2(0.0), N(0) {
+		min(infinity), max(-infinity), mean(0.0), M2(0.0), N(0), Nfinite(0) {
 	}
 	
 	StreamingStatistics(const StreamingStatistics& s) {
@@ -40,6 +45,7 @@ public:
 		mean = s.mean;
 		M2 = s.M2;
 		N   = s.N;
+		Nfinite = s.Nfinite;
 		streaming_median = s.streaming_median;
 	}
 	
@@ -51,6 +57,7 @@ public:
 		mean = s.mean;
 		M2 = s.M2;
 		N   = s.N;
+		Nfinite = s.Nfinite;
 		streaming_median = s.streaming_median;
 	}
 
@@ -60,14 +67,17 @@ public:
 		 * @param x
 		 */
 		
+		// get the lock (before touching N: this used to increment N, a plain double, outside the lock,
+		// which is a data race when several MCTS threads add to the same node)
+		std::lock_guard guard(lock);
+		
 		++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
 		
 		// filter nans and inf(TODO: Should we filter inf?)
 		if(std::isnan(x) or std::isinf(x)) 
 			return; 
 		
-		// get the lock
-		std::lock_guard guard(lock);
+		++Nfinite;
 
 		streaming_median << x;
 
@@ -77,7 +87,7 @@ public:
 		// now update -- Welford's algorithm
 		
 		double delta = x - mean;
-		mean += delta/N;
+		mean += delta/Nfinite;
 		
 		double delta2 = x - mean;
 		M2 += delta*delta2;
@@ -104,8 +114,9 @@ public:
 	}
 	
 	double get_variance() {
-		if(N<2) return NaN;
-		else 	return M2/(N-1);
+		std::lock_guard guard(lock);
+		if(Nfinite<2) return NaN;
+		else 	      return M2/(Nfinite-1);
 	}	
 };
 
