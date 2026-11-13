@@ -42,6 +42,8 @@ public:
 	// proposals return this:
 	using ProposalType = std::optional<std::pair<this_t,double>>;
 	
+	static constexpr bool is_stochastic = INNER::is_stochastic; // is stochastic 
+	
 	// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = Serialization::LexiconDelimiter;
 

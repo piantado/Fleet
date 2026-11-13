@@ -109,6 +109,19 @@ public:
 		}
 	}
 	
+	template<typename Q>
+	void addmass(DiscreteDistribution<Q> q, double v) {
+		/**
+		 * @brief Everything in q gets its probability updated, adding v total mass
+		 */
+		
+		for(auto& [k,l] : q) {
+			addmass(k, l+v);
+		}
+
+	}
+	
+	
 	double get(T x, double v) const {
 		if(m.find(x) == m.end()) {
 			return v;

@@ -25,6 +25,8 @@ public:
 	using call_output_t = DiscreteDistribution<output_t>; // what does call output?
 	using VirtualMachineState_t = _VirtualMachineState_t;
 
+	static constexpr bool is_stochastic = true; // is stochastic 
+
 	// Compute the output of this function. Must be defined in subclasses. 
 	virtual DiscreteDistribution<output_t> compute_output(const input_t& in) {
 		

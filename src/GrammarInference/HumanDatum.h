@@ -45,11 +45,3 @@ struct HumanDatum {
 
 };
 
-//
-//
-//template<typename... Args>
-//std::ostream& operator<<(std::ostream& o, const HumanDatum<Args...>& d) {
-//	
-//	// TODO: Check if pointer and deref for printing
-//	return o;
-//}

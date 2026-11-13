@@ -184,6 +184,19 @@ namespace Builtins {
 		}
 	});
 	
+	
+	template<typename T, typename Grammar_t, auto mx>
+	Primitive<T> Uniform_const_int(Op::Sample, BUILTIN_LAMBDA {
+		// sample 0,1,2,3, ... <first argument>-1
+		const double lp = -log(mx);
+		for(T i=0;i<mx;i++) { 
+			bool b = vms->pool->copy_increment_push(vms,i,lp);
+			if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
+		}
+		vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
+	});
+
+	
 	template<typename Grammar_t, typename t, typename T=std::set<t>>
 	Primitive<t, T> Sample(Op::Sample, BUILTIN_LAMBDA {
 				

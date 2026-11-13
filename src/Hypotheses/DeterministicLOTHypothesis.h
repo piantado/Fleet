@@ -25,6 +25,8 @@ public:
 	using call_output_t = output_t;
 	using VirtualMachineState_t = Super::VirtualMachineState_t;
 	
+	static constexpr bool is_stochastic = false; // not stochastic
+	
 	// Compute the output of this function. Must be defined in subclasses. 
 	virtual output_t compute_output(const input_t& in) {
 		

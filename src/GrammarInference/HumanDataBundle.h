@@ -1,6 +1,8 @@
 #pragma once
 
 #include "HumanDatum.h"
+#include "StochasticLOTHypothesis.h"
+
 
 // This is a HumanDatum plus some sutff for dealing with hypotheses
 // ConditionOn_t can either by std::vector of data or std::span, depending on where we want to store the conditioning data
@@ -15,8 +17,13 @@ struct HumanDataBundle : public HD {
 	// To HumanDatum we are going to add responses and caching etc
 	// from each hypothesis
 	
-	// each hypothesis output on generalize
-	std::vector<typename HYP::output_t> hypotheses_responses; 
+	// what repsonses we store depend on whether or not its a StochasticLotHypotheis // TODO: This does not handle Lexicons!!
+	using StoredResponse_t = std::conditional_t<
+        HYP::is_stochastic,
+        DiscreteDistribution<typename HYP::output_t>,
+        typename HYP::output_t                    
+    >;
+	std::vector<StoredResponse_t> hypotheses_responses; 
 	
 	// each hypothesis's likelihood to each conditioned_on
 	std::vector<std::vector<float>> point_likelihood;  
@@ -48,7 +55,7 @@ struct HumanDataBundle : public HD {
 	}
 	
 	
-	void fill_point_likelihoods(std::vector<HYP>& hypotheses) {
+	virtual void fill_point_likelihoods(std::vector<HYP>& hypotheses) {
 		const size_t H = hypotheses.size();
 		
 		// fill in the point likelihoods
@@ -62,7 +69,7 @@ struct HumanDataBundle : public HD {
 		}
 	}
 	
-	void fill_predictions(std::vector<HYP>& hypotheses) {
+	virtual void fill_predictions(std::vector<HYP>& hypotheses) {
 		const size_t H = hypotheses.size();
 		
 		// fill in the predictions of each hypothesis
@@ -74,7 +81,7 @@ struct HumanDataBundle : public HD {
 	}
 	
 	// what is the hi'th liklihood if it has decay decay?
-	double likelihood_with_decay(size_t hi, float decay) {
+	virtual double likelihood_with_decay(size_t hi, float decay) {
 		double ll = 0.0;
 		for(size_t i=0;i<this->condition_on.size();i++) {
 			ll += point_likelihood.at(hi).at(i) * pow( this->decay_indices.at(i), -decay);
@@ -82,3 +89,4 @@ struct HumanDataBundle : public HD {
 		return ll;
 	}
 };
+

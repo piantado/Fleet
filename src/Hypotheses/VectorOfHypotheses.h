@@ -12,6 +12,8 @@ public:
 	
 	std::vector<HYP> hypotheses;
 	
+	static constexpr bool is_stochastic = HYP::is_stochastic; // is stochastic 
+	
 	double propose_p = 0.1; // propose to this many at once 
 	
 	VectorOfHypotheses(size_t n) : hypotheses(n) { // NOTE default initialized

@@ -97,7 +97,10 @@ public:
 				
 				// This is a breakout in case our ll is too low
 				if(FleetArgs::LIKELIHOOD_BREAKOUT){
-					assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
+					
+					// we msut allow tiny numerical precision to be positive here since we sometimes have 0ish
+					assert((sll <= 1e-9 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
+					
 					if(likelihood < breakout) {
 						return likelihood = -infinity; // should not matter what value, but let's make it -infinity
 					}

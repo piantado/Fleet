@@ -14,6 +14,7 @@
 template<typename this_t,
          typename HYP,
 		 typename HD, // human datum type
+		 typename HDB=HumanDataBundle<HYP,HD>, // human data bundle type
 		 typename _datum_t = NullDatum_t, 
 		 typename _data_t=std::span<_datum_t>
 		 >
@@ -21,7 +22,7 @@ class NewGrammarHypothesis : public MCMCable<this_t, _datum_t, _data_t> {
 public:
 	using ConditionOn_t = typename HD::ConditionOn_t;
 	using Response_t    = typename HD::Response_t;
-	using HumanDataBundle_t = HumanDataBundle<HYP,HD>;
+	using HumanDataBundle_t = HDB;
 	using Hinput_t = typename HYP::input_t;
 	using CleanHYP = std::remove_cvref_t<HYP>; // needed below for checking 
 	
