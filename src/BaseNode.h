@@ -239,9 +239,18 @@ public:
 		return d;
 	}
 	
+	#if defined(__GNUC__) || defined(__clang__)
+	__attribute__((no_sanitize("vptr"))) 
+	#endif
 	void fix_child_info() {
 		/**
 		 * @brief Fix my immediate children's pointers to ensure that children's parent pointers and indices are correct. 
+		 * 
+		 * 		  NOTE: BaseNode's copy/move constructors call this, i.e. while the derived this_t is still
+		 * 		  being constructed. The cast below only computes the address of the enclosing this_t (it
+		 * 		  is stored, not dereferenced), but UBSan's vptr check looks at the dynamic type at that
+		 * 		  moment (still BaseNode) and reports a bad downcast -- which aborted nearly every test
+		 * 		  under `make SANITIZE=1`. So that one check is turned off for this function. 
 		 */
 		
 		// go through children and assign their parents to me
@@ -478,7 +487,7 @@ public:
 		 * @param f
 		 */
 		
-		f(* dynamic_cast<const this_t*>(this));
+		f(* static_cast<this_t*>(this)); // (this used to pass a const this_t to f, which takes this_t&, and so never compiled)
 		for(auto& c: this->children) {
 			c.map(f); 
 		}

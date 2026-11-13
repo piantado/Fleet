@@ -125,7 +125,7 @@ public:
 	auto begin() { return m.begin(); }
 	auto end()   { return m.end();   }
 	
-	const std::map<T,double>& values() const {
+	const my_map_t& values() const { // NOTE: my_map_t, not std::map<T,double>: for T=double/float the map has a NaN-safe comparator
 		/**
 		 * @brief Get all of the values in this distribution
 		 * @return 
@@ -143,7 +143,7 @@ public:
 	double Z() const {
 		
 		if(m.size() == 0) {
-			return 0; // the log normalizer is 0 for an empty set
+			return -infinity; // log(0): an empty distribution has no mass (this used to return 0 = log(1))
 		}
 		else { 
 			double Z = -infinity; // add up the mass

@@ -44,9 +44,9 @@ struct burn {
 	burn(size_t _m=FleetArgs::burn) : m(_m), cnt(0) { 
 	}
 
-	// funny little increment here returns true for 0 mod m
+	// returns false for the first m calls (the samples to burn) and true after that
 	bool operator++() {
-		if(cnt > m or m==0) {
+		if(cnt >= m) { // NOTE: this was cnt > m, which burned m+1 samples
 			return true;
 		}
 		else {
@@ -158,7 +158,7 @@ generator<T&> operator|(generator<T&> g, std::vector<T>& tn) { // NOTE: tn MUST 
 template<typename T> 
 generator<T&> operator|(generator<T&> g, std::set<T>& tn) { // NOTE: tn MUST be a ref here...
 	for(auto& x : g) {
-		tn.add(x);
+		tn.insert(x); // (std::set has no add(), so this overload never compiled)
 		co_yield x; // and yield 
 	}
 }

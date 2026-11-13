@@ -25,8 +25,12 @@ public:
 	size_t inner_samples;
 	typename HYP::data_t data;
 	double T = 1.0; 
+	
+	// The hypothesis we were constructed with. We restart from this when top is empty, which happens
+	// when it (or everything found so far) has a posterior of -infinity or NaN, which TopN won't store. 
+	HYP start; 
 		
-	HillClimbing(HYP& h0, typename HYP::data_t d, size_t n=1, size_t is=100) :  N(n), inner_samples(is), data(d) {
+	HillClimbing(HYP& h0, typename HYP::data_t d, size_t n=1, size_t is=100) :  N(n), inner_samples(is), data(d), start(h0) {
 		top.set_size(N);	
 		
 		// add this h0
@@ -54,10 +58,14 @@ public:
 				steps_since_improvement = 0; // reset the couter
 				
 				while(true) { // avoid -infs
-					auto current = top.best().restart();
+					if(CTRL_C) co_return; // otherwise we could never leave this loop if nothing has a finite posterior
+					
+					// NOTE: top is empty when h0's posterior was -infinity/NaN (TopN does not store those),
+					// and this used to call top.best() on the empty TopN (an assert failure, or undefined behavior)
+					auto current = (top.empty() ? start : top.best()).restart();
 					//CERR "# Restarting " TAB current.string() ENDL;
 					current.compute_posterior(data);
-					if(current.posterior == -infinity) continue; 
+					if(current.posterior == -infinity or std::isnan(current.posterior)) continue; // (TopN would not store it)
 					
 					co_yield current; 
 					

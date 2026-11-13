@@ -87,6 +87,17 @@ public:
 		return pool.size();
 	}
 	
+	/**
+	 * @brief Every chain is available again at the start of a run. 
+	 * 		  NOTE: without this, the running states left by a previous run() persisted: a step-limited 
+	 * 		  run leaves the chain that ran the last (short) segment DONE, so a second run() on the same 
+	 * 		  pool searched forever (holding running_lock) for a READY chain.
+	 */
+	virtual void prepare_run() override {
+		std::lock_guard guard(running_lock);
+		running.assign(pool.size(), RunningState::READY);
+	}
+	
 	void show(std::string prefix) const { 
 		for(size_t i=0;i<nchains();i++) {
 			std::lock_guard guard(this->pool[i].current_mutex);
@@ -174,6 +185,7 @@ public:
 								
 					// exit here if there is nothing else to do
 					if(to_run_steps <= 0) {
+						running.at(idx) = RunningState::READY; // we never ran it, so don't leave it marked RUNNING
 						break; 
 					}	
 					

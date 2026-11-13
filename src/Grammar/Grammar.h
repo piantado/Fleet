@@ -4,6 +4,8 @@
 #include <optional>
 #include <array>
 #include <exception>
+#include <memory>
+#include <algorithm>
 
 #include "IO.h"
 #include "Errors.h"
@@ -85,6 +87,12 @@ public:
 	
 	size_t GRAMMAR_MAX_DEPTH = 64;
 	
+	// The functions that add() allocates to wrap primitives. The Rules (and the Instructions made from
+	// them) hold plain pointers to these, so they must live exactly as long as the grammar. NOTE: they
+	// used to be allocated with new and never freed, which leaked them whenever a grammar that is not a
+	// global was destroyed (and made every test that builds a local grammar fail under LeakSanitizer).
+	std::vector<std::unique_ptr<FT>> owned_functions;
+	
 	// This function converts a type (passed as a template parameter) into a 
 	// size_t index for which one it in in GRAMMAR_TYPES. 
 	// This is used so that a Rule doesn't need type subclasses/templates, it can
@@ -135,6 +143,15 @@ public:
 			RuleIterator(this_t* g, bool is_end) : grammar(g), current_nt(0) { 
 				if(not is_end) {
 					current_rule = g->rules[0].begin();
+					
+					// skip nonterminals that have no rules, as operator++ does (and if none has any, we end
+					// up equal to end()). NOTE: without this, a grammar whose FIRST nonterminal type has no
+					// rules started at rules[0].end(): dereferencing that is undefined, and ++ then walked
+					// off the end of the empty vector forever. 
+					while(current_rule == grammar->rules[current_nt].end() and current_nt < N_NTs-1) {
+						current_nt++;
+						current_rule = grammar->rules[current_nt].begin();
+					}
 				} 
 				else {
 					// by convention we set current_rule and current_nt to the last items
@@ -220,11 +237,19 @@ public:
 	
 	void change_probability(const std::string& s, const double newp) {
 		Rule* r = get_rule(s);
-		Z[r->nt] -= r->p;
 		r->p = newp;
 		r->logp = log(newp); // keep the cached log in sync with p
-		Z[r->nt] += r->p;
+		
+		// recompute the normalizer from scratch: subtracting the old p and adding the new one (as this 
+		// used to) accumulates round-off each time, and loses everything if p changes by many orders of magnitude
+		double z = 0.0;
+		for(const auto& x : rules[r->nt]) z += x.p;
+		Z[r->nt] = z; 
 		logZ[r->nt] = log(Z[r->nt]); // and the cached log normalizer in sync with Z
+		
+		// NOTE: rules[nt] is NOT re-sorted here, so after this call the rules of this nonterminal are still 
+		// terminals-first but may no longer be in decreasing order of probability. We can't sort: Nodes hold
+		// pointers to their Rules, and sorting would move the Rules under them. (add_vms copes with this.)
 	}
 	
 	size_t count_terminals(nonterminal_t nt) const {
@@ -336,6 +361,12 @@ public:
 		warn_if_unserializable(Tnt, fmt, r.child_types);
 		Z[Tnt] += r.p; // keep track of the total probability
 		logZ[Tnt] = log(Z[Tnt]); // keep the cached log normalizer in sync
+		
+		// lower_bound requires a sorted range, which change_probability can break (see there). Inserting
+		// invalidates pointers to this nonterminal's Rules anyway, so it costs nothing more to sort here.
+		if(not std::is_sorted(rules[Tnt].begin(), rules[Tnt].end())) {
+			std::sort(rules[Tnt].begin(), rules[Tnt].end());
+		}
 		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
 		rules[Tnt].insert( pos, r ); // put this before	
 	}
@@ -465,6 +496,8 @@ public:
 				}
 			});
 			
+		owned_functions.emplace_back(fvms); // the grammar owns it (see owned_functions)
+		
 		add_vms<T,args...>(fmt, fvms, p, o, a);
 	}
 
@@ -704,16 +737,27 @@ public:
 		// and computed log(p)-log(Z) for a return value this caller throws away. 
 		// The selection logic (and so the consumed randomness) is identical. 
 		double r = Z[nt] * uniform();
+		const Rule* last = nullptr; // the last rule with positive probability
 		for(auto& x : rules[nt]) {
 			const double fx = x.p;
 			if(std::isnan(fx)) continue; // treat as zero prob (as sample() does)
 			assert(fx >= 0.0);
 			r -= fx;
-			if(fx > 0.0 and r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability rule
-				return const_cast<Rule*>(&x);
+			if(fx > 0.0) {
+				if(r <= 0.0) // fx > 0.0: when uniform() draws exactly 0, never return a zero-probability rule
+					return const_cast<Rule*>(&x);
+				last = &x;
+			}
 		}
 		
-		throw YouShouldNotBeHereError("*** Should not get here in sample_rule");
+		// We can get here by round-off: Z[nt] was summed in the order the rules were added, but we subtract
+		// in sorted order, so when uniform() is within a few ulps of 1, r can be left a hair above zero
+		// after the last rule (this happens for about 10% of weight sets at the largest value of uniform()).
+		// That draw belongs to the last rule with positive probability. This used to throw, and an
+		// exception in a worker thread ends the whole run. 
+		if(last != nullptr) return const_cast<Rule*>(last);
+		
+		throw YouShouldNotBeHereError("*** Should not get here in sample_rule (no rule has positive probability)");
 	}
 	
 	

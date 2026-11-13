@@ -66,6 +66,8 @@ public:
 	// Same as ParallelTempering, but no adapter
 	generator<HYP&> run(Control ctl) {
 		
+		this->terminate = false; // it is set at the end of every run (see ParallelTempering::run)
+		
 		// Start a swapper and adapter thread
 		std::thread swapper(&DataTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
 		
@@ -116,8 +118,16 @@ public:
 				// compute R based on *data* swapping
 				double Tnow = this->pool[k-1].getCurrent().likelihood + 
 							  this->pool[k  ].getCurrent().likelihood;
+				// NOTE: compute_likelihood stores its result in the hypothesis's .likelihood, so evaluating
+				// each current hypothesis on the OTHER chain's data overwrites it. We must put the old values
+				// back if the swap is rejected: this used to leave both chains holding the likelihood of the
+				// wrong data set, which the chains' next Metropolis-Hastings steps then used.
+				const double lik_km1 = this->pool[k-1].getCurrent().likelihood;
+				const double lik_k   = this->pool[k  ].getCurrent().likelihood;
 				double Tswp = this->pool[k-1].getCurrent().compute_likelihood(this->pool[k].data) +
 							  this->pool[k  ].getCurrent().compute_likelihood(this->pool[k-1].data);
+				this->pool[k-1].getCurrent().likelihood = lik_km1;
+				this->pool[k  ].getCurrent().likelihood = lik_k;
 				double R = Tswp-Tnow;
 	
 				//DEBUG("Swap p: ", k, R, this->pool[k-1].samples, this->pool[k-1].getCurrent().posterior, this->pool[k-1].getCurrent()); 

@@ -190,7 +190,10 @@ public:
 					int z = 0;
 					for (const auto& [_, value] : hd.human_responses) { z += value; }
 					for(auto& [r, mp] : model_pr.values()) {
-						size_t b = floor(exp(mp)*bin_tot.size());
+						// NOTE: exp(mp) is exactly 1 (or, in float arithmetic, slightly more) when the model is
+						// certain of a response, which gave b == bin_tot.size(): a write one past the end of
+						// both vectors. Probability 1 belongs in the last bin. 
+						size_t b = std::min((size_t)floor(exp(mp)*bin_tot.size()), bin_tot.size()-1);
 						bin_yes[b] += get(hd.human_responses, r, 0);
 						bin_tot[b] += z; 					
 					}

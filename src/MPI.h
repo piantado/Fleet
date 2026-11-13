@@ -91,6 +91,10 @@ std::vector<T> mpi_gather() {
 
 
 
+// NOTE: mpi_map below was never finished: it uses undeclared variables (sz, r, out), `int[1] buf`,
+// MPI_send, and its worker branch does nothing. It does not compile, so it is disabled until someone
+// with an MPI installation completes and tests it.
+#if 0
 /**
  * @brief Send an int n to each request. Each requestor can use this to index into some data
  *        which they are assumed to know already
@@ -145,4 +149,5 @@ std::vector<T> mpi_map(const size_t n) {
 		}
 	}
 }
+#endif
 

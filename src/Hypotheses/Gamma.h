@@ -33,23 +33,31 @@ public:
 
 	virtual std::optional<std::pair<self_t,double>> propose() const override {
 		
-		// choose a scaling factor
-		float s = random_gamma(PROPOSAL_K, PROPOSAL_K); 
+		// choose a scaling factor s ~ Gamma(shape K, rate K), which has mean 1
+		const double K = PROPOSAL_K;
+		const double s = random_gamma(K, K);
 		
 		auto out = *this; // copy myself
-
-		// here our proposal is a scaling so we need to treat it as a change of variables
-		// and include the jacobian, which is ds/dx' = 1/x. The reverse is ds/sx=1/x', 
-		// so in the acceptance ratio we have x/x' which is the same as 1/s
-		out.value = out.value * s; // set the value
+		out.value = (float)((double)value * s); // set the value
 		
-		// force a hard boundary
-		if(out.value < 1e-6) 
-			out.value = 1e-6;
+		// A hard lower boundary. A proposal below it (or one that is not finite and positive) is a
+		// FAILED proposal, which MCMC counts as a rejection: that is exact for the target restricted to
+		// values >= 1e-6. (This used to clamp the value to 1e-6 while computing fb as if it had not.)
+		if(not (out.value >= 1e-6f) or std::isinf(out.value)) 
+			return {};
 			
-		// NOTE that gamma_lpdf here is with shape/rate unlike random_Gamma above
-		// here, the forward-backward simplifies to -log(s)
-		return std::make_pair(out, -log(s)); 
+		// The proposal is x' = x*s with s ~ g = Gamma(K,K), so the densities are
+		//     q(x'|x) = g(x'/x)/x = g(s)/x       and       q(x|x') = g(x/x')/x' = g(1/s)/x'
+		// and therefore
+		//     fb = log q(x'|x) - log q(x|x') = log g(s) - log g(1/s) + log(s)
+		//        = (2K-1) log(s) - K (s - 1/s)
+		// NOTE: this used to return -log(s). That is the right answer only for a multiplier that is
+		// symmetric in log space (g(s)/g(1/s) = 1/s^2, e.g. a lognormal), which Gamma(K,K) is not:
+		// log(s) has mean ~ -1/(2K) and variance ~ 1/K, and ignoring that drift made the chain sample
+		// from prior(x)/x instead of prior(x) for every K -- e.g. a Gamma(5,5) prior came out with
+		// mean 0.8 instead of 1 (see Testing/TestAudit.cpp).
+		const double fb = (2.0*K-1.0)*log(s) - K*(s - 1.0/s);
+		return std::make_pair(out, fb); 
 	}
 	
 	virtual self_t restart() const override {

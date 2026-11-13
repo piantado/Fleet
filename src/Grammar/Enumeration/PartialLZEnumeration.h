@@ -37,7 +37,7 @@ public:
 			auto nx = st.count(n);
 			if(nx > max_partial_enum) continue; // don't spend all our time here
 			for(size_t i=0;i<nx;i++) {
-				auto x = st.toNode(i,root);
+				auto x = st.toNode(i,n); // the i'th partial subtree of n (this used to pass root, though nx counts n's)
 			
 				if(x.nt() == nt and (not unique.contains(x)) and x.count_nonnull() > min_ref_size and (not x.is_null())) {
 					cnt++;
@@ -56,7 +56,7 @@ public:
 			auto nx = st.count(n);
 			if(nx > max_partial_enum) continue; // don't spend all our time here
 			for(size_t i=0;i<nx;i++) {
-				auto x = st.toNode(i,root);
+				auto x = st.toNode(i,n); // the i'th partial subtree of n (this used to pass root, though nx counts n's)
 			
 				if(x.nt() == nt and (not unique.contains(x)) and x.count_nonnull() > min_ref_size and (not x.is_null())) {
 					   

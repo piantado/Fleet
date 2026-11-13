@@ -28,7 +28,9 @@ public:
 		// let's see, in a string like abcdefg
 		//                             0123456
 		// we want to compute for a bigram P(b|a)
-		for(size_t i=0;i<=s.size()-n;i++) {
+		// NOTE: i+n <= s.size(), not i <= s.size()-n: for a string shorter than n the subtraction wraps
+		// around (size_t), and substr then throws std::out_of_range. Such a string has no n-grams. 
+		for(size_t i=0;i+(size_t)n<=s.size();i++) {
 			auto x = s.substr(i,n);
 			auto y = s.substr(i,n-1);
 			count[x]     = get(count,     x, 0) + 1;
@@ -40,7 +42,9 @@ public:
 		// this is the same as train except that we skip *anything* containing msk 
 		// within the n-gram
 		
-		for(size_t i=0;i<=s.size()-n;i++) {
+		// NOTE: i+n <= s.size(), not i <= s.size()-n: for a string shorter than n the subtraction wraps
+		// around (size_t), and substr then throws std::out_of_range. Such a string has no n-grams. 
+		for(size_t i=0;i+(size_t)n<=s.size();i++) {
 			auto x = s.substr(i,n);
 			if(not contains(x, mask)) {				
 				auto y = s.substr(i,n-1);

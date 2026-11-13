@@ -116,15 +116,20 @@ struct Vector2D {
 		}
 	}
 	
-	T& operator()(const int x, const int y) const {
+	// NOTE: these two had their constness exchanged: the const version returned a T& (which cannot
+	// bind to an element of a const vector, so it never compiled) and the non-const one a const T&. 
+	const T& operator()(const int x, const int y) const {
 		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
 		else { 
 			return value.at(x*ysize + y);
 		}
 	}
 	
-	const T& operator()(const int x, const int y) {
-		return value.at(x*ysize + y);
+	T& operator()(const int x, const int y) {
+		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
+		else { 
+			return value.at(x*ysize + y);
+		}
 	}
 	
 	

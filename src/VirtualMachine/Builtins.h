@@ -450,13 +450,16 @@ namespace Builtins {
 				throw VMSRuntimeError();
 			}
 			
-			// the key here is the index into the lexicon
-			// NOTE: this is popped before the argument (which is relevant when they are the same type)
-			auto key = vms->template getpop<key_t>();
-
-			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
-			// so we must move them to the x stack (where there are accessible by op_X)
+			// Arguments come off the stack in REVERSE order: the rule is F(key, x), so x (the last argument)
+			// is on top. That only matters when key_t and input_t are the same type and so share a stack,
+			// but then popping the key first (as this used to) exchanged the two: F(key,x) ran factor x on
+			// the input key. (Same convention as Grammar::add, which pops a1 before a0.)
+			// So first the argument, which we move to the x stack (where it is accessible by op_X)
 			auto mynewx = vms->template getpop<input_t>();
+			
+			// and then the key, which is the index into the lexicon
+			auto key = vms->template getpop<key_t>();
+			
 			vms->xstack.push(std::move(mynewx));
 			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
 			
@@ -500,8 +503,9 @@ namespace Builtins {
 			throw VMSRuntimeError();
 		}
 		
-		auto key = vms->template getpop<key_t>();
+		// NOTE: x (the last argument) must be popped before the key -- see LexiconRecurse
 		auto x = vms->template getpop<input_t>(); // get the argument
+		auto key = vms->template getpop<key_t>();
 		
 		auto memindex = std::make_pair(key,x);
 		

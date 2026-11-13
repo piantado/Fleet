@@ -66,8 +66,10 @@ public:
 	
 	// store the the total number of instructions on the last call
 	// (summed up for stochastic, else just one for deterministic)
-	unsigned long total_instruction_count_last_call;
-	unsigned long total_vms_steps;
+	// (initialized: they used to be indeterminate until the first call, and copying a hypothesis -- which
+	//  every proposal does -- read them)
+	unsigned long total_instruction_count_last_call = 0;
+	unsigned long total_vms_steps = 0;
 	
 	// A Callable stores its program
 	Program<VirtualMachineState_t> program;
@@ -240,7 +242,10 @@ public:
 	}
 
 	static this_t from_string(Grammar_t* g, std::string s) {
-		return this_t(g, g->from_parseable(s));
+		// NOTE: the grammar is a template argument of LOTHypothesis, not a constructor argument (this 
+		// used to call a (Grammar_t*, Node) constructor that does not exist, and so never compiled)
+		assert(g == grammar && "*** from_string must be given this hypothesis type's own grammar");
+		return this_t(g->from_parseable(s));
 	}
 	
 	virtual size_t hash() const override {

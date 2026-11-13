@@ -536,15 +536,21 @@ public:
 			     char path[PATH_MAX+1]; 
 				uint32_t size = sizeof(path); 
 				_NSGetExecutablePath(path, &size); 
-				char tmp[128]; sprintf(tmp, "md5sum %s", path);
+				// (a std::string: a path can be up to PATH_MAX long, which overflowed the char[128] used here before)
+				const std::string tmp = std::string("md5sum \"") + path + "\"";
 			#else 
 			
 				// and build the command to get the md5 checksum of myself
-				char tmp[128]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
+				const std::string tmp = "md5sum /proc/" + std::to_string(getpid()) + "/exe";
 			#endif
 				
 			std::filesystem::path cwd = std::filesystem::current_path();
-			std::string exc = system_exec(tmp); exc.erase(exc.length()-1); // came with a newline?
+			// remove the trailing newline. NOTE: the output is EMPTY when md5sum is not installed (e.g. on
+			// macOS, which has md5 instead) or /proc is not there, and exc.erase(exc.length()-1) then threw
+			// std::out_of_range, ending the program before it started. 
+			std::string exc = system_exec(tmp.c_str()); 
+			while(not exc.empty() and (exc.back() == '\n' or exc.back() == '\r')) exc.pop_back();
+			if(exc.empty()) exc = "<unavailable>";
 			
 			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			// NOTE: getenv can return nullptr (e.g. in containers or clusters where USER is unset),
